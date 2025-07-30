@@ -22,6 +22,7 @@ VoteSecured represents the future of secure electronic voting, combining cutting
 - **📊 Admin Dashboard**: Complete election lifecycle management
 - **👀 Observer Portal**: Public transparency with privacy preservation
 - **🛡️ Security FAQ**: Comprehensive objection handling and education
+- **🐳 Container Architecture**: Each component runs in isolated Docker containers with verifiable images
 
 ## 🏗️ Current Status
 
@@ -48,6 +49,7 @@ vote-secured/
 ├── docs/                           # Documentation
 │   ├── gap-analysis-report.md      # Current vs. target analysis
 │   ├── state-implementation-guide.md # Deployment guide
+│   ├── docker-architecture.md      # Container architecture guide
 │   └── compliance/                 # Standards compliance
 ├── pages/                          # Web interface
 │   ├── index.html                  # Federal landing page
@@ -55,17 +57,23 @@ vote-secured/
 │   ├── demo/                       # Interactive demonstrations
 │   └── compliance/                 # Compliance documentation
 ├── src/                           # Source code (to be implemented)
-│   ├── cryptography/              # zkSNARKs, blind signatures
-│   ├── backend/                   # Voting system core
-│   ├── frontend/                  # User interfaces
-│   └── infrastructure/            # Deployment and ops
-└── tests/                         # Test suites
+│   ├── services/                  # Containerized microservices
+│   │   ├── voting-engine/         # Core voting logic container
+│   │   ├── cryptography-service/  # zkSNARKs, signatures container
+│   │   ├── merkle-ledger/         # Public audit trail container
+│   │   ├── voter-interface/       # Frontend voter app container
+│   │   └── admin-dashboard/       # Management interface container
+│   ├── k8s/                      # Kubernetes deployment manifests
+│   ├── docker-compose.yml        # Development environment
+│   └── scripts/                  # Image verification and deployment
+└── tests/                         # Test suites including container tests
 ```
 
 ## 🛣️ Development Roadmap
 
 ### Phase 1: Core Security Infrastructure (6-8 months)
 **Priority: Critical**
+- [ ] Docker container architecture with verifiable images
 - [ ] Anonymous credential issuance system
 - [ ] Public Merkle ledger with inclusion proofs
 - [ ] Backend voting system architecture
@@ -111,11 +119,21 @@ vote-secured/
 - **WebAssembly**: Client-side cryptography
 - **Accessibility**: WCAG 2.1 AA compliance
 
-### Infrastructure
-- **Kubernetes**: Container orchestration
+### Infrastructure & Containers
+- **Docker**: Containerized microservices architecture
+- **Kubernetes**: Container orchestration and scaling
+- **Docker Content Trust**: Cryptographic image signing and verification
+- **Container Registry**: Private registry with vulnerability scanning
 - **HashiCorp Vault**: Secrets management
 - **FIPS 140-2 Level 3**: Hardware Security Modules
 - **Multi-cloud**: AWS/Azure redundancy
+
+### Container Security
+- **Image Verification**: SHA-256 hashes and digital signatures for all containers
+- **Vulnerability Scanning**: Automated security scanning in CI/CD pipeline
+- **Runtime Security**: Non-root execution, read-only filesystems, capability restrictions
+- **Network Isolation**: Container network segmentation and policies
+- **Resource Limits**: CPU, memory, and I/O constraints per container
 
 ## 🛡️ Security & Compliance
 
