@@ -1,0 +1,25 @@
+{
+  "name": "vote-secured",
+  "version": "1.0.0",
+  "description": "Secure voting platform for Georgia elections",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "voting",
+    "elections",
+    "security",
+    "georgia"
+  ],
+  "author": "Vote Secured Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "path": "^0.12.7"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

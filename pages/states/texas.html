@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Secured - Texas Election Security Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, 'Segoe UI', Georgia, serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-bottom: 3px solid #e0e0e0;
+            position: relative;
+        }
+        
+        .slide:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #BF0A30;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #BF0A30;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #002868;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .texas-seal {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #BF0A30, #002868);
+            border-radius: 50%;
+            color: white;
+            font-size: 48px;
+        }
+        
+        .texas-flag {
+            width: 80px;
+            height: 50px;
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            border: 1px solid #333;
+            background-image: url('/images/tx.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .concern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .concern-card {
+            background: #fff;
+            border: 2px solid #BF0A30;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .concern-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .concern-icon {
+            font-size: 36px;
+            margin-right: 15px;
+            color: #002868;
+        }
+        
+        .solution-box {
+            background: #e0f2fe;
+            border-left: 4px solid #0288d1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .solution-box h4 {
+            color: #0288d1;
+            margin-bottom: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table th {
+            background: #BF0A30;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .check {
+            color: #0288d1;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .texas-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .stat-box {
+            padding: 30px;
+            background: #fff3e0;
+            border-radius: 8px;
+            border: 2px solid #BF0A30;
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #002868;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .rural-connectivity {
+            background: #f3e5f5;
+            border: 2px solid #9c27b0;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #BF0A30;
+        }
+        
+        .domain-badge {
+            position: absolute;
+            top: 20px;
+            right: 140px;
+            font-size: 14px;
+            color: #666;
+            background: #f0f4f8;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid #d0d0d0;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .slide-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #BF0A30;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #002868;
+            transform: scale(1.1);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .border-security {
+            background: #fff8e1;
+            border-left: 5px solid #ffc107;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .county-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .county-card {
+            background: #f3e5f5;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #9c27b0;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #BF0A30 0%, #002868 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #BF0A30;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 6px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .voter-id-section {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide">
+        <div class="texas-flag"></div>
+        <div class="container">
+            <div class="texas-seal">⭐</div>
+            <h1>Vote Secured: Election Solutions for the Lone Star State</h1>
+            <p class="subtitle">Secure, Scalable, and Rural-Ready Voting Technology for Texas</p>
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 20px; color: #BF0A30;">
+                    <strong>Prepared for:</strong> Texas Secretary of State<br>
+                    <strong>Secretary:</strong> Jane Nelson<br>
+                    <strong>Texas Association of Elections Administrators</strong><br>
+                    <strong>Date:</strong> July 2025
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">1</span>
+    </div>
+
+    <!-- Slide 2: Texas Election Challenges -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h2>Texas Election Challenges & Opportunities</h2>
+            <p class="subtitle">Addressing the Unique Needs of America's Second-Largest State</p>
+            <div class="concern-grid">
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🏔️</span>
+                        <h3>Rural Connectivity</h3>
+                    </div>
+                    <p>Vast rural areas with limited broadband infrastructure requiring innovative connectivity solutions</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Satellite internet integration, offline voting capability, and mobile voting units for remote areas</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🏛️</span>
+                        <h3>County-Level Customization</h3>
+                    </div>
+                    <p>254 counties with varying technical capabilities, budgets, and election management needs</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Scalable SaaS platform with county-specific customization and tiered service levels</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🆔</span>
+                        <h3>Voter ID Integration</h3>
+                    </div>
+                    <p>Strict voter ID requirements requiring seamless integration with state identification systems</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Real-time integration with Texas DPS database and automated ID verification</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🌎</span>
+                        <h3>Border Security Concerns</h3>
+                    </div>
+                    <p>Enhanced security requirements for border counties with additional verification protocols</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Advanced biometric verification and citizenship status checking for border regions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">2</span>
+    </div>
+
+    <!-- Slide 3: Texas Election Statistics -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h2>Texas Election Landscape by the Numbers</h2>
+            <div class="texas-stats">
+                <div class="stat-box">
+                    <div class="stat-number">17.7M</div>
+                    <div class="stat-label">Registered voters</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">254</div>
+                    <div class="stat-label">Counties to coordinate</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">40%</div>
+                    <div class="stat-label">Hispanic/Latino voters</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">61</div>
+                    <div class="stat-label">Languages spoken</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">28%</div>
+                    <div class="stat-label">Rural population</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">$220M</div>
+                    <div class="stat-label">Annual election costs</div>
+                </div>
+            </div>
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 30px; border-radius: 8px; margin-top: 40px;">
+                <h3 style="color: #856404; text-align: center;">Texas Election Priorities</h3>
+                <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                    <li style="padding: 10px 0;">🆔 Strict voter ID compliance</li>
+                    <li style="padding: 10px 0;">🏔️ Rural area connectivity solutions</li>
+                    <li style="padding: 10px 0;">🏛️ County autonomy preservation</li>
+                    <li style="padding: 10px 0;">🌎 Border security enhancement</li>
+                    <li style="padding: 10px 0;">📊 Real-time result reporting</li>
+                    <li style="padding: 10px 0;">💰 Cost reduction for counties</li>
+                </ul>
+            </div>
+        </div>
+        <span class="slide-number">3</span>
+    </div>
+
+    <!-- Slide 4: Rural Connectivity Solutions -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h2>Rural Texas Connectivity Solutions</h2>
+            <p class="subtitle">Ensuring Every Texan Can Vote, Regardless of Location</p>
+            
+            <div class="rural-connectivity">
+                <h3 style="color: #9c27b0; text-align: center; margin-bottom: 30px;">Multi-Modal Connectivity Approach</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #9c27b0;">Satellite Internet Integration</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Starlink and other LEO satellite support</li>
+                            <li style="padding: 5px 0;">✓ Automatic failover to satellite backup</li>
+                            <li style="padding: 5px 0;">✓ Low-latency voting optimizations</li>
+                            <li style="padding: 5px 0;">✓ Weather-resistant connections</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #9c27b0;">Mobile Voting Units</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Solar-powered mobile voting trailers</li>
+                            <li style="padding: 5px 0;">✓ Cellular and satellite connectivity</li>
+                            <li style="padding: 5px 0;">✓ Deployable to ranch communities</li>
+                            <li style="padding: 5px 0;">✓ ADA compliant accessibility</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #9c27b0;">Offline Voting Capability</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Local ballot storage and encryption</li>
+                            <li style="padding: 5px 0;">✓ Sync when connectivity restored</li>
+                            <li style="padding: 5px 0;">✓ Cryptographic integrity maintenance</li>
+                            <li style="padding: 5px 0;">✓ Emergency paper ballot export</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #9c27b0;">Partnership Solutions</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Library and community center hosting</li>
+                            <li style="padding: 5px 0;">✓ Rural co-op internet partnerships</li>
+                            <li style="padding: 5px 0;">✓ Church and school collaborations</li>
+                            <li style="padding: 5px 0;">✓ Agricultural extension office integration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #e8f5e9; padding: 30px; border-radius: 12px; margin-top: 30px;">
+                <h3 style="color: #4caf50; text-align: center; margin-bottom: 20px;">Real Texas Success Stories</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div>
+                        <h4 style="color: #4caf50;">West Texas Ranch Voting</h4>
+                        <p>Mobile units serve remote ranching communities with populations under 500, reducing travel time from 2+ hours to under 30 minutes</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #4caf50;">East Texas Forest Communities</h4>
+                        <p>Satellite connectivity enables voting in areas where traditional broadband infrastructure is not economically viable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">4</span>
+    </div>
+
+    <!-- Slide 5: County Customization & Voter ID -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h2>County Flexibility & Voter ID Compliance</h2>
+            <p class="subtitle">Preserving Local Control While Ensuring Statewide Security</p>
+            
+            <div class="county-grid">
+                <div class="county-card">
+                    <h4 style="color: #9c27b0;">Large County Features</h4>
+                    <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                        <li style="padding: 5px 0;">✓ High-volume processing optimization</li>
+                        <li style="padding: 5px 0;">✓ Multiple language support</li>
+                        <li style="padding: 5px 0;">✓ Advanced analytics and reporting</li>
+                        <li style="padding: 5px 0;">✓ Integration with county systems</li>
+                        <li style="padding: 5px 0;">✓ Real-time result broadcasting</li>
+                    </ul>
+                </div>
+                <div class="county-card">
+                    <h4 style="color: #9c27b0;">Small County Features</h4>
+                    <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                        <li style="padding: 5px 0;">✓ Simplified administration interface</li>
+                        <li style="padding: 5px 0;">✓ Shared infrastructure cost model</li>
+                        <li style="padding: 5px 0;">✓ 24/7 technical support</li>
+                        <li style="padding: 5px 0;">✓ Automated compliance reporting</li>
+                        <li style="padding: 5px 0;">✓ Turnkey operation capability</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="voter-id-section">
+                <h3 style="color: #4caf50; text-align: center; margin-bottom: 30px;">Texas Voter ID Integration</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                    <div>
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🆔</div>
+                        <h4>DPS Integration</h4>
+                        <p>Real-time verification with Texas Department of Public Safety database</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                        <h4>Photo Matching</h4>
+                        <p>Biometric facial recognition to prevent impersonation</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📋</div>
+                        <h4>Acceptable ID Types</h4>
+                        <p>Support for all 7 acceptable forms of Texas voter identification</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-security">
+                <h3 style="color: #ffc107; text-align: center; margin-bottom: 20px;">Enhanced Border County Security</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div>
+                        <h4 style="color: #ffc107;">Citizenship Verification</h4>
+                        <p>Enhanced verification protocols for border counties with real-time citizenship status checking through federal databases</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #ffc107;">Biometric Security</h4>
+                        <p>Advanced fingerprint and facial recognition systems for additional identity verification in sensitive areas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">5</span>
+    </div>
+
+    <!-- Slide 6: Texas vs Current System Comparison -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h2>Vote Secured vs. Current Texas Systems</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Current Texas Systems</th>
+                        <th>Vote Secured Solution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Rural Area Coverage</strong></td>
+                        <td>Limited by broadband availability</td>
+                        <td>Satellite + mobile units reach 100% of Texas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>County Coordination</strong></td>
+                        <td>254 separate systems</td>
+                        <td>Unified platform with local customization</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Voter ID Verification</strong></td>
+                        <td>Manual checking at polls</td>
+                        <td>Automated DPS database integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spanish Language Support</strong></td>
+                        <td>Paper translations only</td>
+                        <td>Full digital bilingual interface</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Result Reporting</strong></td>
+                        <td>Hours to compile statewide</td>
+                        <td>Real-time aggregation across all counties</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Auditing</strong></td>
+                        <td>Limited paper trail audits</td>
+                        <td>Complete cryptographic audit trail</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost per Voter</strong></td>
+                        <td>$12.43 (varies by county)</td>
+                        <td>$3.75 with economy of scale</td>
+                    </tr>
+                    <tr style="background: #f3e5f5; font-weight: bold;">
+                        <td>Annual State Savings</td>
+                        <td>-</td>
+                        <td class="check">$155M+ annually</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span class="slide-number">6</span>
+    </div>
+
+    <!-- Slide 7: Implementation Strategy -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h2>Texas Implementation Roadmap</h2>
+            <p class="subtitle">Phased Rollout Respecting Texas Election Cycles</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px;">
+                <div style="background: #fff3e0; padding: 30px; border-radius: 12px; border-left: 5px solid #ff9800;">
+                    <h3 style="color: #ff9800; text-align: center;">Phase 1: Pilot</h3>
+                    <h4 style="text-align: center; margin: 20px 0;">Spring 2026</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ 5 diverse counties (urban/rural/border)</li>
+                        <li style="padding: 8px 0;">✓ Local/municipal elections</li>
+                        <li style="padding: 8px 0;">✓ Rural connectivity testing</li>
+                        <li style="padding: 8px 0;">✓ Voter ID integration validation</li>
+                        <li style="padding: 8px 0;">✓ Bilingual interface testing</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #f3e5f5; padding: 30px; border-radius: 12px; border-left: 5px solid #9c27b0;">
+                    <h3 style="color: #9c27b0; text-align: center;">Phase 2: Regional</h3>
+                    <h4 style="text-align: center; margin: 20px 0;">Fall 2026</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ 25-30 counties</li>
+                        <li style="padding: 8px 0;">✓ Constitutional amendment elections</li>
+                        <li style="padding: 8px 0;">✓ Border county security validation</li>
+                        <li style="padding: 8px 0;">✓ Mobile unit deployment</li>
+                        <li style="padding: 8px 0;">✓ County feedback integration</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #e8f5e9; padding: 30px; border-radius: 12px; border-left: 5px solid #4caf50;">
+                    <h3 style="color: #4caf50; text-align: center;">Phase 3: Statewide</h3>
+                    <h4 style="text-align: center; margin: 20px 0;">2028 General</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ All 254 counties</li>
+                        <li style="padding: 8px 0;">✓ Presidential election</li>
+                        <li style="padding: 8px 0;">✓ Full rural area coverage</li>
+                        <li style="padding: 8px 0;">✓ Complete cost savings realized</li>
+                        <li style="padding: 8px 0;">✓ National model deployment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 30px; border-radius: 12px; margin-top: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="text-align: center; color: #BF0A30; margin-bottom: 20px;">Texas-Specific Preparation</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div>
+                        <h4 style="color: #002868;">Legislative Engagement</h4>
+                        <p>Work with Texas Legislature to ensure compliance with state election code and constitutional requirements</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #002868;">County Outreach</h4>
+                        <p>Extensive collaboration with Texas Association of Elections Administrators</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #002868;">Rural Testing</h4>
+                        <p>Comprehensive connectivity testing in most remote Texas counties</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #002868;">Security Validation</h4>
+                        <p>Enhanced security testing for border counties and high-threat areas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">7</span>
+    </div>
+
+    <!-- Slide 8: Call to Action -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="texas-flag"></div>
+        <div class="container">
+            <h1>Secure Texas Elections for the 21st Century</h1>
+            <div class="cta-section">
+                <h2>Ready to Lead the Nation in Election Innovation?</h2>
+                <p style="font-size: 22px; margin-bottom: 30px;">Texas has always been a leader in innovation. Let's make Texas elections the most secure, accessible, and efficient in America.</p>
+                <a href="mailto:texas@vote-secured.net?subject=Texas Demo Request&body=I would like to schedule a demo of Vote Secured for Texas election officials. Please contact me to arrange a presentation." class="cta-button">Request Texas Demo</a>
+                <a href="mailto:texas@vote-secured.net?subject=County Presentation Request&body=I would like to schedule a Vote Secured presentation for our county election officials. Please provide available dates and times." class="cta-button">Schedule County Presentation</a>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 40px;">
+                <div style="text-align: center;">
+                    <h3 style="color: #BF0A30;">Contact</h3>
+                    <p>texas@vote-secured.net</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: #BF0A30;">Rural Coverage</h3>
+                    <p>100% Texas Coverage</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: #BF0A30;">County Flexibility</h3>
+                    <p>254 County Customization</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: #BF0A30;">Savings</h3>
+                    <p>$155M+ Annual Reduction</p>
+                </div>
+            </div>
+            <div style="margin-top: 40px; padding: 30px; background: #BF0A30; color: white; border-radius: 12px;">
+                <p style="text-align: center; font-size: 20px; margin: 0;">
+                    "Everything's bigger in Texas - including our commitment to election security. <br>
+                    Vote Secured delivers Texas-sized solutions for the Lone Star State."
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">8</span>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="slide-nav">
+        <button class="nav-btn" id="firstBtn" onclick="goToSlide(1)" title="First Slide">⏮</button>
+        <button class="nav-btn" id="prevBtn" onclick="previousSlide()" title="Previous Slide">⏪</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next Slide">⏩</button>
+        <button class="nav-btn" id="lastBtn" onclick="goToSlide(8)" title="Last Slide">⏭</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 8;
+
+        function updateNavigation() {
+            document.getElementById('firstBtn').disabled = currentSlide === 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            document.getElementById('lastBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 1 && slideNumber <= totalSlides) {
+                currentSlide = slideNumber;
+                const slides = document.querySelectorAll('.slide');
+                slides[slideNumber - 1].scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start' 
+                });
+                updateNavigation();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        // Initialize navigation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case 'PageDown':
+                    case ' ':
+                        e.preventDefault();
+                        nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        e.preventDefault();
+                        previousSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToSlide(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        goToSlide(totalSlides);
+                        break;
+                }
+            });
+
+            // Track current slide position on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const slides = Array.from(document.querySelectorAll('.slide'));
+                        const slideIndex = slides.indexOf(entry.target);
+                        if (slideIndex !== -1) {
+                            currentSlide = slideIndex + 1;
+                            updateNavigation();
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            document.querySelectorAll('.slide').forEach(slide => {
+                observer.observe(slide);
+            });
+        });
+
+        console.log('⭐ Vote-Secured.net - Texas Election Security Solution');
+        console.log('Addressing: Rural connectivity, county customization, voter ID integration');
+        console.log('Potential savings: $155M+ annually for Texas taxpayers');
+    </script>
+</body>
+</html>

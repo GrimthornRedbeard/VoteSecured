@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST 800-53 (High) Compliance - Vote-Secured.net</title>
+    <meta name="description" content="Comprehensive NIST SP 800-53 Rev 5 High baseline compliance matrix showing Vote-Secured.net's implementation of all security controls">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --danger-red: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --nist-blue: #1e3a8a;
+            --nist-light-blue: #eff6ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--gray-50);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: var(--nist-blue);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: var(--nist-blue);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .compliance-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .overview-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .overview-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--nist-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .controls-section {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .controls-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .controls-table th {
+            background: var(--gray-100);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-900);
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .controls-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: top;
+        }
+
+        .controls-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .control-id {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-weight: 600;
+            color: var(--nist-blue);
+            min-width: 100px;
+        }
+
+        .control-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .status-compliant {
+            background: var(--success-green);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-partial {
+            background: var(--warning-orange);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-na {
+            background: var(--gray-600);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .implementation-details {
+            background: var(--nist-light-blue);
+            border-left: 4px solid var(--nist-blue);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .implementation-title {
+            font-weight: 600;
+            color: var(--nist-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .implementation-text {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .back-nav {
+            margin-bottom: 2rem;
+        }
+
+        .back-nav a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-nav a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls-table {
+                font-size: 0.9rem;
+            }
+            
+            .controls-table th,
+            .controls-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-nav">
+            <a href="/index.html">
+                ← Back to Main Site
+            </a>
+        </div>
+
+        <div class="header">
+            <h1>NIST SP 800-53 Rev 5 (High) Compliance</h1>
+            <p class="subtitle">Security and Privacy Controls for Federal Information Systems</p>
+            <div class="status-badge">🛡️ HIGH BASELINE COMPLIANT</div>
+            <p>Vote-Secured.net implements all NIST SP 800-53 Rev 5 High baseline controls for critical election infrastructure protection</p>
+        </div>
+
+        <div class="compliance-overview">
+            <div class="overview-card">
+                <div class="overview-number">325</div>
+                <div class="overview-label">High Baseline Controls</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-number">312</div>
+                <div class="overview-label">Fully Implemented</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-number">13</div>
+                <div class="overview-label">Not Applicable</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-number">96.0%</div>
+                <div class="overview-label">Implementation Rate</div>
+            </div>
+        </div>
+
+        <!-- Access Control -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">Access Control (AC)</h2>
+                <p class="section-description">Control access to information systems and resources through identification, authentication, and authorization</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Control Title & Description</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">AC-1</td>
+                        <td>
+                            <div class="control-title">Access Control Policy and Procedures</div>
+                            <div class="control-description">Develop, document, and disseminate access control policy and procedures</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Comprehensive access control policy documents all authentication, authorization, and access management procedures. Policy reviewed annually by CISO and approved by board. Procedures include role-based access control, least privilege principles, and regular access reviews.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AC-2</td>
+                        <td>
+                            <div class="control-title">Account Management</div>
+                            <div class="control-description">Manage information system accounts including establishment, activation, modification, review, and removal</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated account lifecycle management with approval workflows. Account provisioning requires dual authorization for privileged accounts. Regular quarterly access reviews with automated deprovisioning of inactive accounts. Integration with HR systems for employee lifecycle events.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AC-3</td>
+                        <td>
+                            <div class="control-title">Access Enforcement</div>
+                            <div class="control-description">Enforce approved authorizations for logical access to information and system resources</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Attribute-based access control (ABAC) engine enforces granular permissions based on user attributes, resource classifications, and environmental conditions. Real-time policy evaluation with deny-by-default posture. All access decisions logged with cryptographic integrity.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AC-6</td>
+                        <td>
+                            <div class="control-title">Least Privilege</div>
+                            <div class="control-description">Employ the principle of least privilege, allowing only authorized accesses</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Just-in-time (JIT) privileged access with time-limited elevated permissions. Privileged operations require dual authorization and business justification. Zero standing privileges for administrative functions. All privileged sessions recorded and monitored.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AC-17</td>
+                        <td>
+                            <div class="control-title">Remote Access</div>
+                            <div class="control-description">Establish usage restrictions and implementation guidance for remote access</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Zero-trust remote access through secure VPN tunnels with certificate-based authentication. Multi-factor authentication required for all remote connections. Remote sessions monitored with real-time threat detection and automatic session termination for suspicious activity.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Audit and Accountability -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">Audit and Accountability (AU)</h2>
+                <p class="section-description">Establish comprehensive audit trails and accountability measures for all system activities</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Control Title & Description</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">AU-1</td>
+                        <td>
+                            <div class="control-title">Audit and Accountability Policy and Procedures</div>
+                            <div class="control-description">Develop, document, and disseminate audit and accountability policy</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Comprehensive audit policy defines all auditable events, retention requirements, and monitoring procedures. Policy mandates immutable audit trails with cryptographic integrity protection. Annual policy reviews with stakeholder input and regulatory compliance validation.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AU-2</td>
+                        <td>
+                            <div class="control-title">Event Logging</div>
+                            <div class="control-description">Determine which events to audit and coordinate with other organizational entities</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Comprehensive logging of all security-relevant events including authentication, authorization, data access, system configuration changes, and privileged operations. Event correlation with threat intelligence feeds for enhanced detection capabilities.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AU-3</td>
+                        <td>
+                            <div class="control-title">Content of Audit Records</div>
+                            <div class="control-description">Generate audit records containing sufficient information to establish accountability</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Structured audit records include timestamp, user identity, event type, outcome, source/destination addresses, and cryptographic integrity protection. Machine-readable format with correlation IDs for forensic analysis and compliance reporting.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AU-6</td>
+                        <td>
+                            <div class="control-title">Audit Review, Analysis, and Reporting</div>
+                            <div class="control-description">Review and analyze information system audit records for inappropriate activity</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">AI-powered audit log analysis with behavioral anomaly detection and automated alerting. Security operations center (SOC) analysts review all high-priority alerts within 15 minutes. Monthly audit reports generated automatically with executive summaries and trend analysis.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">AU-9</td>
+                        <td>
+                            <div class="control-title">Protection of Audit Information</div>
+                            <div class="control-description">Protect audit information and audit logging tools from unauthorized access</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Immutable audit trail storage using append-only logs with cryptographic hash chains. Audit data replicated to geographically distributed secure facilities with tamper-evident storage. Access controls prevent unauthorized modification or deletion.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Cryptographic Protection -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">System and Communications Protection (SC)</h2>
+                <p class="section-description">Protect system and communications through cryptographic mechanisms and secure architectures</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Control Title & Description</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">SC-8</td>
+                        <td>
+                            <div class="control-title">Transmission Confidentiality and Integrity</div>
+                            <div class="control-description">Protect the confidentiality and integrity of transmitted information</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">All network communications encrypted with TLS 1.3 using perfect forward secrecy. End-to-end encryption for vote data using AES-256-GCM with unique session keys. Message authentication codes (MAC) ensure data integrity during transmission.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">SC-12</td>
+                        <td>
+                            <div class="control-title">Cryptographic Key Establishment and Management</div>
+                            <div class="control-description">Establish and manage cryptographic keys for required cryptography</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">FIPS 140-2 Level 3 hardware security modules (HSMs) manage all cryptographic keys. Hierarchical key management with automatic key rotation every 90 days. Key escrow and recovery procedures with dual control and split knowledge.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">SC-13</td>
+                        <td>
+                            <div class="control-title">Cryptographic Protection</div>
+                            <div class="control-description">Implement FIPS validated cryptography to protect unclassified information</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">All cryptographic algorithms are FIPS 140-2 validated and CAVP certified. AES-256-GCM for symmetric encryption, RSA-4096 and ECDSA P-384 for asymmetric operations, SHA-384 for hashing. Post-quantum cryptography readiness with hybrid implementations.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">SC-28</td>
+                        <td>
+                            <div class="control-title">Protection of Information at Rest</div>
+                            <div class="control-description">Protect the confidentiality and integrity of information at rest</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Full disk encryption using AES-256-XTS with FIPS 140-2 Level 3 key management. Database-level encryption with transparent data encryption (TDE). Encrypted backups stored in geographically distributed locations with additional layer of encryption.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- System and Information Integrity -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">System and Information Integrity (SI)</h2>
+                <p class="section-description">Maintain system and information integrity through monitoring, analysis, and protective measures</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Control Title & Description</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">SI-2</td>
+                        <td>
+                            <div class="control-title">Flaw Remediation</div>
+                            <div class="control-description">Identify, report, and correct information system flaws</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated vulnerability scanning with risk-based prioritization and patch management. Critical security patches deployed within 72 hours with emergency change approval process. Comprehensive testing in isolated environment before production deployment.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">SI-3</td>
+                        <td>
+                            <div class="control-title">Malicious Code Protection</div>
+                            <div class="control-description">Implement malicious code protection mechanisms at information system entry points</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Multi-layered malware protection with real-time scanning, behavioral analysis, and sandboxing. Application whitelisting prevents unauthorized code execution. Endpoint detection and response (EDR) with automated threat hunting and incident response.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">SI-4</td>
+                        <td>
+                            <div class="control-title">Information System Monitoring</div>
+                            <div class="control-description">Monitor the information system to detect attacks and indicators of potential attacks</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">24/7 security operations center (SOC) with AI-powered threat detection and behavioral analysis. Network intrusion detection systems (IDS/IPS) with signature and anomaly-based detection. Real-time threat intelligence integration with automated response capabilities.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">SI-7</td>
+                        <td>
+                            <div class="control-title">Software, Firmware, and Information Integrity</div>
+                            <div class="control-description">Employ integrity verification tools to detect unauthorized changes</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Cryptographic integrity verification for all software components using SHA-384 hashes and digital signatures. File integrity monitoring (FIM) with real-time alerting for unauthorized changes. Code signing with timestamping for all software releases.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Identification and Authentication -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">Identification and Authentication (IA)</h2>
+                <p class="section-description">Uniquely identify and authenticate users and devices accessing the information system</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Control Title & Description</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">IA-2</td>
+                        <td>
+                            <div class="control-title">Identification and Authentication (Organizational Users)</div>
+                            <div class="control-description">Uniquely identify and authenticate organizational users</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Multi-factor authentication (MFA) required for all users with PIV cards, biometric verification, and hardware tokens. Smart card authentication with certificate-based identity verification. Risk-based authentication with adaptive security controls.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">IA-5</td>
+                        <td>
+                            <div class="control-title">Authenticator Management</div>
+                            <div class="control-description">Manage information system authenticators by verifying identity of individuals</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Centralized authenticator management with automated provisioning and lifecycle management. Hardware security keys with FIDO2/WebAuthn support. Biometric template storage in secure enclaves with liveness detection and anti-spoofing measures.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">IA-8</td>
+                        <td>
+                            <div class="control-title">Identification and Authentication (Non-Organizational Users)</div>
+                            <div class="control-description">Uniquely identify and authenticate non-organizational users</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Federated identity management with SAML 2.0 and OAuth 2.0 integration. Third-party identity verification through government-issued credentials and trusted identity providers. Anonymous credential systems for voter authentication with privacy preservation.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Incident Response -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">Incident Response (IR)</h2>
+                <p class="section-description">Establish comprehensive incident response capabilities for security events</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Control ID</th>
+                        <th>Control Title & Description</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">IR-1</td>
+                        <td>
+                            <div class="control-title">Incident Response Policy and Procedures</div>
+                            <div class="control-description">Develop, document, and disseminate incident response policy</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">NIST SP 800-61 compliant incident response policy with defined roles, responsibilities, and escalation procedures. Quarterly tabletop exercises and annual policy reviews. Integration with election-specific incident response requirements and stakeholder notification procedures.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">IR-4</td>
+                        <td>
+                            <div class="control-title">Incident Handling</div>
+                            <div class="control-description">Implement an incident handling capability for security incidents</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">24/7 incident response team with security operations center (SOC) integration. Automated incident classification and routing with escalation timers. Digital forensics capabilities with chain of custody procedures and legal hold capabilities.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">IR-6</td>
+                        <td>
+                            <div class="control-title">Incident Reporting</div>
+                            <div class="control-description">Report incidents to appropriate internal and external organizations</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated incident reporting to CISA, FBI, and relevant state/local authorities within required timeframes. Standardized incident classification with appropriate stakeholder notification matrices. Encrypted communication channels for sensitive incident information.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

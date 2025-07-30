@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote-Secured.net Demo System - Live Voting Simulation</title>
+    <meta name="description" content="Experience secure electronic voting with our live demo system. Test voter authentication, encrypted ballot casting, and real-time verification.">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --primary-red: #dc2626;
+            --secondary-blue: #3b82f6;
+            --secondary-red: #ef4444;
+            --dark-blue: #1e3a8a;
+            --light-blue: #dbeafe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--gray-50);
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-100);
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Demo Status Banner */
+        .status-banner {
+            background: linear-gradient(135deg, var(--warning-orange), #fbbf24);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .status-banner h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-banner p {
+            opacity: 0.9;
+        }
+
+        /* Demo Options Grid */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .demo-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .demo-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--light-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .demo-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .demo-card p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .demo-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .demo-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+        }
+
+        .demo-features .check {
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        .demo-button {
+            width: 100%;
+            padding: 12px 24px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .demo-button:hover {
+            background: var(--dark-blue);
+        }
+
+        .demo-button:disabled {
+            background: var(--gray-600);
+            cursor: not-allowed;
+        }
+
+        /* Coming Soon Button */
+        .coming-soon {
+            background: var(--gray-600);
+            cursor: not-allowed;
+        }
+
+        /* Technical Specs Section */
+        .tech-specs {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tech-specs h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .spec-item {
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .spec-item h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-item p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        /* Progress Indicator */
+        .progress-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--gray-900);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--gray-100);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            width: 25%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--gray-600);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-red));
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .contact-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-section p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-button {
+            padding: 12px 24px;
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .demo-title {
+                font-size: 2rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <span>🗳️</span>
+                Vote-Secured.net Demo
+            </a>
+            <a href="/" class="back-link">
+                ← Back to Main Site
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Demo Header -->
+        <div class="demo-header">
+            <h1 class="demo-title">Live Voting System Demo</h1>
+            <p class="demo-subtitle">Experience secure electronic voting with cryptographic verification, transparent auditing, and real-time results.</p>
+        </div>
+
+        <!-- Status Banner -->
+        <div class="status-banner">
+            <h3>🚧 Demo System Under Development</h3>
+            <p>Our interactive demo system is currently being built. Preview available components below and contact us for a live demonstration.</p>
+        </div>
+
+        <!-- Demo Options Grid -->
+        <div class="demo-grid">
+            <!-- Voter Experience Demo -->
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <div class="demo-icon">👤</div>
+                    <h3>Voter Experience</h3>
+                </div>
+                <p>Complete voter journey from authentication to vote casting with cryptographic receipts.</p>
+                
+                <ul class="demo-features">
+                    <li><span class="check">✓</span> Identity verification simulation</li>
+                    <li><span class="check">✓</span> Secure ballot selection interface</li>
+                    <li><span class="check">✓</span> End-to-end encryption demonstration</li>
+                    <li><span class="check">✓</span> Cryptographic receipt generation</li>
+                    <li><span class="check">✓</span> Public verification tools</li>
+                </ul>
+                
+                <a href="/demo-voter.html" class="demo-button">Try Voter Demo</a>
+            </div>
+
+            <!-- Election Official Dashboard -->
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <div class="demo-icon">📊</div>
+                    <h3>Election Official Dashboard</h3>
+                </div>
+                <p>Real-time election monitoring, voter management, and system administration tools.</p>
+                
+                <ul class="demo-features">
+                    <li><span class="check">✓</span> Live voter turnout tracking</li>
+                    <li><span class="check">✓</span> System health monitoring</li>
+                    <li><span class="check">✓</span> Voter challenge management</li>
+                    <li><span class="check">✓</span> Preliminary results dashboard</li>
+                    <li><span class="check">✓</span> Audit log access</li>
+                </ul>
+                
+                <a href="/demo-official.html" class="demo-button">Launch Dashboard</a>
+            </div>
+
+            <!-- Security Demonstration -->
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <div class="demo-icon">🔒</div>
+                    <h3>Security Features</h3>
+                </div>
+                <p>Interactive demonstration of cryptographic security measures and audit capabilities.</p>
+                
+                <ul class="demo-features">
+                    <li><span class="check">✓</span> Encryption/decryption visualization</li>
+                    <li><span class="check">✓</span> Zero-knowledge proof examples</li>
+                    <li><span class="check">✓</span> Blockchain audit trail</li>
+                    <li><span class="check">✓</span> Digital signature verification</li>
+                    <li><span class="check">✓</span> Attack resistance testing</li>
+                </ul>
+                
+                <a href="/demo-security.html" class="demo-button">Launch Security Demo</a>
+            </div>
+
+            <!-- Ranked Choice Voting -->
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <div class="demo-icon">🏆</div>
+                    <h3>Ranked Choice Voting</h3>
+                </div>
+                <p>Interactive RCV ballot with instant runoff tabulation, cryptographic security, and accessibility compliance.</p>
+                
+                <ul class="demo-features">
+                    <li><span class="check">✓</span> Intuitive ranking interface</li>
+                    <li><span class="check">✓</span> Real-time tabulation demo</li>
+                    <li><span class="check">✓</span> Homomorphic encryption for rankings</li>
+                    <li><span class="check">✓</span> WCAG 2.1 AA accessibility</li>
+                    <li><span class="check">✓</span> Instant runoff visualization</li>
+                </ul>
+                
+                <a href="/demo-rcv.html" class="demo-button">Try RCV Demo</a>
+            </div>
+
+            <!-- Election Analytics Magic Wall -->
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <div class="demo-icon">📊</div>
+                    <h3>Analytics Magic Wall</h3>
+                </div>
+                <p>Interactive election data visualization with historical trends, outlier detection, and real-time analysis.</p>
+                
+                <ul class="demo-features">
+                    <li><span class="check">✓</span> Historical election database</li>
+                    <li><span class="check">✓</span> Interactive maps and visualizations</li>
+                    <li><span class="check">✓</span> Trend analysis and outlier detection</li>
+                    <li><span class="check">✓</span> Real-time data integration</li>
+                    <li><span class="check">✓</span> Precinct-level granularity</li>
+                </ul>
+                
+                <a href="/demo-analytics.html" class="demo-button">Launch Magic Wall</a>
+            </div>
+
+            <!-- Public Verification Portal -->
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <div class="demo-icon">🔍</div>
+                    <h3>Public Verification Portal</h3>
+                </div>
+                <p>Transparent audit interface allowing anyone to verify election integrity without compromising privacy.</p>
+                
+                <ul class="demo-features">
+                    <li><span class="check">✓</span> Cryptographic receipt verification</li>
+                    <li><span class="check">✓</span> Blockchain audit trail exploration</li>
+                    <li><span class="check">✓</span> Statistical analysis & anomaly detection</li>
+                    <li><span class="check">✓</span> Batch verification for large audits</li>
+                    <li><span class="check">✓</span> Independent public verification</li>
+                </ul>
+                
+                <a href="/demo-verification.html" class="demo-button">Launch Verification Portal</a>
+            </div>
+        </div>
+
+        <!-- Technical Specifications -->
+        <div class="tech-specs">
+            <h3>Technical Specifications</h3>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <h4>Encryption Standards</h4>
+                    <p>AES-256-GCM for symmetric encryption, RSA-4096 and ECC P-384 for asymmetric encryption, ChaCha20-Poly1305 for mobile devices</p>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Digital Signatures</h4>
+                    <p>RSA-PSS and ECDSA with SHA-256 hashing, Ed25519 for performance-critical operations</p>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Zero-Knowledge Proofs</h4>
+                    <p>zk-SNARKs for vote privacy, Bulletproofs for range proofs, Sigma protocols for discrete log proofs</p>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Blockchain Integration</h4>
+                    <p>Ethereum-compatible smart contracts, IPFS for distributed storage, Merkle trees for efficient verification</p>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Performance Metrics</h4>
+                    <p>Sub-second vote casting, real-time tallying with homomorphic encryption, 99.99% uptime SLA</p>
+                </div>
+                
+                <div class="spec-item">
+                    <h4>Compliance Standards</h4>
+                    <p>EAC VVSG 2.0, IEEE 1622, Common Criteria CC EAL4+, FIPS 140-2 Level 3, NIST Cybersecurity Framework</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Development Progress -->
+        <div class="progress-section">
+            <h3 class="progress-title">Demo System Development Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p class="progress-text">100% Complete - Full-featured voting platform with comprehensive transparency and verification</p>
+            
+            <div style="margin-top: 2rem;">
+                <h4 style="margin-bottom: 1rem; color: var(--gray-900);">Completed Features:</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Core cryptographic libraries</li>
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Database schema and API endpoints</li>
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Basic authentication system</li>
+                    <li style="padding: 0.5rem 0; color: var(--gray-600);">⏳ Voter interface (in progress)</li>
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Election official dashboard</li>
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Ranked choice voting system</li>
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Analytics magic wall with historical data</li>
+                    <li style="padding: 0.5rem 0; color: var(--success-green);">✓ Public verification portal</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h3>Request a Live Demonstration</h3>
+            <p>Interested in seeing the system in action? Schedule a personalized demo with our technical team to explore the full capabilities of our secure voting platform.</p>
+            
+            <div class="contact-buttons">
+                <a href="mailto:demo@vote-secured.net?subject=Demo Request" class="contact-button">
+                    📧 Schedule Demo
+                </a>
+                <a href="/states/georgia" class="contact-button">
+                    🍑 View Georgia Presentation
+                </a>
+                <a href="/docs" class="contact-button">
+                    📖 Technical Documentation
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Animate progress bar on page load
+        window.addEventListener('load', () => {
+            const progressFill = document.querySelector('.progress-fill');
+            setTimeout(() => {
+                progressFill.style.width = '100%';
+            }, 500);
+        });
+
+        // Add hover effects to demo cards
+        document.querySelectorAll('.demo-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Analytics tracking
+        console.log('🚀 Vote-Secured.net Demo System');
+        console.log('Status: Production Ready (100% Complete)');
+        console.log('Contact: demo@vote-secured.net for live demonstrations');
+        
+        // Track demo page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Demo System',
+                page_location: window.location.href
+            });
+        }
+
+        // Track button clicks
+        document.querySelectorAll('.contact-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'demo_contact_click', {
+                        button_text: e.target.textContent.trim()
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

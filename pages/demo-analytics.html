@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Analytics Magic Wall - Vote-Secured.net</title>
+    <meta name="description" content="Interactive election data visualization with historical trends, real-time analysis, and outlier detection">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --purple: #7c3aed;
+            --dark-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), #1e293b);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid #334155;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #10b981;
+            text-decoration: none;
+        }
+
+        .analytics-badge {
+            background: linear-gradient(135deg, var(--purple), #6d28d9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(148, 163, 184, 0.1);
+            color: #10b981;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            height: calc(100vh - 100px);
+        }
+
+        .left-panel, .right-panel {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+        }
+
+        .magic-wall {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+        }
+
+        .panel-title {
+            color: #10b981;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .filter-select {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .map-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .usa-map {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+
+        .state-region {
+            fill: #1e293b;
+            stroke: #334155;
+            stroke-width: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .state-region:hover {
+            fill: #3b82f6;
+            stroke: #10b981;
+            stroke-width: 2;
+        }
+
+        .state-region.selected {
+            fill: #10b981;
+            stroke: #fbbf24;
+            stroke-width: 2;
+        }
+
+        .state-region.republican {
+            fill: #dc2626;
+        }
+
+        .state-region.democrat {
+            fill: #2563eb;
+        }
+
+        .state-region.competitive {
+            fill: #7c3aed;
+        }
+
+        .controls-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .control-button.active {
+            background: #10b981;
+        }
+
+        .trend-chart {
+            height: 200px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+            font-size: 0.85rem;
+        }
+
+        .data-table th {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            color: #94a3b8;
+        }
+
+        .metric-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .outlier-alert {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .outlier-title {
+            color: #f87171;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .outlier-description {
+            color: #fca5a5;
+            font-size: 0.9rem;
+        }
+
+        .historical-timeline {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-year {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .timeline-year:hover {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .timeline-year:last-child {
+            border-bottom: none;
+        }
+
+        .year-label {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .year-turnout {
+            color: #10b981;
+            font-size: 0.9rem;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #334155;
+            border-top: 4px solid #10b981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .search-box {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .search-box::placeholder {
+            color: #64748b;
+        }
+
+        @media (max-width: 1400px) {
+            .main-container {
+                grid-template-columns: 250px 1fr 250px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+                height: auto;
+            }
+            
+            .left-panel, .right-panel {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-container">
+            <a href="/demo.html" class="logo">
+                <span>📊</span>
+                Election Analytics Magic Wall
+            </a>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="analytics-badge">REAL-TIME DATA</span>
+                <a href="/demo.html" class="back-link">← Back to Demo Hub</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Panel: Filters and Controls -->
+        <div class="left-panel">
+            <h3 class="panel-title">🎛️ Analytics Controls</h3>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label class="filter-label">Election Year</label>
+                    <select class="filter-select" id="year-filter">
+                        <option value="2024">2024 Presidential</option>
+                        <option value="2022">2022 Midterms</option>
+                        <option value="2020" selected>2020 Presidential</option>
+                        <option value="2018">2018 Midterms</option>
+                        <option value="2016">2016 Presidential</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Data Level</label>
+                    <select class="filter-select" id="level-filter">
+                        <option value="state" selected>State Level</option>
+                        <option value="county">County Level</option>
+                        <option value="precinct">Precinct Level</option>
+                        <option value="district">District Level</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Analysis Type</label>
+                    <select class="filter-select" id="analysis-filter">
+                        <option value="results" selected>Election Results</option>
+                        <option value="turnout">Voter Turnout</option>
+                        <option value="demographics">Demographics</option>
+                        <option value="trends">Historical Trends</option>
+                        <option value="outliers">Outlier Detection</option>
+                    </select>
+                </div>
+                
+                <input type="text" class="search-box" id="search-box" placeholder="Search states, counties, precincts...">
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-value" id="total-votes">158.4M</span>
+                <span class="metric-label">Total Votes Cast</span>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-value" id="turnout-rate">66.6%</span>
+                <span class="metric-label">National Turnout</span>
+            </div>
+
+            <div class="outlier-alert">
+                <div class="outlier-title">🚨 Outlier Detected</div>
+                <div class="outlier-description">
+                    Maricopa County, AZ shows unusual turnout pattern vs. historical average
+                </div>
+            </div>
+
+            <div class="historical-timeline">
+                <h4 style="color: #10b981; margin-bottom: 10px;">Historical Comparison</h4>
+                <div class="timeline-year" onclick="loadHistoricalData(2020)">
+                    <span class="year-label">2020</span>
+                    <span class="year-turnout">66.6%</span>
+                </div>
+                <div class="timeline-year" onclick="loadHistoricalData(2016)">
+                    <span class="year-label">2016</span>
+                    <span class="year-turnout">59.2%</span>
+                </div>
+                <div class="timeline-year" onclick="loadHistoricalData(2012)">
+                    <span class="year-label">2012</span>
+                    <span class="year-turnout">58.6%</span>
+                </div>
+                <div class="timeline-year" onclick="loadHistoricalData(2008)">
+                    <span class="year-label">2008</span>
+                    <span class="year-turnout">61.6%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center: Magic Wall Map -->
+        <div class="magic-wall">
+            <div class="controls-panel">
+                <div>
+                    <button class="control-button active" onclick="setMapMode('results')">Results</button>
+                    <button class="control-button" onclick="setMapMode('turnout')">Turnout</button>
+                    <button class="control-button" onclick="setMapMode('swing')">Swing States</button>
+                </div>
+                <div>
+                    <button class="control-button" onclick="playTimelineAnimation()">▶️ Play Timeline</button>
+                    <button class="control-button" onclick="resetMapView()">🔄 Reset View</button>
+                </div>
+            </div>
+            
+            <div class="map-container" id="map-container">
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="spinner"></div>
+                </div>
+                
+                <svg class="usa-map" viewBox="0 0 1000 600" id="usa-map">
+                    <!-- Simplified USA state outlines for demo -->
+                    <g id="states-group">
+                        <!-- California -->
+                        <path class="state-region democrat" data-state="CA" data-votes="11110250" data-turnout="71.3" 
+                              d="M50 200 L50 450 L150 450 L150 350 L100 300 L100 200 Z"/>
+                        
+                        <!-- Texas -->
+                        <path class="state-region republican" data-state="TX" data-votes="11315056" data-turnout="60.4"
+                              d="M300 350 L450 350 L450 450 L300 450 Z"/>
+                        
+                        <!-- Florida -->
+                        <path class="state-region republican" data-state="FL" data-votes="11067456" data-turnout="77.3"
+                              d="M650 400 L800 400 L800 480 L650 480 Z"/>
+                        
+                        <!-- New York -->
+                        <path class="state-region democrat" data-state="NY" data-votes="8594826" data-turnout="65.1"
+                              d="M700 150 L800 150 L800 220 L700 220 Z"/>
+                        
+                        <!-- Pennsylvania -->
+                        <path class="state-region competitive" data-state="PA" data-votes="6915283" data-turnout="76.5"
+                              d="M650 200 L750 200 L750 250 L650 250 Z"/>
+                        
+                        <!-- Illinois -->
+                        <path class="state-region democrat" data-state="IL" data-votes="6033744" data-turnout="72.4"
+                              d="M450 200 L500 200 L500 300 L450 300 Z"/>
+                        
+                        <!-- Ohio -->
+                        <path class="state-region republican" data-state="OH" data-votes="5922202" data-turnout="74.1"
+                              d="M550 200 L600 200 L600 270 L550 270 Z"/>
+                        
+                        <!-- Georgia -->
+                        <path class="state-region competitive" data-state="GA" data-votes="5457537" data-turnout="67.7"
+                              d="M600 300 L650 300 L650 380 L600 380 Z"/>
+                        
+                        <!-- North Carolina -->
+                        <path class="state-region competitive" data-state="NC" data-votes="5524804" data-turnout="75.4"
+                              d="M650 270 L750 270 L750 320 L650 320 Z"/>
+                        
+                        <!-- Michigan -->
+                        <path class="state-region competitive" data-state="MI" data-votes="5539302" data-turnout="72.9"
+                              d="M500 150 L550 150 L550 200 L500 200 Z"/>
+                        
+                        <!-- Additional states with simplified representations -->
+                        <path class="state-region democrat" data-state="WA" data-votes="4087631" data-turnout="84.1"
+                              d="M100 50 L200 50 L200 120 L100 120 Z"/>
+                        
+                        <path class="state-region republican" data-state="AZ" data-votes="3387326" data-turnout="79.9"
+                              d="M200 350 L300 350 L300 420 L200 420 Z"/>
+                        
+                        <path class="state-region competitive" data-state="WI" data-votes="3298041" data-turnout="76.8"
+                              d="M450 150 L500 150 L500 200 L450 200 Z"/>
+                        
+                        <path class="state-region competitive" data-state="NV" data-votes="1407761" data-turnout="76.3"
+                              d="M150 250 L200 250 L200 320 L150 320 Z"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 20px; font-size: 0.9rem;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <div style="width: 15px; height: 15px; background: #2563eb; border-radius: 3px;"></div>
+                    <span>Democratic</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <div style="width: 15px; height: 15px; background: #dc2626; border-radius: 3px;"></div>
+                    <span>Republican</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <div style="width: 15px; height: 15px; background: #7c3aed; border-radius: 3px;"></div>
+                    <span>Competitive</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Data and Analysis -->
+        <div class="right-panel">
+            <h3 class="panel-title">📈 Data Analysis</h3>
+            
+            <div class="trend-chart">
+                📊 Turnout Trend Analysis<br>
+                <small>Historical voter turnout patterns 2008-2024</small>
+            </div>
+            
+            <h4 style="color: #10b981; margin-bottom: 10px;">Top Swing States</h4>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>Margin</th>
+                        <th>Turnout</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Georgia</td>
+                        <td style="color: #2563eb;">+0.23%</td>
+                        <td>67.7%</td>
+                    </tr>
+                    <tr>
+                        <td>Arizona</td>
+                        <td style="color: #2563eb;">+0.31%</td>
+                        <td>79.9%</td>
+                    </tr>
+                    <tr>
+                        <td>Wisconsin</td>
+                        <td style="color: #2563eb;">+0.63%</td>
+                        <td>76.8%</td>
+                    </tr>
+                    <tr>
+                        <td>Pennsylvania</td>
+                        <td style="color: #2563eb;">+1.17%</td>
+                        <td>76.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Nevada</td>
+                        <td style="color: #2563eb;">+2.39%</td>
+                        <td>76.3%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4 style="color: #10b981; margin-bottom: 10px;">Demographic Insights</h4>
+            <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: #94a3b8;">College Educated</span>
+                        <span style="color: #10b981;">61% Dem</span>
+                    </div>
+                    <div style="width: 100%; height: 4px; background: #334155; border-radius: 2px;">
+                        <div style="width: 61%; height: 100%; background: #2563eb; border-radius: 2px;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: #94a3b8;">High School Only</span>
+                        <span style="color: #f87171;">54% Rep</span>
+                    </div>
+                    <div style="width: 100%; height: 4px; background: #334155; border-radius: 2px;">
+                        <div style="width: 54%; height: 100%; background: #dc2626; border-radius: 2px;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: #94a3b8;">Urban Areas</span>
+                        <span style="color: #10b981;">68% Dem</span>
+                    </div>
+                    <div style="width: 100%; height: 4px; background: #334155; border-radius: 2px;">
+                        <div style="width: 68%; height: 100%; background: #2563eb; border-radius: 2px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <h4 style="color: #10b981; margin-bottom: 10px;">Data Sources</h4>
+            <div style="font-size: 0.8rem; color: #64748b; line-height: 1.4;">
+                • MIT Election Data Science Lab<br>
+                • FEC OpenFEC API<br>
+                • Associated Press Elections API<br>
+                • Census Bureau Demographics<br>
+                • Real-time precinct reporting
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state management
+        let currentMapMode = 'results';
+        let selectedState = null;
+        let isAnimating = false;
+        
+        // Initialize the magic wall
+        function initializeMagicWall() {
+            setupEventListeners();
+            hideLoadingOverlay();
+            updateMapData();
+            console.log('📊 Election Analytics Magic Wall Initialized');
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // State hover and click events
+            document.querySelectorAll('.state-region').forEach(state => {
+                state.addEventListener('mouseover', handleStateHover);
+                state.addEventListener('mouseout', handleStateOut);
+                state.addEventListener('click', handleStateClick);
+            });
+            
+            // Filter change events
+            document.getElementById('year-filter').addEventListener('change', handleFilterChange);
+            document.getElementById('level-filter').addEventListener('change', handleFilterChange);
+            document.getElementById('analysis-filter').addEventListener('change', handleFilterChange);
+            document.getElementById('search-box').addEventListener('input', handleSearch);
+        }
+        
+        // Handle state hover
+        function handleStateHover(e) {
+            const state = e.target;
+            const stateCode = state.dataset.state;
+            const votes = parseInt(state.dataset.votes).toLocaleString();
+            const turnout = state.dataset.turnout;
+            
+            // Show tooltip (simplified for demo)
+            console.log(`Hovering over ${stateCode}: ${votes} votes, ${turnout}% turnout`);
+            
+            // Update UI feedback
+            state.style.opacity = '0.8';
+        }
+        
+        // Handle state mouse out
+        function handleStateOut(e) {
+            e.target.style.opacity = '1';
+        }
+        
+        // Handle state click
+        function handleStateClick(e) {
+            const state = e.target;
+            const stateCode = state.dataset.state;
+            
+            // Remove previous selection
+            document.querySelectorAll('.state-region.selected').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Add selection to clicked state
+            state.classList.add('selected');
+            selectedState = stateCode;
+            
+            // Check current zoom level and drill down accordingly
+            const currentLevel = document.getElementById('level-filter').value;
+            
+            if (currentLevel === 'state') {
+                // Drill down to county level
+                drillDownToCounties(stateCode);
+            } else if (currentLevel === 'county') {
+                // Drill down to precinct level
+                drillDownToPrecincts(stateCode);
+            }
+            
+            // Load detailed data for selected state
+            loadStateDetails(stateCode);
+            trackAnalyticsInteraction('state_select', stateCode);
+        }
+        
+        // Set map display mode
+        function setMapMode(mode) {
+            currentMapMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.control-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update map visualization
+            updateMapVisualization(mode);  
+            trackAnalyticsInteraction('map_mode_change', mode);
+        }
+        
+        // Update map visualization based on mode
+        function updateMapVisualization(mode) {
+            const states = document.querySelectorAll('.state-region');
+            
+            switch(mode) {
+                case 'results':
+                    // Show election results coloring
+                    states.forEach(state => {
+                        // Colors already set by classes, just ensure visibility
+                        state.style.opacity = '1';
+                    });
+                    break;
+                    
+                case 'turnout':
+                    // Show turnout-based coloring
+                    states.forEach(state => {
+                        const turnout = parseFloat(state.dataset.turnout);
+                        if (turnout > 75) {
+                            state.style.fill = '#10b981'; // High turnout - green
+                        } else if (turnout > 65) {
+                            state.style.fill = '#f59e0b'; // Medium turnout - orange
+                        } else {
+                            state.style.fill = '#dc2626'; // Low turnout - red
+                        }
+                    });
+                    break;
+                    
+                case 'swing':
+                    // Highlight swing states
+                    states.forEach(state => {
+                        if (state.classList.contains('competitive')) {
+                            state.style.fill = '#7c3aed';
+                            state.style.opacity = '1';
+                        } else {
+                            state.style.opacity = '0.3';
+                        }
+                    });
+                    break;
+            }
+        }
+        
+        // Handle filter changes
+        function handleFilterChange(e) {
+            const filterType = e.target.id;
+            const value = e.target.value;
+            
+            showLoadingOverlay();
+            
+            // Simulate data loading
+            setTimeout(() => {
+                updateMapData();
+                hideLoadingOverlay();
+            }, 1000);
+            
+            trackAnalyticsInteraction('filter_change', `${filterType}:${value}`);
+        }
+        
+        // Handle search
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            
+            if (query.length > 2) {
+                // Filter states based on search
+                document.querySelectorAll('.state-region').forEach(state => {
+                    const stateCode = state.dataset.state.toLowerCase();
+                    if (stateCode.includes(query)) {
+                        state.style.opacity = '1';
+                        state.style.stroke = '#fbbf24';
+                    } else {
+                        state.style.opacity = '0.3';
+                    }
+                });
+            } else {
+                // Reset all states
+                document.querySelectorAll('.state-region').forEach(state => {
+                    state.style.opacity = '1';
+                    state.style.stroke = '#334155';
+                });
+            }
+        }
+        
+        // Load historical data for a specific year
+        function loadHistoricalData(year) {
+            showLoadingOverlay();
+            
+            // Simulate loading historical data
+            setTimeout(() => {
+                document.getElementById('year-filter').value = year;
+                updateMapData();
+                hideLoadingOverlay();
+                
+                // Update metrics for the selected year
+                updateMetricsForYear(year);
+            }, 1500);
+            
+            trackAnalyticsInteraction('historical_load', year.toString());
+        }
+        
+        // Update metrics display for specific year
+        function updateMetricsForYear(year) {
+            const yearData = {
+                2020: { votes: '158.4M', turnout: '66.6%' },
+                2016: { votes: '136.7M', turnout: '59.2%' },
+                2012: { votes: '129.1M', turnout: '58.6%' },
+                2008: { votes: '131.3M', turnout: '61.6%' }
+            };
+            
+            const data = yearData[year] || yearData[2020];
+            document.getElementById('total-votes').textContent = data.votes;
+            document.getElementById('turnout-rate').textContent = data.turnout;
+        }
+        
+        // Drill down to county level view
+        function drillDownToCounties(stateCode) {
+            showLoadingOverlay();
+            
+            // Update level filter to reflect county view
+            document.getElementById('level-filter').value = 'county';
+            
+            // Generate county-level map for the selected state
+            setTimeout(() => {
+                generateCountyMap(stateCode);
+                hideLoadingOverlay();
+                updateBreadcrumbs(['United States', getStateName(stateCode)]);
+            }, 1500);
+            
+            trackAnalyticsInteraction('drill_down_counties', stateCode);
+        }
+        
+        // Drill down to precinct level view
+        function drillDownToPrecincts(stateCode, countyId = null) {
+            showLoadingOverlay();
+            
+            // Update level filter to reflect precinct view
+            document.getElementById('level-filter').value = 'precinct';
+            
+            // Generate precinct-level map
+            setTimeout(() => {
+                generatePrecinctMap(stateCode, countyId);
+                hideLoadingOverlay();
+                const breadcrumbs = ['United States', getStateName(stateCode)];
+                if (countyId) breadcrumbs.push(getCountyName(countyId));
+                updateBreadcrumbs(breadcrumbs);
+            }, 1500);
+            
+            trackAnalyticsInteraction('drill_down_precincts', `${stateCode}:${countyId || 'all'}`);
+        }
+        
+        // Generate county-level map for a state
+        function generateCountyMap(stateCode) {
+            const mapContainer = document.getElementById('usa-map');
+            
+            // Sample county data for demonstration
+            const countyData = getCountyData(stateCode);
+            
+            // Clear current map and create county view
+            mapContainer.innerHTML = `
+                <g id="counties-group">
+                    ${countyData.map(county => `
+                        <path class="county-region ${county.party}" 
+                              data-county="${county.id}"
+                              data-state="${stateCode}"
+                              data-votes="${county.votes}" 
+                              data-turnout="${county.turnout}"
+                              data-name="${county.name}"
+                              d="${county.path}"
+                              onclick="handleCountyClick(event)"
+                              style="fill: ${getPartyColor(county.party)}; stroke: #334155; stroke-width: 1; cursor: pointer;">
+                        </path>
+                    `).join('')}
+                </g>
+                <text x="500" y="50" text-anchor="middle" fill="#10b981" font-size="24" font-weight="bold">
+                    ${getStateName(stateCode)} Counties
+                </text>
+            `;
+            
+            // Add back button
+            addBackButton();
+        }
+        
+        // Generate precinct-level map
+        function generatePrecinctMap(stateCode, countyId) {
+            const mapContainer = document.getElementById('usa-map');
+            
+            // Sample precinct data for demonstration
+            const precinctData = getPrecinctData(stateCode, countyId);
+            
+            // Clear current map and create precinct view
+            mapContainer.innerHTML = `
+                <g id="precincts-group">
+                    ${precinctData.map(precinct => `
+                        <rect class="precinct-region ${precinct.party}" 
+                              data-precinct="${precinct.id}"
+                              data-county="${precinct.countyId}"
+                              data-state="${stateCode}"
+                              data-votes="${precinct.votes}" 
+                              data-turnout="${precinct.turnout}"
+                              data-name="${precinct.name}"
+                              x="${precinct.x}" y="${precinct.y}" 
+                              width="${precinct.width}" height="${precinct.height}"
+                              onclick="handlePrecinctClick(event)"
+                              style="fill: ${getPartyColor(precinct.party)}; stroke: #334155; stroke-width: 0.5; cursor: pointer;">
+                        </rect>
+                        <text x="${precinct.x + precinct.width/2}" y="${precinct.y + precinct.height/2}" 
+                              text-anchor="middle" fill="white" font-size="8" font-weight="bold">
+                            ${precinct.id}
+                        </text>
+                    `).join('')}
+                </g>
+                <text x="500" y="50" text-anchor="middle" fill="#10b981" font-size="20" font-weight="bold">
+                    ${countyId ? getCountyName(countyId) + ' Precincts' : getStateName(stateCode) + ' Precincts'}
+                </text>
+            `;
+            
+            // Add back button
+            addBackButton();
+        }
+        
+        // Handle county click
+        function handleCountyClick(event) {
+            const county = event.target;
+            const countyId = county.dataset.county;
+            const stateCode = county.dataset.state;
+            const countyName = county.dataset.name;
+            const votes = county.dataset.votes;
+            const turnout = county.dataset.turnout;
+            
+            // Highlight selected county
+            document.querySelectorAll('.county-region').forEach(c => c.classList.remove('selected'));
+            county.classList.add('selected');
+            
+            // Update data panel with county information
+            updateCountyDataPanel(countyId, countyName, votes, turnout);
+            
+            // Option to drill down to precincts
+            if (event.detail === 2) { // Double click
+                drillDownToPrecincts(stateCode, countyId);
+            }
+            
+            trackAnalyticsInteraction('county_select', `${stateCode}:${countyId}`);
+        }
+        
+        // Handle precinct click
+        function handlePrecinctClick(event) {
+            const precinct = event.target;
+            const precinctId = precinct.dataset.precinct;
+            const countyId = precinct.dataset.county;
+            const stateCode = precinct.dataset.state;
+            const precinctName = precinct.dataset.name;
+            const votes = precinct.dataset.votes;
+            const turnout = precinct.dataset.turnout;
+            
+            // Highlight selected precinct
+            document.querySelectorAll('.precinct-region').forEach(p => p.classList.remove('selected'));
+            precinct.classList.add('selected');
+            
+            // Update data panel with precinct information
+            updatePrecinctDataPanel(precinctId, precinctName, votes, turnout);
+            
+            trackAnalyticsInteraction('precinct_select', `${stateCode}:${countyId}:${precinctId}`);
+        }
+        
+        // Add back button for navigation
+        function addBackButton() {
+            const backButton = document.createElement('g');
+            backButton.innerHTML = `
+                <rect x="50" y="50" width="100" height="30" fill="#3b82f6" stroke="#1e40af" rx="5" cursor="pointer" onclick="navigateBack()"></rect>
+                <text x="100" y="70" text-anchor="middle" fill="white" font-size="12" font-weight="bold" cursor="pointer" onclick="navigateBack()">← Back</text>
+            `;
+            document.getElementById('usa-map').appendChild(backButton);
+        }
+        
+        // Navigate back to previous level
+        function navigateBack() {
+            const currentLevel = document.getElementById('level-filter').value;
+            
+            if (currentLevel === 'precinct') {
+                // Go back to county level
+                document.getElementById('level-filter').value = 'county';
+                if (selectedState) {
+                    drillDownToCounties(selectedState);
+                }
+            } else if (currentLevel === 'county') {
+                // Go back to state level
+                document.getElementById('level-filter').value = 'state';
+                resetToNationalView();
+            }
+            
+            trackAnalyticsInteraction('navigate_back', currentLevel);
+        }
+        
+        // Reset to national state-level view
+        function resetToNationalView() {
+            showLoadingOverlay();
+            
+            setTimeout(() => {
+                // Restore original USA map
+                const mapContainer = document.getElementById('usa-map');
+                mapContainer.innerHTML = `
+                    <g id="states-group">
+                        ${generateOriginalStatesSVG()}
+                    </g>
+                `;
+                
+                // Re-attach event listeners
+                setupEventListeners();
+                hideLoadingOverlay();
+                updateBreadcrumbs(['United States']);
+            }, 1000);
+        }
+        
+        // Update breadcrumb navigation
+        function updateBreadcrumbs(breadcrumbs) {
+            // This would update a breadcrumb UI element
+            console.log('Breadcrumbs:', breadcrumbs.join(' > '));
+        }
+        
+        // Load detailed data for selected geographic area
+        function loadStateDetails(stateCode) {
+            const currentLevel = document.getElementById('level-filter').value;
+            
+            // Update right panel with level-appropriate data
+            console.log(`Loading ${currentLevel}-level data for ${stateCode}`);
+            
+            // This would normally make API calls for:
+            // - County-level results (if state selected)
+            // - Precinct-level data (if county selected) 
+            // - District-level data
+            // - Historical trends
+            // - Demographic breakdowns
+            
+            updateDataPanel(stateCode, currentLevel);
+        }
+        
+        // Play timeline animation
+        function playTimelineAnimation() {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            const years = [2008, 2012, 2016, 2020, 2024];
+            let currentIndex = 0;
+            
+            const interval = setInterval(() => {
+                if (currentIndex >= years.length) {
+                    clearInterval(interval);
+                    isAnimating = false;
+                    return;
+                }
+                
+                loadHistoricalData(years[currentIndex]);
+                currentIndex++;
+            }, 2000);
+            
+            trackAnalyticsInteraction('timeline_animation', 'started');
+        }
+        
+        // Reset map view
+        function resetMapView() {
+            // Clear selections
+            document.querySelectorAll('.state-region.selected').forEach(s => {
+                s.classList.remove('selected');
+            });
+            
+            // Reset filters
+            document.getElementById('year-filter').value = '2020';
+            document.getElementById('level-filter').value = 'state';
+            document.getElementById('analysis-filter').value = 'results';
+            document.getElementById('search-box').value = '';
+            
+            // Reset map mode
+            setMapMode('results');
+            
+            // Reset map data
+            updateMapData();
+            
+            trackAnalyticsInteraction('map_reset', 'all');
+        }
+        
+        // Update map data
+        function updateMapData() {
+            // This would normally fetch new data based on current filters
+            // For demo, we'll just update the visualization
+            updateMapVisualization(currentMapMode);
+        }
+        
+        // Show loading overlay
+        function showLoadingOverlay() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        
+        // Hide loading overlay
+        function hideLoadingOverlay() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+        
+        // Track analytics interactions
+        function trackAnalyticsInteraction(action, details) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'analytics_interaction', {
+                    event_category: 'election_analytics',
+                    event_label: action,
+                    custom_map: {
+                        'interaction_type': action,
+                        'interaction_details': details,
+                        'current_mode': currentMapMode
+                    }
+                });
+            }
+            console.log(`Analytics Interaction: ${action} - ${details}`);
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeMagicWall);
+        
+        // Analytics tracking
+        console.log('📊 Election Analytics Magic Wall Demo');
+        console.log('Features: Interactive maps, historical data, trend analysis, outlier detection');
+        console.log('Data Sources: MIT MEDSL, FEC OpenFEC API, AP Elections API');
+        console.log('Contact: analytics@vote-secured.net');
+        
+        // Track page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Election Analytics Magic Wall',
+                page_location: window.location.href,
+                custom_map: {
+                    'demo_type': 'election_analytics',
+                    'feature_set': 'magic_wall_historical_data',
+                    'visualization_type': 'interactive_maps'
+                }
+            });
+        }
+        
+        // Helper functions for geographic data
+        function getStateName(stateCode) {
+            const stateNames = {
+                'CA': 'California', 'TX': 'Texas', 'FL': 'Florida', 'NY': 'New York',
+                'PA': 'Pennsylvania', 'IL': 'Illinois', 'OH': 'Ohio', 'GA': 'Georgia',
+                'NC': 'North Carolina', 'MI': 'Michigan', 'WA': 'Washington',
+                'AZ': 'Arizona', 'WI': 'Wisconsin', 'NV': 'Nevada'
+            };
+            return stateNames[stateCode] || stateCode;
+        }
+        
+        function getCountyName(countyId) {
+            const countyNames = {
+                'LAC': 'Los Angeles County', 'ORC': 'Orange County', 'SDC': 'San Diego County',
+                'HAR': 'Harris County', 'DAL': 'Dallas County', 'TAR': 'Tarrant County',
+                'MIA': 'Miami-Dade County', 'BRO': 'Broward County', 'HIL': 'Hillsborough County',
+                'NYC': 'New York County', 'KIN': 'Kings County', 'QUE': 'Queens County'
+            };
+            return countyNames[countyId] || `County ${countyId}`;
+        }
+        
+        function getPartyColor(party) {
+            const colors = {
+                'democrat': '#2563eb',
+                'republican': '#dc2626', 
+                'competitive': '#7c3aed',
+                'independent': '#059669'
+            };
+            return colors[party] || '#64748b';
+        }
+        
+        function getCountyData(stateCode) {
+            // Sample county data - in production this would come from API
+            const sampleCounties = {
+                'CA': [
+                    { id: 'LAC', name: 'Los Angeles County', party: 'democrat', votes: '5321542', turnout: '71.2', 
+                      path: 'M100 300 L200 300 L200 380 L100 380 Z' },
+                    { id: 'ORC', name: 'Orange County', party: 'competitive', votes: '1789623', turnout: '75.8',
+                      path: 'M200 300 L250 300 L250 350 L200 350 Z' },
+                    { id: 'SDC', name: 'San Diego County', party: 'democrat', votes: '1876543', turnout: '68.9',
+                      path: 'M150 380 L250 380 L250 450 L150 450 Z' },
+                    { id: 'SFC', name: 'San Francisco County', party: 'democrat', votes: '567892', turnout: '84.3',
+                      path: 'M100 250 L150 250 L150 300 L100 300 Z' },
+                    { id: 'ALA', name: 'Alameda County', party: 'democrat', votes: '923456', turnout: '79.1',
+                      path: 'M150 250 L200 250 L200 300 L150 300 Z' }
+                ],
+                'TX': [
+                    { id: 'HAR', name: 'Harris County', party: 'competitive', votes: '2453671', turnout: '62.4',
+                      path: 'M350 380 L400 380 L400 420 L350 420 Z' },
+                    { id: 'DAL', name: 'Dallas County', party: 'democrat', votes: '1456789', turnout: '58.7',
+                      path: 'M380 350 L430 350 L430 390 L380 390 Z' },
+                    { id: 'TAR', name: 'Tarrant County', party: 'republican', votes: '1234567', turnout: '59.2',
+                      path: 'M330 350 L380 350 L380 390 L330 390 Z' },
+                    { id: 'BEX', name: 'Bexar County', party: 'competitive', votes: '987654', turnout: '61.8',
+                      path: 'M320 400 L370 400 L370 440 L320 440 Z' }
+                ],
+                'FL': [
+                    { id: 'MIA', name: 'Miami-Dade County', party: 'democrat', votes: '1567890', turnout: '67.3',
+                      path: 'M750 450 L800 450 L800 480 L750 480 Z' },
+                    { id: 'BRO', name: 'Broward County', party: 'democrat', votes: '987654', turnout: '72.1',
+                      path: 'M700 430 L750 430 L750 460 L700 460 Z' },
+                    { id: 'HIL', name: 'Hillsborough County', party: 'competitive', votes: '765432', turnout: '69.8',
+                      path: 'M670 400 L720 400 L720 440 L670 440 Z' },
+                    { id: 'ORA', name: 'Orange County', party: 'republican', votes: '654321', turnout: '71.5',
+                      path: 'M720 410 L770 410 L770 440 L720 440 Z' }
+                ]
+            };
+            
+            return sampleCounties[stateCode] || [];
+        }
+        
+        function getPrecinctData(stateCode, countyId) {
+            // Sample precinct data - arranged in a grid for demo
+            const precincts = [];
+            const gridSize = 8;
+            const cellSize = 80;
+            const startX = 100;
+            const startY = 150;
+            
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const precinctNum = i * gridSize + j + 1;
+                    const parties = ['democrat', 'republican', 'competitive', 'independent'];
+                    const randomParty = parties[Math.floor(Math.random() * parties.length)];
+                    
+                    precincts.push({
+                        id: `P${precinctNum.toString().padStart(3, '0')}`,
+                        name: `Precinct ${precinctNum}`,
+                        countyId: countyId,
+                        party: randomParty,
+                        votes: Math.floor(Math.random() * 5000 + 1000).toString(),
+                        turnout: (Math.random() * 30 + 50).toFixed(1),
+                        x: startX + j * cellSize,
+                        y: startY + i * cellSize,
+                        width: cellSize - 5,
+                        height: cellSize - 5
+                    });
+                }
+            }
+            
+            return precincts;
+        }
+        
+        function generateOriginalStatesSVG() {
+            return `
+                <!-- California -->
+                <path class="state-region democrat" data-state="CA" data-votes="11110250" data-turnout="71.3" 
+                      d="M50 200 L50 450 L150 450 L150 350 L100 300 L100 200 Z"/>
+                
+                <!-- Texas -->
+                <path class="state-region republican" data-state="TX" data-votes="11315056" data-turnout="60.4"
+                      d="M300 350 L450 350 L450 450 L300 450 Z"/>
+                
+                <!-- Florida -->
+                <path class="state-region republican" data-state="FL" data-votes="11067456" data-turnout="77.3"
+                      d="M650 400 L800 400 L800 480 L650 480 Z"/>
+                
+                <!-- New York -->
+                <path class="state-region democrat" data-state="NY" data-votes="8594826" data-turnout="65.1"
+                      d="M700 150 L800 150 L800 220 L700 220 Z"/>
+                
+                <!-- Pennsylvania -->
+                <path class="state-region competitive" data-state="PA" data-votes="6915283" data-turnout="76.5"
+                      d="M650 200 L750 200 L750 250 L650 250 Z"/>
+                
+                <!-- Illinois -->
+                <path class="state-region democrat" data-state="IL" data-votes="6033744" data-turnout="72.4"
+                      d="M450 200 L500 200 L500 300 L450 300 Z"/>
+                
+                <!-- Ohio -->
+                <path class="state-region republican" data-state="OH" data-votes="5922202" data-turnout="74.1"
+                      d="M550 200 L600 200 L600 270 L550 270 Z"/>
+                
+                <!-- Georgia -->
+                <path class="state-region competitive" data-state="GA" data-votes="5457537" data-turnout="67.7"
+                      d="M600 300 L650 300 L650 380 L600 380 Z"/>
+                
+                <!-- North Carolina -->
+                <path class="state-region competitive" data-state="NC" data-votes="5524804" data-turnout="75.4"
+                      d="M650 270 L750 270 L750 320 L650 320 Z"/>
+                
+                <!-- Michigan -->
+                <path class="state-region competitive" data-state="MI" data-votes="5539302" data-turnout="72.9"
+                      d="M500 150 L550 150 L550 200 L500 200 Z"/>
+                
+                <!-- Additional states -->
+                <path class="state-region democrat" data-state="WA" data-votes="4087631" data-turnout="84.1"
+                      d="M100 50 L200 50 L200 120 L100 120 Z"/>
+                
+                <path class="state-region republican" data-state="AZ" data-votes="3387326" data-turnout="79.9"
+                      d="M200 350 L300 350 L300 420 L200 420 Z"/>
+                
+                <path class="state-region competitive" data-state="WI" data-votes="3298041" data-turnout="76.8"
+                      d="M450 150 L500 150 L500 200 L450 200 Z"/>
+                
+                <path class="state-region competitive" data-state="NV" data-votes="1407761" data-turnout="76.3"
+                      d="M150 250 L200 250 L200 320 L150 320 Z"/>
+            `;
+        }
+        
+        function updateCountyDataPanel(countyId, countyName, votes, turnout) {
+            console.log(`County Selected: ${countyName} - ${parseInt(votes).toLocaleString()} votes, ${turnout}% turnout`);
+            // Update right panel with county-specific data
+        }
+        
+        function updatePrecinctDataPanel(precinctId, precinctName, votes, turnout) {
+            console.log(`Precinct Selected: ${precinctName} - ${parseInt(votes).toLocaleString()} votes, ${turnout}% turnout`);
+            // Update right panel with precinct-specific data
+        }
+        
+        function updateDataPanel(geoCode, level) {
+            console.log(`Updating data panel for ${level} level: ${geoCode}`);
+            // This would update the right panel with appropriate data for the geographic level
+        }
+        
+        // Simulate real-time data updates
+        setInterval(() => {
+            // Update vote counts and metrics periodically
+            const totalVotes = document.getElementById('total-votes');
+            const currentVotes = parseFloat(totalVotes.textContent.replace('M', ''));
+            const newVotes = (currentVotes + Math.random() * 0.1).toFixed(1);
+            totalVotes.textContent = newVotes + 'M';
+            
+            // Randomly highlight regions with new data based on current level
+            const currentLevel = document.getElementById('level-filter').value;
+            let regions;
+            
+            switch(currentLevel) {
+                case 'state':
+                    regions = document.querySelectorAll('.state-region');
+                    break;
+                case 'county':
+                    regions = document.querySelectorAll('.county-region');
+                    break;
+                case 'precinct':
+                    regions = document.querySelectorAll('.precinct-region');
+                    break;
+                default:
+                    regions = document.querySelectorAll('.state-region');
+            }
+            
+            if (regions.length > 0) {
+                const randomRegion = regions[Math.floor(Math.random() * regions.length)];
+                randomRegion.style.stroke = '#fbbf24';
+                randomRegion.style.strokeWidth = '3';
+                
+                setTimeout(() => {
+                    randomRegion.style.stroke = '#334155';
+                    randomRegion.style.strokeWidth = currentLevel === 'precinct' ? '0.5' : '1';
+                }, 2000);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

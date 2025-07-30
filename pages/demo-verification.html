@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Verification Portal - Vote-Secured.net</title>
+    <meta name="description" content="Independent verification of election integrity through cryptographic receipts, statistical analysis, and blockchain audit trails">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --purple: #7c3aed;
+            --dark-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), #1e293b);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid #334155;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #10b981;
+            text-decoration: none;
+        }
+
+        .verification-badge {
+            background: linear-gradient(135deg, var(--success-green), #059669);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(148, 163, 184, 0.1);
+            color: #10b981;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .verification-section {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: #10b981;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verification-tool {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .tool-title {
+            color: #10b981;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .tool-description {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            color: #e2e8f0;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .verify-button {
+            background: var(--success-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .verify-button:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .verify-button:disabled {
+            background: #4b5563;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-panel.success {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .result-panel.error {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-title.success { color: #10b981; }
+        .result-title.error { color: #f87171; }
+
+        .result-details {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .merkle-tree {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .tree-node {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+            margin: 10px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            display: inline-block;
+            min-width: 120px;
+            text-align: center;
+            position: relative;
+        }
+
+        .tree-node.root {
+            background: rgba(124, 58, 237, 0.2);
+            border-color: rgba(124, 58, 237, 0.4);
+            color: #c4b5fd;
+        }
+
+        .hash-display {
+            font-family: 'Courier New', monospace;
+            color: #fbbf24;
+            word-break: break-all;
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .verification-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .verification-steps li {
+            padding: 12px 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .verification-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .step-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .step-status.complete {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-status.pending {
+            background: #64748b;
+            color: white;
+        }
+
+        .step-status.error {
+            background: #dc2626;
+            color: white;
+        }
+
+        .batch-verification {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .sample-receipts {
+            display: grid;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .sample-receipt {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sample-receipt:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .audit-timeline {
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .audit-entry {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.9rem;
+        }
+
+        .audit-entry:last-child {
+            border-bottom: none;
+        }
+
+        .audit-timestamp {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .audit-action {
+            color: #e2e8f0;
+            margin: 5px 0;
+        }
+
+        .audit-hash {
+            color: #fbbf24;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-container">
+            <a href="/demo.html" class="logo">
+                <span>🔍</span>
+                Public Verification Portal
+            </a>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="verification-badge">TRANSPARENT AUDITING</span>
+                <a href="/demo.html" class="back-link">← Back to Demo Hub</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Sidebar: Tools & Statistics -->
+        <div class="sidebar">
+            <h3 style="color: #10b981; margin-bottom: 20px;">🛠️ Verification Tools</h3>
+            
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: #e2e8f0; margin-bottom: 10px;">Quick Actions</h4>
+                <button class="verify-button" onclick="runFullAudit()" style="margin-bottom: 10px;">
+                    🔍 Run Full Election Audit
+                </button>
+                <button class="verify-button" onclick="generateSampleData()" style="background: var(--purple);">
+                    📊 Generate Sample Data
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value" id="total-ballots">156,329</span>
+                    <span class="stat-label">Total Ballots</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-value" id="verified-ballots">156,329</span>
+                    <span class="stat-label">Verified</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-value" id="audit-entries">892,341</span>
+                    <span class="stat-label">Audit Entries</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-value" id="verification-rate">100%</span>
+                    <span class="stat-label">Integrity Rate</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-value" id="public-auditors">47</span>
+                    <span class="stat-label">Public Auditors</span>
+                </div>
+                
+                <div class="stat-card">
+                    <span class="stat-value" id="zero-anomalies">0</span>
+                    <span class="stat-label">Anomalies</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <h4 style="color: #e2e8f0; margin-bottom: 15px;">📋 Sample Receipts</h4>
+                <div class="sample-receipts">
+                    <div class="sample-receipt" onclick="verifyReceipt('VS_7f3a9b2c_20250729_1245_verified')">
+                        VS_7f3a9b2c_20250729_1245_verified
+                    </div>
+                    <div class="sample-receipt" onclick="verifyReceipt('VS_4e8d6a1f_20250729_1158_verified')">
+                        VS_4e8d6a1f_20250729_1158_verified
+                    </div>
+                    <div class="sample-receipt" onclick="verifyReceipt('VS_9c2b5e84_20250729_1032_verified')">
+                        VS_9c2b5e84_20250729_1032_verified
+                    </div>
+                    <div class="sample-receipt" onclick="verifyReceipt('VS_6f1a3d89_20250729_0947_verified')">
+                        VS_6f1a3d89_20250729_0947_verified
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content: Verification Interfaces -->
+        <div>
+            <!-- Receipt Verification -->
+            <div class="verification-section">
+                <h2 class="section-title">🧾 Receipt Verification</h2>
+                
+                <div class="verification-tool">
+                    <h3 class="tool-title">Cryptographic Receipt Verification</h3>
+                    <p class="tool-description">
+                        Verify that your vote was recorded correctly by entering your cryptographic receipt. 
+                        This process confirms your ballot is in the official tally without revealing how you voted.
+                    </p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="receipt-input">Receipt ID:</label>
+                        <input type="text" id="receipt-input" class="input-field" 
+                               placeholder="VS_7f3a9b2c_20250729_1245_verified"
+                               value="">
+                    </div>
+                    
+                    <button class="verify-button" onclick="verifyReceiptById()">
+                        Verify Receipt
+                    </button>
+                    
+                    <div class="result-panel" id="receipt-result">
+                        <div class="result-title">
+                            <span id="receipt-status-icon">✅</span>
+                            <span id="receipt-status-text">Receipt Verified Successfully</span>
+                        </div>
+                        <div class="result-details" id="receipt-details">
+                            Your ballot has been cryptographically verified and is included in the official tally.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Merkle Tree Exploration -->
+            <div class="verification-section">
+                <h2 class="section-title">🌳 Blockchain Audit Trail</h2>
+                
+                <div class="verification-tool">
+                    <h3 class="tool-title">Merkle Tree Verification</h3>
+                    <p class="tool-description">
+                        Explore the cryptographic audit trail that links every vote to the final tally. 
+                        Each ballot is part of an immutable blockchain structure that can be independently verified.
+                    </p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="ballot-hash">Ballot Hash:</label>
+                        <input type="text" id="ballot-hash" class="input-field" 
+                               placeholder="0xa7b3c4d5e6f7890123456789abcdef"
+                               value="">
+                    </div>
+                    
+                    <button class="verify-button" onclick="exploreMerkleTree()">
+                        Generate Merkle Proof
+                    </button>
+                    
+                    <div class="result-panel" id="merkle-result">
+                        <div class="result-title success">
+                            <span>🔗</span>
+                            <span>Merkle Proof Generated</span>
+                        </div>
+                        <div class="merkle-tree" id="merkle-display">
+                            <div class="tree-node root">
+                                Root Hash<br>
+                                <small>0x4f8e9d7c6b5a4938271605...</small>
+                            </div>
+                            <br>
+                            <div class="tree-node">
+                                Branch A<br>
+                                <small>0x2c5b8e73f4d1a6927384...</small>
+                            </div>
+                            <div class="tree-node">
+                                Branch B<br>
+                                <small>0x9d1a6f548c3b7e259170...</small>
+                            </div>
+                            <br>
+                            <div class="tree-node">
+                                Your Ballot<br>
+                                <small>0xa7b3c4d5e6f7890123456789...</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistical Analysis -->
+            <div class="verification-section">
+                <h2 class="section-title">📊 Statistical Analysis</h2>
+                
+                <div class="verification-tool">
+                    <h3 class="tool-title">Independent Statistical Verification</h3>
+                    <p class="tool-description">
+                        Perform statistical analysis on voting patterns to detect anomalies or irregularities. 
+                        This analysis uses advanced algorithms to identify potential issues without compromising voter privacy.
+                    </p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="analysis-type">Analysis Type:</label>
+                        <select id="analysis-type" class="input-field">
+                            <option value="benford">Benford's Law Analysis</option>
+                            <option value="turnout">Turnout Pattern Analysis</option>
+                            <option value="demographic">Demographic Correlation</option>
+                            <option value="temporal">Temporal Pattern Analysis</option>
+                            <option value="geographic">Geographic Clustering</option>
+                        </select>
+                    </div>
+                    
+                    <button class="verify-button" onclick="runStatisticalAnalysis()">
+                        Run Analysis
+                    </button>
+                    
+                    <div class="result-panel success" id="stats-result">
+                        <div class="result-title success">
+                            <span>📈</span>
+                            <span>Statistical Analysis Complete</span>
+                        </div>
+                        <div class="result-details" id="stats-details">
+                            <strong>Benford's Law Analysis Results:</strong><br>
+                            ✅ First digit distribution: Expected pattern (P > 0.05)<br>
+                            ✅ Second digit distribution: Normal variation (P = 0.23)<br>
+                            ✅ Chi-square test: No significant deviation detected<br>
+                            ✅ Conclusion: Voting patterns consistent with natural distribution
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Batch Verification -->
+            <div class="verification-section">
+                <h2 class="section-title">🔄 Batch Verification</h2>
+                
+                <div class="batch-verification">
+                    <h3 class="tool-title">Large-Scale Ballot Verification</h3>
+                    <p class="tool-description">
+                        Verify thousands of ballots simultaneously for comprehensive election auditing. 
+                        This process is used by independent auditing organizations and election monitoring groups.
+                    </p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="batch-size">Verification Batch Size:</label>
+                        <select id="batch-size" class="input-field">
+                            <option value="1000">1,000 ballots (Quick verification)</option>
+                            <option value="10000">10,000 ballots (Standard audit)</option>
+                            <option value="50000">50,000 ballots (Comprehensive audit)</option>
+                            <option value="all">All ballots (Full election audit)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="verify-button" onclick="startBatchVerification()" id="batch-button">
+                        Start Batch Verification
+                    </button>
+                    
+                    <div class="progress-bar" id="batch-progress-bar" style="display: none;">
+                        <div class="progress-fill" id="batch-progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="batch-progress-text" style="display: none;">
+                        Initializing verification process...
+                    </div>
+                    
+                    <ul class="verification-steps" id="batch-steps" style="display: none;">
+                        <li>
+                            <div class="step-status pending" id="step1">1</div>
+                            <span>Loading ballot dataset</span>
+                        </li>
+                        <li>
+                            <div class="step-status pending" id="step2">2</div>
+                            <span>Generating cryptographic proofs</span>
+                        </li>
+                        <li>
+                            <div class="step-status pending" id="step3">3</div>
+                            <span>Verifying digital signatures</span>
+                        </li>
+                        <li>
+                            <div class="step-status pending" id="step4">4</div>
+                            <span>Checking merkle tree consistency</span>
+                        </li>
+                        <li>
+                            <div class="step-status pending" id="step5">5</div>
+                            <span>Validating vote tallies</span>
+                        </li>
+                        <li>
+                            <div class="step-status pending" id="step6">6</div>
+                            <span>Generating verification report</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Audit Timeline -->
+            <div class="verification-section">
+                <h2 class="section-title">⏰ Live Audit Timeline</h2>
+                
+                <div class="verification-tool">
+                    <h3 class="tool-title">Real-time Verification Activity</h3>
+                    <p class="tool-description">
+                        Monitor ongoing verification activities by public auditors, election officials, and automated systems.
+                    </p>
+                    
+                    <div class="audit-timeline" id="audit-timeline">
+                        <div class="audit-entry">
+                            <div class="audit-timestamp">2025-07-29 12:45:33</div>
+                            <div class="audit-action">Batch verification completed: 10,000 ballots verified</div>
+                            <div class="audit-hash">Block: 0xa7b3c4d5...f890 | Verifier: IndependentAuditor_47</div>
+                        </div>
+                        <div class="audit-entry">
+                            <div class="audit-timestamp">2025-07-29 12:43:15</div>
+                            <div class="audit-action">Statistical analysis completed: Benford's Law test passed</div>
+                            <div class="audit-hash">Analysis: 0x4f8e9d7c...6b5a | P-value: 0.234</div>
+                        </div>
+                        <div class="audit-entry">
+                            <div class="audit-timestamp">2025-07-29 12:41:22</div>
+                            <div class="audit-action">Merkle tree verification: 5,647 proofs validated</div>
+                            <div class="audit-hash">Root: 0x2c5b8e73...f4d1 | Depth: 18 levels</div>
+                        </div>
+                        <div class="audit-entry">
+                            <div class="audit-timestamp">2025-07-29 12:39:58</div>
+                            <div class="audit-action">Receipt verification: 2,341 receipts validated by public</div>
+                            <div class="audit-hash">Session: 0x9d1a6f54...8c3b | Success rate: 100%</div>
+                        </div>
+                        <div class="audit-entry">
+                            <div class="audit-timestamp">2025-07-29 12:37:44</div>
+                            <div class="audit-action">Third-party audit initiated: EFF Verification Team</div>
+                            <div class="audit-hash">Audit ID: 0x7a4f2e6d...9c8b | Scope: Full election</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state for verification portal
+        let isVerifying = false;
+        let auditInProgress = false;
+        
+        // Initialize the verification portal
+        function initializeVerificationPortal() {
+            updateAuditTimeline();
+            console.log('🔍 Public Verification Portal Initialized');
+        }
+        
+        // Verify receipt by ID
+        function verifyReceiptById() {
+            const receiptInput = document.getElementById('receipt-input');
+            const receiptId = receiptInput.value.trim();
+            
+            if (!receiptId) {
+                showReceiptError('Please enter a receipt ID');
+                return;
+            }
+            
+            verifyReceipt(receiptId);
+        }
+        
+        // Verify a specific receipt
+        function verifyReceipt(receiptId) {
+            const resultPanel = document.getElementById('receipt-result');
+            const statusIcon = document.getElementById('receipt-status-icon');
+            const statusText = document.getElementById('receipt-status-text');
+            const details = document.getElementById('receipt-details');
+            
+            // Set input value if called from sample
+            document.getElementById('receipt-input').value = receiptId;
+            
+            // Show loading state
+            resultPanel.style.display = 'block';
+            resultPanel.className = 'result-panel';
+            statusIcon.textContent = '⏳';
+            statusText.textContent = 'Verifying Receipt...';
+            details.textContent = 'Checking cryptographic signature and blockchain inclusion...';
+            
+            // Simulate verification process
+            setTimeout(() => {
+                // Parse receipt ID for demo
+                const parts = receiptId.split('_');
+                if (parts.length === 5 && parts[0] === 'VS') {
+                    // Valid receipt format
+                    resultPanel.className = 'result-panel success';
+                    statusIcon.textContent = '✅';
+                    statusText.textContent = 'Receipt Verified Successfully';
+                    details.innerHTML = `
+                        <strong>Verification Details:</strong><br>
+                        • Receipt ID: ${receiptId}<br>
+                        • Ballot Hash: 0x${parts[1]}<br>
+                        • Election Date: ${formatDate(parts[2])}<br>
+                        • Cast Time: ${formatTime(parts[3])}<br>
+                        • Verification Status: ${parts[4]}<br>
+                        • Blockchain Block: #458,392<br>
+                        • Merkle Proof: Valid<br>
+                        • Digital Signature: Verified<br><br>
+                        <strong>✅ Your vote has been securely recorded and is included in the official tally.</strong>
+                    `;
+                } else {
+                    // Invalid receipt format
+                    showReceiptError('Invalid receipt format. Please check your receipt ID.');
+                }
+                
+                trackVerificationInteraction('receipt_verify', receiptId);
+            }, 2000);
+        }
+        
+        // Show receipt verification error
+        function showReceiptError(message) {
+            const resultPanel = document.getElementById('receipt-result');
+            const statusIcon = document.getElementById('receipt-status-icon');
+            const statusText = document.getElementById('receipt-status-text');
+            const details = document.getElementById('receipt-details');
+            
+            resultPanel.style.display = 'block';
+            resultPanel.className = 'result-panel error';
+            statusIcon.textContent = '❌';
+            statusText.textContent = 'Verification Failed';
+            details.textContent = message;
+        }
+        
+        // Explore Merkle tree for ballot
+        function exploreMerkleTree() {
+            const ballotHashInput = document.getElementById('ballot-hash');
+            const ballotHash = ballotHashInput.value.trim();
+            
+            if (!ballotHash) {
+                ballotHashInput.value = '0xa7b3c4d5e6f7890123456789abcdef';
+            }
+            
+            const resultPanel = document.getElementById('merkle-result');
+            resultPanel.style.display = 'block';
+            
+            // Animate the tree generation
+            const treeDisplay = document.getElementById('merkle-display');
+            treeDisplay.classList.add('pulse');
+            
+            setTimeout(() => {
+                treeDisplay.classList.remove('pulse');
+                // Tree is already displayed, just highlight the path
+                const ballotNode = treeDisplay.querySelector('.tree-node:last-child');
+                ballotNode.style.background = 'rgba(16, 185, 129, 0.3)';
+                ballotNode.style.borderColor = '#10b981';
+            }, 1500);
+            
+            trackVerificationInteraction('merkle_explore', ballotHash || 'default');
+        }
+        
+        // Run statistical analysis
+        function runStatisticalAnalysis() {
+            const analysisType = document.getElementById('analysis-type').value;
+            const resultPanel = document.getElementById('stats-result');
+            const details = document.getElementById('stats-details');
+            
+            resultPanel.style.display = 'block';
+            
+            // Show loading state
+            details.innerHTML = 'Running ' + getAnalysisName(analysisType) + '...';
+            
+            setTimeout(() => {
+                const results = getAnalysisResults(analysisType);
+                details.innerHTML = results;
+            }, 3000);
+            
+            trackVerificationInteraction('statistical_analysis', analysisType);
+        }
+        
+        // Get analysis name for display
+        function getAnalysisName(type) {
+            const names = {
+                'benford': 'Benford\'s Law Analysis',
+                'turnout': 'Turnout Pattern Analysis',
+                'demographic': 'Demographic Correlation Analysis',
+                'temporal': 'Temporal Pattern Analysis',
+                'geographic': 'Geographic Clustering Analysis'
+            };
+            return names[type] || 'Statistical Analysis';
+        }
+        
+        // Get analysis results
+        function getAnalysisResults(type) {
+            const results = {
+                'benford': `
+                    <strong>Benford's Law Analysis Results:</strong><br>
+                    ✅ First digit distribution: Expected pattern (P = 0.387)<br>
+                    ✅ Second digit distribution: Normal variation (P = 0.234)<br>
+                    ✅ Chi-square test: χ² = 7.42, df = 8 (P = 0.492)<br>
+                    ✅ Conclusion: Voting patterns consistent with natural distribution<br>
+                    📊 Confidence Level: 95% - No evidence of manipulation detected
+                `,
+                'turnout': `
+                    <strong>Turnout Pattern Analysis Results:</strong><br>
+                    ✅ Expected turnout variance: Within 2 standard deviations<br>
+                    ✅ Precinct correlation: R² = 0.89 (Strong correlation with demographics)<br>
+                    ✅ Time-series analysis: No unusual spikes or dips detected<br>
+                    ✅ Geographic clustering: Consistent with historical patterns<br>
+                    📊 Overall turnout: 66.6% (±1.2% from predicted)
+                `,
+                'demographic': `
+                    <strong>Demographic Correlation Analysis:</strong><br>
+                    ✅ Education correlation: R = 0.76 (Expected range: 0.70-0.85)<br>
+                    ✅ Income correlation: R = 0.68 (Normal variation)<br>
+                    ✅ Age group patterns: Consistent with historical data<br>
+                    ✅ Urban/rural split: 68%/32% (Expected: 67%/33%)<br>
+                    📊 All demographic correlations within expected parameters
+                `,
+                'temporal': `
+                    <strong>Temporal Pattern Analysis:</strong><br>
+                    ✅ Peak voting hours: 7-9 AM, 5-7 PM (Expected pattern)<br>
+                    ✅ Vote velocity: Smooth curves, no artificial spikes<br>
+                    ✅ Processing delays: Average 1.2s (Within specifications)<br>
+                    ✅ Late voter patterns: Consistent with early voters<br>
+                    📊 Temporal distribution indicates natural voting behavior
+                `,
+                'geographic': `
+                    <strong>Geographic Clustering Analysis:</strong><br>
+                    ✅ Moran's I statistic: 0.234 (Expected spatial autocorrelation)<br>
+                    ✅ Cluster analysis: 3 natural clusters identified<br>
+                    ✅ Outlier detection: 2 precincts flagged for review (0.3% of total)<br>
+                    ✅ Spatial consistency: High correlation with census data<br>
+                    📊 Geographic patterns consistent with demographic distributions
+                `
+            };
+            return results[type] || 'Analysis completed successfully.';
+        }
+        
+        // Start batch verification process
+        function startBatchVerification() {
+            if (isVerifying) return;
+            
+            isVerifying = true;
+            const batchSize = document.getElementById('batch-size').value;
+            const button = document.getElementById('batch-button');
+            const progressBar = document.getElementById('batch-progress-bar');
+            const progressFill = document.getElementById('batch-progress-fill');
+            const progressText = document.getElementById('batch-progress-text');
+            const steps = document.getElementById('batch-steps');
+            
+            // Update UI
+            button.disabled = true;
+            button.textContent = 'Verification in Progress...';
+            progressBar.style.display = 'block';
+            progressText.style.display = 'block';
+            steps.style.display = 'block';
+            
+            // Reset all steps
+            for (let i = 1; i <= 6; i++) {
+                const step = document.getElementById(`step${i}`);
+                step.className = 'step-status pending';
+                step.textContent = i;
+            }
+            
+            // Start verification process
+            runBatchVerificationSteps(batchSize);
+            
+            trackVerificationInteraction('batch_verify_start', batchSize);
+        }
+        
+        // Run batch verification steps
+        function runBatchVerificationSteps(batchSize) {
+            const steps = [
+                'Loading ballot dataset',
+                'Generating cryptographic proofs',
+                'Verifying digital signatures',
+                'Checking merkle tree consistency',
+                'Validating vote tallies',
+                'Generating verification report'
+            ];
+            
+            const progressFill = document.getElementById('batch-progress-fill');
+            const progressText = document.getElementById('batch-progress-text');
+            
+            let currentStep = 0;
+            const totalSteps = steps.length;
+            
+            function executeStep() {
+                if (currentStep >= totalSteps) {
+                    completeBatchVerification(batchSize);
+                    return;
+                }
+                
+                const stepElement = document.getElementById(`step${currentStep + 1}`);
+                stepElement.className = 'step-status complete';
+                stepElement.textContent = '✓';
+                
+                const progress = ((currentStep + 1) / totalSteps) * 100;
+                progressFill.style.width = progress + '%';
+                
+                const ballotCount = getBallotCount(batchSize);
+                const processed = Math.floor((ballotCount * (currentStep + 1)) / totalSteps);
+                progressText.textContent = `${steps[currentStep]}: ${processed.toLocaleString()} / ${ballotCount.toLocaleString()} ballots`;
+                
+                currentStep++;
+                setTimeout(executeStep, 2000 + Math.random() * 1000);
+            }
+            
+            executeStep();
+        }
+        
+        // Complete batch verification
+        function completeBatchVerification(batchSize) {
+            const button = document.getElementById('batch-button');
+            const progressText = document.getElementById('batch-progress-text');
+            const ballotCount = getBallotCount(batchSize);
+            
+            progressText.textContent = `✅ Verification Complete: ${ballotCount.toLocaleString()} ballots verified successfully`;
+            progressText.style.color = '#10b981';
+            
+            setTimeout(() => {
+                button.disabled = false;
+                button.textContent = 'Start Batch Verification';
+                isVerifying = false;
+                
+                // Update statistics
+                updateVerificationStats();
+            }, 2000);
+            
+            trackVerificationInteraction('batch_verify_complete', batchSize);
+        }
+        
+        // Get ballot count for batch size
+        function getBallotCount(batchSize) {
+            const counts = {
+                '1000': 1000,
+                '10000': 10000,
+                '50000': 50000,
+                'all': 156329
+            };
+            return counts[batchSize] || 1000;
+        }
+        
+        // Run full election audit
+        function runFullAudit() {
+            if (auditInProgress) return;
+            
+            auditInProgress = true;
+            
+            // Simulate comprehensive audit
+            setTimeout(() => {
+                alert(`🔍 Full Election Audit Complete!\n\n✅ All 156,329 ballots verified\n✅ Cryptographic integrity confirmed\n✅ Statistical analysis passed\n✅ Zero anomalies detected\n✅ Public verification successful\n\nDetailed audit report generated and available for download.`);
+                auditInProgress = false;
+            }, 5000);
+            
+            trackVerificationInteraction('full_audit', 'initiated');
+        }
+        
+        // Generate sample data for demonstration
+        function generateSampleData() {
+            // Add sample receipt to input
+            const sampleReceipts = [
+                'VS_8b4c2d7e_20250729_1356_verified',
+                'VS_3f7a9e5c_20250729_1423_verified',
+                'VS_9d6b8a2f_20250729_1501_verified'
+            ];
+            
+            const randomReceipt = sampleReceipts[Math.floor(Math.random() * sampleReceipts.length)];
+            document.getElementById('receipt-input').value = randomReceipt;
+            
+            // Add sample ballot hash
+            const sampleHashes = [
+                '0xf8e4d7c2a6b9e1f5d8c3a7b2e9f4c6d1',
+                '0x2a5e8b3f7c9d6e1a4f8c2b7e5d9a3c6f',
+                '0x7c3f9e2a6d8b4e7f1c5a9d3b8e6f2a4c'
+            ];
+            
+            const randomHash = sampleHashes[Math.floor(Math.random() * sampleHashes.length)];
+            document.getElementById('ballot-hash').value = randomHash;
+            
+            trackVerificationInteraction('sample_data_generated', 'demo');
+        }
+        
+        // Update verification statistics
+        function updateVerificationStats() {
+            const stats = {
+                'total-ballots': Math.floor(Math.random() * 1000) + 156329,
+                'verified-ballots': 156329,
+                'audit-entries': Math.floor(Math.random() * 10000) + 892341,
+                'public-auditors': Math.floor(Math.random() * 10) + 47
+            };
+            
+            Object.keys(stats).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = stats[id].toLocaleString();
+                }
+            });
+        }
+        
+        // Update audit timeline with new entries
+        function updateAuditTimeline() {
+            const timeline = document.getElementById('audit-timeline');
+            const activities = [
+                'Batch verification completed',
+                'Statistical analysis passed',
+                'Merkle proof validated',
+                'Receipt verification session',
+                'Third-party audit completed',
+                'Public verification report generated',
+                'Anomaly detection scan completed',
+                'Cryptographic integrity check passed'
+            ];
+            
+            setInterval(() => {
+                const activity = activities[Math.floor(Math.random() * activities.length)];
+                const timestamp = new Date().toLocaleString();
+                const ballotCount = Math.floor(Math.random() * 50000) + 1000;
+                const hash = generateRandomHash();
+                
+                const newEntry = document.createElement('div');
+                newEntry.className = 'audit-entry';
+                newEntry.innerHTML = `
+                    <div class="audit-timestamp">${timestamp}</div>
+                    <div class="audit-action">${activity}: ${ballotCount.toLocaleString()} ballots processed</div>
+                    <div class="audit-hash">Block: ${hash} | Verifier: System_${Math.floor(Math.random() * 100)}</div>
+                `;
+                
+                timeline.insertBefore(newEntry, timeline.firstChild);
+                
+                // Keep only last 20 entries
+                while (timeline.children.length > 20) {
+                    timeline.removeChild(timeline.lastChild);
+                }
+            }, 8000);
+        }
+        
+        // Utility functions
+        function formatDate(dateStr) {
+            if (dateStr.length === 8) {
+                return `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}`;
+            }
+            return dateStr;
+        }
+        
+        function formatTime(timeStr) {
+            if (timeStr.length === 4) {
+                return `${timeStr.slice(0,2)}:${timeStr.slice(2,4)}`;
+            }
+            return timeStr;
+        }
+        
+        function generateRandomHash() {
+            const chars = '0123456789abcdef';
+            let hash = '0x';
+            for (let i = 0; i < 8; i++) {
+                hash += chars[Math.floor(Math.random() * chars.length)];
+            }
+            hash += '...';
+            for (let i = 0; i < 4; i++) {
+                hash += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return hash;
+        }
+        
+        // Track verification interactions
+        function trackVerificationInteraction(action, details) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'verification_interaction', {
+                    event_category: 'public_verification',
+                    event_label: action,
+                    custom_map: {
+                        'interaction_type': action,
+                        'verification_details': details
+                    }
+                });
+            }
+            console.log(`Verification: ${action} - ${details}`);
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeVerificationPortal);
+        
+        // Analytics tracking
+        console.log('🔍 Public Verification Portal');
+        console.log('Features: Receipt verification, merkle tree exploration, statistical analysis');
+        console.log('Transparency: Full public audit capability with privacy protection');
+        console.log('Contact: verification@vote-secured.net');
+        
+        // Track page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Public Verification Portal',
+                page_location: window.location.href,
+                custom_map: {
+                    'demo_type': 'public_verification',
+                    'verification_features': 'comprehensive',
+                    'transparency_level': 'full_public_audit'
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranked Choice Voting Demo - Vote-Secured.net</title>
+    <meta name="description" content="Interactive demonstration of ranked choice voting with cryptographic security and accessibility features">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --purple: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rcv-badge {
+            background: linear-gradient(135deg, var(--purple), #6d28d9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: var(--gray-100);
+            color: var(--primary-blue);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        .ballot-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .ballot-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .ballot-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 10px;
+        }
+
+        .ballot-subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        .instructions {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .instructions h3 {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .instructions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions-list li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+        }
+
+        .candidates-container {
+            margin-bottom: 30px;
+        }
+
+        .contest-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--gray-900);
+        }
+
+        .candidate-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .candidate-item {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .candidate-item:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.1);
+        }
+
+        .candidate-item.ranked {
+            border-color: var(--success-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .candidate-item.ranked:hover {
+            border-color: var(--success-green);
+        }
+
+        .rank-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            flex-shrink: 0;
+        }
+
+        .candidate-item.ranked .rank-indicator {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .candidate-info {
+            flex: 1;
+        }
+
+        .candidate-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 5px;
+        }
+
+        .candidate-party {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .ranking-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .rank-button {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rank-button:hover {
+            background: var(--gray-100);
+        }
+
+        .rank-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .current-rankings {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .rankings-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--gray-900);
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-number {
+            width: 24px;
+            height: 24px;
+            background: var(--success-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .ballot-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .action-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .primary-button {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .secondary-button {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .secondary-button:hover {
+            background: var(--gray-300);
+        }
+
+        .sidebar {
+            display: grid;
+            gap: 20px;
+        }
+
+        .sidebar-widget {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--gray-900);
+        }
+
+        .rcv-explainer {
+            background: linear-gradient(135deg, var(--purple), #6d28d9);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .rcv-explainer h3 {
+            margin-bottom: 15px;
+        }
+
+        .rcv-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rcv-steps li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.9;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tabulation-demo {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .round-info {
+            background: var(--white);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .round-info:last-child {
+            margin-bottom: 0;
+        }
+
+        .round-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 5px;
+        }
+
+        .round-details {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .security-features {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .security-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .security-list li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--success-green);
+            font-size: 0.9rem;
+        }
+
+        .accessibility-notice {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ballot-actions {
+                flex-direction: column;
+            }
+            
+            .candidate-item {
+                padding: 15px;
+            }
+            
+            .ranking-controls {
+                display: none;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-container">
+            <a href="/demo.html" class="logo">
+                <span>🗳️</span>
+                Ranked Choice Voting Demo
+            </a>
+            <div class="header-actions">
+                <span class="rcv-badge">RCV ENABLED</span>
+                <a href="/demo.html" class="back-link">← Back to Demo Hub</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="ballot-section">
+            <div class="ballot-header">
+                <h1 class="ballot-title">Sample Mayor Election</h1>
+                <p class="ballot-subtitle">Rank candidates in order of preference</p>
+            </div>
+
+            <div class="instructions">
+                <h3>🎯 How to Vote with Ranked Choice</h3>
+                <ul class="instructions-list">
+                    <li><span>1️⃣</span> Click on your first choice candidate</li>
+                    <li><span>2️⃣</span> Click on your second choice candidate</li>
+                    <li><span>3️⃣</span> Continue ranking as many candidates as you wish</li>
+                    <li><span>✨</span> You can change or remove rankings anytime</li>
+                </ul>
+            </div>
+
+            <div class="candidates-container">
+                <h2 class="contest-title">Mayor of Riverside City</h2>
+                <div class="candidate-list" id="candidate-list">
+                    <div class="candidate-item" data-candidate="johnson">
+                        <div class="rank-indicator">—</div>
+                        <div class="candidate-info">
+                            <div class="candidate-name">Sarah Johnson</div>
+                            <div class="candidate-party">Democratic Party</div>
+                        </div>
+                        <div class="ranking-controls">
+                            <button class="rank-button" onclick="moveRanking('johnson', 'up')" title="Move up">↑</button>
+                            <button class="rank-button" onclick="moveRanking('johnson', 'down')" title="Move down">↓</button>
+                            <button class="rank-button" onclick="removeRanking('johnson')" title="Remove">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="candidate-item" data-candidate="martinez">
+                        <div class="rank-indicator">—</div>
+                        <div class="candidate-info">
+                            <div class="candidate-name">Carlos Martinez</div>
+                            <div class="candidate-party">Republican Party</div>
+                        </div>
+                        <div class="ranking-controls">
+                            <button class="rank-button" onclick="moveRanking('martinez', 'up')" title="Move up">↑</button>
+                            <button class="rank-button" onclick="moveRanking('martinez', 'down')" title="Move down">↓</button>
+                            <button class="rank-button" onclick="removeRanking('martinez')" title="Remove">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="candidate-item" data-candidate="chen">
+                        <div class="rank-indicator">—</div>
+                        <div class="candidate-info">
+                            <div class="candidate-name">Lisa Chen</div>
+                            <div class="candidate-party">Independent</div>
+                        </div>
+                        <div class="ranking-controls">
+                            <button class="rank-button" onclick="moveRanking('chen', 'up')" title="Move up">↑</button>
+                            <button class="rank-button" onclick="moveRanking('chen', 'down')" title="Move down">↓</button>
+                            <button class="rank-button" onclick="removeRanking('chen')" title="Remove">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="candidate-item" data-candidate="williams">
+                        <div class="rank-indicator">—</div>
+                        <div class="candidate-info">
+                            <div class="candidate-name">Michael Williams</div>
+                            <div class="candidate-party">Green Party</div>
+                        </div>
+                        <div class="ranking-controls">
+                            <button class="rank-button" onclick="moveRanking('williams', 'up')" title="Move up">↑</button>
+                            <button class="rank-button" onclick="moveRanking('williams', 'down')" title="Move down">↓</button>
+                            <button class="rank-button" onclick="removeRanking('williams')" title="Remove">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="candidate-item" data-candidate="thompson">
+                        <div class="rank-indicator">—</div>
+                        <div class="candidate-info">
+                            <div class="candidate-name">Jennifer Thompson</div>
+                            <div class="candidate-party">Libertarian Party</div>
+                        </div>
+                        <div class="ranking-controls">
+                            <button class="rank-button" onclick="moveRanking('thompson', 'up')" title="Move up">↑</button>
+                            <button class="rank-button" onclick="moveRanking('thompson', 'down')" title="Move down">↓</button>
+                            <button class="rank-button" onclick="removeRanking('thompson')" title="Remove">✕</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="current-rankings" id="current-rankings">
+                <h3 class="rankings-title">Your Current Rankings</h3>
+                <div id="rankings-display">
+                    <p style="color: var(--gray-600); font-style: italic;">Click on candidates above to rank them</p>
+                </div>
+            </div>
+
+            <div class="ballot-actions">
+                <button class="action-button secondary-button" onclick="clearAllRankings()">Clear All</button>
+                <button class="action-button primary-button" onclick="submitBallot()" id="submit-button" disabled>Submit Ballot</button>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="rcv-explainer">
+                <h3>🏆 How RCV Works</h3>
+                <ul class="rcv-steps">
+                    <li><span class="step-number">1</span>Count all first-choice votes</li>
+                    <li><span class="step-number">2</span>If no majority, eliminate lowest candidate</li>
+                    <li><span class="step-number">3</span>Transfer votes to next choices</li>
+                    <li><span class="step-number">4</span>Repeat until someone has 50%+</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">📊 Live Tabulation Demo</h3>
+                <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 15px;">
+                    Watch how votes are counted in real-time
+                </p>
+                <div class="tabulation-demo" id="tabulation-demo">
+                    <div class="round-info">
+                        <div class="round-title">Round 1 - Initial Count</div>
+                        <div class="round-details">Counting all first-choice preferences</div>
+                    </div>
+                    <div class="round-info">
+                        <div class="round-title">Round 2 - Elimination</div>
+                        <div class="round-details">Lowest candidate eliminated, votes transferred</div>
+                    </div>
+                    <div class="round-info">
+                        <div class="round-title">Round 3 - Final Count</div>
+                        <div class="round-details">Winner determined with majority</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">🔒 Security Features</h3>
+                <div class="security-features">
+                    <ul class="security-list">
+                        <li>✓ End-to-end encryption for all rankings</li>
+                        <li>✓ Zero-knowledge proof verification</li>
+                        <li>✓ Homomorphic encryption for tabulation</li>
+                        <li>✓ Cryptographic audit trail</li>
+                        <li>✓ Individual ballot verification</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">♿ Accessibility</h3>
+                <div class="accessibility-notice">
+                    <strong>WCAG 2.1 AA Compliant</strong><br>
+                    Full screen reader support, keyboard navigation, high contrast mode, and audio ballot capability available.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state for rankings
+        let currentRankings = [];
+        let maxRankings = 5;
+
+        const candidates = {
+            'johnson': { name: 'Sarah Johnson', party: 'Democratic Party' },
+            'martinez': { name: 'Carlos Martinez', party: 'Republican Party' },
+            'chen': { name: 'Lisa Chen', party: 'Independent' },
+            'williams': { name: 'Michael Williams', party: 'Green Party' },
+            'thompson': { name: 'Jennifer Thompson', party: 'Libertarian Party' }
+        };
+
+        // Initialize the ballot interface
+        function initializeBallot() {
+            updateDisplay();
+            setupEventListeners();
+            console.log('🗳️ Ranked Choice Voting Demo Initialized');
+        }
+
+        // Set up click event listeners for candidates
+        function setupEventListeners() {
+            document.querySelectorAll('.candidate-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    // Don't trigger on control button clicks
+                    if (e.target.classList.contains('rank-button')) return;
+                    
+                    const candidateId = item.dataset.candidate;
+                    toggleCandidateRanking(candidateId);
+                });
+            });
+
+            // Add keyboard accessibility
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    clearAllRankings();
+                }
+            });
+        }
+
+        // Toggle ranking for a candidate
+        function toggleCandidateRanking(candidateId) {
+            const existingIndex = currentRankings.indexOf(candidateId);
+            
+            if (existingIndex !== -1) {
+                // Remove from rankings
+                currentRankings.splice(existingIndex, 1);
+            } else {
+                // Add to rankings if not at max
+                if (currentRankings.length < maxRankings) {
+                    currentRankings.push(candidateId);
+                } else {
+                    alert(`You can only rank up to ${maxRankings} candidates.`);
+                    return;
+                }
+            }
+            
+            updateDisplay();
+            trackRankingInteraction('candidate_toggle', candidateId);
+        }
+
+        // Move ranking up or down
+        function moveRanking(candidateId, direction) {
+            const currentIndex = currentRankings.indexOf(candidateId);
+            if (currentIndex === -1) return;
+
+            let newIndex;
+            if (direction === 'up' && currentIndex > 0) {
+                newIndex = currentIndex - 1;
+            } else if (direction === 'down' && currentIndex < currentRankings.length - 1) {
+                newIndex = currentIndex + 1;
+            } else {
+                return; // Can't move further
+            }
+
+            // Swap positions
+            [currentRankings[currentIndex], currentRankings[newIndex]] = 
+            [currentRankings[newIndex], currentRankings[currentIndex]];
+            
+            updateDisplay();
+            trackRankingInteraction('ranking_reorder', candidateId);
+        }
+
+        // Remove a specific ranking
+        function removeRanking(candidateId) {
+            const index = currentRankings.indexOf(candidateId);
+            if (index !== -1) {
+                currentRankings.splice(index, 1);
+                updateDisplay();
+                trackRankingInteraction('ranking_remove', candidateId);
+            }
+        }
+
+        // Clear all rankings
+        function clearAllRankings() {
+            currentRankings = [];
+            updateDisplay();
+            trackRankingInteraction('clear_all', 'all');
+        }
+
+        // Update the visual display
+        function updateDisplay() {
+            // Update candidate items
+            document.querySelectorAll('.candidate-item').forEach(item => {
+                const candidateId = item.dataset.candidate;
+                const rankIndex = currentRankings.indexOf(candidateId);
+                const rankIndicator = item.querySelector('.rank-indicator');
+                
+                if (rankIndex !== -1) {
+                    item.classList.add('ranked');
+                    rankIndicator.textContent = rankIndex + 1;
+                } else {
+                    item.classList.remove('ranked');
+                    rankIndicator.textContent = '—';
+                }
+            });
+
+            // Update rankings display
+            updateRankingsDisplay();
+            
+            // Update submit button
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = currentRankings.length === 0;
+        }
+
+        // Update the current rankings display
+        function updateRankingsDisplay() {
+            const container = document.getElementById('rankings-display');
+            
+            if (currentRankings.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-600); font-style: italic;">Click on candidates above to rank them</p>';
+                return;
+            }
+
+            const rankingsHTML = currentRankings.map((candidateId, index) => {
+                const candidate = candidates[candidateId];
+                return `
+                    <div class="ranking-item">
+                        <div class="ranking-number">${index + 1}</div>
+                        <div>
+                            <div style="font-weight: 600;">${candidate.name}</div>
+                            <div style="font-size: 0.9rem; color: var(--gray-600);">${candidate.party}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = rankingsHTML;
+        }
+
+        // Submit the ballot
+        function submitBallot() {
+            if (currentRankings.length === 0) {
+                alert('Please rank at least one candidate before submitting.');
+                return;
+            }
+
+            // Show submission confirmation
+            const confirmation = confirm(
+                `Submit your ballot with the following rankings?\n\n` +
+                currentRankings.map((candidateId, index) => 
+                    `${index + 1}. ${candidates[candidateId].name}`
+                ).join('\n')
+            );
+
+            if (confirmation) {
+                // Simulate ballot submission
+                simulateBallotSubmission();
+                trackRankingInteraction('ballot_submit', `ranked_${currentRankings.length}`);
+            }
+        }
+
+        // Simulate the ballot submission process
+        function simulateBallotSubmission() {
+            const submitButton = document.getElementById('submit-button');
+            const originalText = submitButton.textContent;
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Encrypting...';
+            
+            setTimeout(() => {
+                submitButton.textContent = 'Verifying...';
+                setTimeout(() => {
+                    submitButton.textContent = 'Submitting...';
+                    setTimeout(() => {
+                        alert('✅ Ballot submitted successfully!\n\nYour cryptographic receipt: RCV_7f3a9b2c_20250729_verified\n\nYour rankings have been encrypted and recorded.');
+                        
+                        // Reset for demo purposes
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                        
+                        // Optionally clear rankings for next demo
+                        // clearAllRankings();
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }
+
+        // Track user interactions for analytics
+        function trackRankingInteraction(action, details) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'rcv_interaction', {
+                    event_category: 'ranked_choice_voting',
+                    event_label: action,
+                    custom_map: {
+                        'interaction_type': action,
+                        'candidate_or_action': details,
+                        'current_ranking_count': currentRankings.length
+                    }
+                });
+            }
+            console.log(`RCV Demo: ${action} - ${details} (${currentRankings.length} ranked)`);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeBallot);
+
+        // Analytics tracking
+        console.log('🗳️ Ranked Choice Voting Demo');
+        console.log('Features: Interactive ranking, real-time tabulation, cryptographic security');
+        console.log('Accessibility: WCAG 2.1 AA compliant with full keyboard and screen reader support');
+        console.log('Contact: rcv@vote-secured.net');
+
+        // Track page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Ranked Choice Voting Demo',
+                page_location: window.location.href,
+                custom_map: {
+                    'demo_type': 'ranked_choice_voting',
+                    'voting_method': 'rcv',
+                    'accessibility_level': 'wcag_2_1_aa'
+                }
+            });
+        }
+
+        // Simulate live tabulation updates
+        function updateTabulationDemo() {
+            const rounds = [
+                { title: 'Round 1 - Initial Count', details: 'Johnson: 142, Martinez: 98, Chen: 87, Williams: 45, Thompson: 28' },
+                { title: 'Round 2 - Thompson Eliminated', details: 'Votes transferred: Johnson: 156, Martinez: 105, Chen: 92, Williams: 47' },
+                { title: 'Round 3 - Williams Eliminated', details: 'Votes transferred: Johnson: 168, Martinez: 119, Chen: 113' },
+                { title: 'Final Round - Winner Declared', details: 'Johnson: 201 votes (50.25%) - WINNER!' }
+            ];
+
+            const container = document.getElementById('tabulation-demo');
+            let currentRound = 0;
+
+            setInterval(() => {
+                if (currentRound < rounds.length) {
+                    const roundHTML = rounds.slice(0, currentRound + 1).map((round, index) => `
+                        <div class="round-info ${index === currentRound ? 'pulse' : ''}">
+                            <div class="round-title">${round.title}</div>
+                            <div class="round-details">${round.details}</div>
+                        </div>
+                    `).join('');
+                    
+                    container.innerHTML = roundHTML;
+                    currentRound++;
+                } else {
+                    currentRound = 0; // Reset for continuous demo
+                }
+            }, 3000);
+        }
+
+        // Start tabulation demo
+        setTimeout(updateTabulationDemo, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST Cybersecurity Framework Tier 4 Compliance - Vote-Secured.net</title>
+    <meta name="description" content="Comprehensive NIST CSF 2.0 Tier 4 compliance matrix showing Vote-Secured.net's implementation of all framework functions and categories">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --danger-red: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --nist-purple: #7c3aed;
+            --nist-light-purple: #faf5ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--gray-50);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: var(--nist-purple);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: var(--nist-purple);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .compliance-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .overview-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .overview-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--nist-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .controls-section {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .controls-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .controls-table th {
+            background: var(--gray-100);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-900);
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .controls-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: top;
+        }
+
+        .controls-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .control-id {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-weight: 600;
+            color: var(--nist-purple);
+            min-width: 120px;
+        }
+
+        .control-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .status-compliant {
+            background: var(--success-green);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-partial {
+            background: var(--warning-orange);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .implementation-details {
+            background: var(--nist-light-purple);
+            border-left: 4px solid var(--nist-purple);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .implementation-title {
+            font-weight: 600;
+            color: var(--nist-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .implementation-text {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .back-nav {
+            margin-bottom: 2rem;
+        }
+
+        .back-nav a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-card {
+            background: var(--gray-50);
+            border: 2px solid var(--gray-100);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card.current {
+            background: var(--nist-light-purple);
+            border-color: var(--nist-purple);
+            transform: scale(1.05);
+        }
+
+        .tier-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--nist-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-description {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        .function-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .function-card {
+            background: var(--white);
+            border: 3px solid var(--gray-100);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .function-card.identify { border-color: #3b82f6; background: #eff6ff; }
+        .function-card.protect { border-color: #10b981; background: #f0fdf4; }
+        .function-card.detect { border-color: #f59e0b; background: #fffbeb; }
+        .function-card.respond { border-color: #ef4444; background: #fef2f2; }
+        .function-card.recover { border-color: #8b5cf6; background: #faf5ff; }
+
+        .function-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .function-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .function-card.identify .function-name { color: #3b82f6; }
+        .function-card.protect .function-name { color: #10b981; }
+        .function-card.detect .function-name { color: #f59e0b; }
+        .function-card.respond .function-name { color: #ef4444; }
+        .function-card.recover .function-name { color: #8b5cf6; }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls-table {
+                font-size: 0.9rem;
+            }
+            
+            .controls-table th,
+            .controls-table td {
+                padding: 0.5rem;
+            }
+
+            .tier-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-nav">
+            <a href="/index.html">
+                ← Back to Main Site
+            </a>
+        </div>
+
+        <div class="header">
+            <h1>NIST Cybersecurity Framework Tier 4</h1>
+            <p class="subtitle">Comprehensive implementation of NIST CSF 2.0 at the highest adaptive tier</p>
+            <div class="status-badge">🛡️ TIER 4 ADAPTIVE</div>
+            <p>Vote-Secured.net implements all NIST CSF functions at Tier 4 - the highest level of cybersecurity maturity with adaptive, predictive capabilities</p>
+        </div>
+
+        <div class="compliance-overview">
+            <div class="overview-card">
+                <div class="overview-number">108</div>
+                <div class="overview-label">Total Subcategories</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-number">103</div>
+                <div class="overview-label">Fully Implemented</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-number">5</div>
+                <div class="overview-label">Partially Implemented</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-number">95.4%</div>
+                <div class="overview-label">Implementation Rate</div>
+            </div>
+        </div>
+
+        <!-- Implementation Tiers -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">NIST CSF Implementation Tiers</h2>
+                <p class="section-description">Framework implementation tiers describe the degree to which cybersecurity risk management practices exhibit characteristics defined in the Framework</p>
+            </div>
+            <div style="padding: 2rem;">
+                <div class="tier-grid">
+                    <div class="tier-card">
+                        <div class="tier-number">Tier 1</div>
+                        <div class="tier-name">Partial</div>
+                        <div class="tier-description">Informal, reactive risk management</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-number">Tier 2</div>
+                        <div class="tier-name">Risk Informed</div>
+                        <div class="tier-description">Approved risk management practices</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-number">Tier 3</div>
+                        <div class="tier-name">Repeatable</div>
+                        <div class="tier-description">Formal policies and procedures</div>
+                    </div>
+                    <div class="tier-card current">
+                        <div class="tier-number">Tier 4</div>
+                        <div class="tier-name">Adaptive</div>
+                        <div class="tier-description">Advanced, predictive cybersecurity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Framework Functions Overview -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">NIST CSF Core Functions</h2>
+                <p class="section-description">The Framework Core consists of five concurrent and continuous Functions</p>
+            </div>
+            <div style="padding: 2rem;">
+                <div class="function-overview">
+                    <div class="function-card identify">
+                        <div class="function-icon">🎯</div>
+                        <div class="function-name">IDENTIFY</div>
+                        <div class="tier-description">Asset management, business environment, governance, risk assessment, risk management, supply chain</div>
+                    </div>
+                    <div class="function-card protect">
+                        <div class="function-icon">🛡️</div>
+                        <div class="function-name">PROTECT</div>
+                        <div class="tier-description">Identity management, awareness training, data security, information protection, maintenance, protective technology</div>
+                    </div>
+                    <div class="function-card detect">
+                        <div class="function-icon">🔍</div>
+                        <div class="function-name">DETECT</div>
+                        <div class="tier-description">Anomalies and events, security continuous monitoring, detection processes</div>
+                    </div>
+                    <div class="function-card respond">
+                        <div class="function-icon">⚡</div>
+                        <div class="function-name">RESPOND</div>
+                        <div class="tier-description">Response planning, communications, analysis, mitigation, improvements</div>
+                    </div>
+                    <div class="function-card recover">
+                        <div class="function-icon">🔄</div>
+                        <div class="function-name">RECOVER</div>
+                        <div class="tier-description">Recovery planning, improvements, communications</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IDENTIFY Function -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">IDENTIFY Function Implementation</h2>
+                <p class="section-description">Develop organizational understanding to manage cybersecurity risk to systems, people, assets, data, and capabilities</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Subcategory ID</th>
+                        <th>Requirement</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">ID.AM-1</td>
+                        <td>
+                            <div class="control-title">Physical devices and systems within the organization are inventoried</div>
+                            <div class="control-description">Complete asset inventory including all election systems hardware</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated asset discovery and inventory management with RFID tagging. Real-time tracking of all voting devices, servers, network equipment, and security appliances. Integration with CMDB for lifecycle management.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">ID.AM-2</td>
+                        <td>
+                            <div class="control-title">Software platforms and applications within the organization are inventoried</div>
+                            <div class="control-description">Comprehensive software inventory including licenses and versions</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Software composition analysis with automated vulnerability scanning. Container image scanning and bill of materials tracking. License compliance monitoring and usage analytics.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">ID.AM-3</td>
+                        <td>
+                            <div class="control-title">Organizational communication and data flows are mapped</div>
+                            <div class="control-description">Data flow diagrams for all election processes and communications</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Comprehensive data flow mapping with encryption point identification. Network topology documentation with security boundary definitions. Real-time traffic analysis and anomaly detection.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">ID.BE-1</td>
+                        <td>
+                            <div class="control-title">The organization's role in the supply chain is identified and communicated</div>
+                            <div class="control-description">Clear understanding of election ecosystem dependencies</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Detailed supply chain risk assessment with vendor security evaluations. Third-party dependency mapping and continuous monitoring. Supply chain attack surface analysis and mitigation strategies.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">ID.GV-1</td>
+                        <td>
+                            <div class="control-title">Organizational information security policy is established and communicated</div>
+                            <div class="control-description">Comprehensive information security governance framework</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Board-approved cybersecurity policy with annual reviews. Role-based security awareness training with compliance tracking. Incident escalation procedures with clear authority delegation.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">ID.RA-1</td>
+                        <td>
+                            <div class="control-title">Asset vulnerabilities are identified and documented</div>
+                            <div class="control-description">Continuous vulnerability assessment and management</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated vulnerability scanning with risk-based prioritization. Penetration testing by certified ethical hackers quarterly. Zero-day threat intelligence integration with predictive analytics.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PROTECT Function -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">PROTECT Function Implementation</h2>
+                <p class="section-description">Develop and implement appropriate safeguards to ensure delivery of critical infrastructure services</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Subcategory ID</th>
+                        <th>Requirement</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">PR.AC-1</td>
+                        <td>
+                            <div class="control-title">Identities and credentials are issued, managed, and verified</div>
+                            <div class="control-description">Comprehensive identity and access management system</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">PKI-based identity management with hardware security modules. Multi-factor authentication with biometric verification. Automated provisioning and deprovisioning with role-based access controls.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">PR.AC-4</td>
+                        <td>
+                            <div class="control-title">Access permissions and authorizations are managed</div>
+                            <div class="control-description">Dynamic access control with principle of least privilege</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Attribute-based access control (ABAC) with real-time policy evaluation. Privileged access management with session recording. Quarterly access reviews with automated compliance reporting.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">PR.DS-1</td>
+                        <td>
+                            <div class="control-title">Data-at-rest is protected</div>
+                            <div class="control-description">Comprehensive encryption for all stored election data</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">AES-256-GCM encryption for all data at rest with FIPS 140-2 Level 3 key management. Database-level encryption with transparent data encryption. Encrypted backup storage with air-gapped copies.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">PR.DS-2</td>
+                        <td>
+                            <div class="control-title">Data-in-transit is protected</div>
+                            <div class="control-description">End-to-end encryption for all data transmission</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">TLS 1.3 with perfect forward secrecy for all communications. End-to-end encrypted voting with homomorphic encryption. VPN tunnels for administrative access with certificate-based authentication.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">PR.PT-1</td>
+                        <td>
+                            <div class="control-title">Audit/log records are determined, documented, implemented, and reviewed</div>
+                            <div class="control-description">Comprehensive audit logging and monitoring</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Immutable audit trails with cryptographic integrity protection. Real-time log analysis with machine learning anomaly detection. Centralized logging with tamper-evident storage and legal hold capabilities.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- DETECT Function -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">DETECT Function Implementation</h2>
+                <p class="section-description">Develop and implement appropriate activities to identify occurrence of cybersecurity events</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Subcategory ID</th>
+                        <th>Requirement</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">DE.AE-1</td>
+                        <td>
+                            <div class="control-title">A baseline of network operations and expected data flows is established</div>
+                            <div class="control-description">Network behavior analysis and anomaly detection</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">AI-powered network behavior analysis with dynamic baseline establishment. Real-time traffic analysis with protocol anomaly detection. Machine learning models trained on election-specific traffic patterns.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">DE.CM-1</td>
+                        <td>
+                            <div class="control-title">The network is monitored to detect potential cybersecurity events</div>
+                            <div class="control-description">24/7 network monitoring and threat detection</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Security operations center (SOC) with 24/7 monitoring. Network intrusion detection systems with signature and behavioral analysis. Threat intelligence feeds with IOC correlation and automated blocking.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">DE.CM-7</td>
+                        <td>
+                            <div class="control-title">Monitoring for unauthorized personnel, connections, devices, and software is performed</div>
+                            <div class="control-description">Comprehensive monitoring for unauthorized access and changes</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Network access control (NAC) with device fingerprinting. Rogue device detection with automated quarantine. Software whitelisting with hash-based integrity verification and unauthorized software alerts.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">DE.DP-1</td>
+                        <td>
+                            <div class="control-title">Roles and responsibilities for detection are well defined</div>
+                            <div class="control-description">Clear detection roles and escalation procedures</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Defined security roles with RACI matrix. 24/7 SOC staffing with tier 1, 2, and 3 analysts. Automated escalation procedures with stakeholder notification templates.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RESPOND Function -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">RESPOND Function Implementation</h2>
+                <p class="section-description">Develop and implement appropriate activities to take action regarding detected cybersecurity incidents</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Subcategory ID</th>
+                        <th>Requirement</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">RS.RP-1</td>
+                        <td>
+                            <div class="control-title">Response plan is executed during or after an incident</div>
+                            <div class="control-description">Comprehensive incident response plan with testing</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">NIST 800-61 compliant incident response plan with quarterly tabletop exercises. Automated playbooks for common incident types. War room procedures with pre-defined communication templates.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">RS.CO-2</td>
+                        <td>
+                            <div class="control-title">Incidents are reported consistent with established criteria</div>
+                            <div class="control-description">Standardized incident reporting and notification procedures</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated incident reporting to CISA, FBI, and relevant authorities. Standardized incident classification with severity levels. Stakeholder notification matrix with timing requirements.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">RS.AN-1</td>
+                        <td>
+                            <div class="control-title">Notifications from detection systems are investigated</div>
+                            <div class="control-description">Systematic investigation of all security alerts</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">SOAR platform with automated alert triage and investigation workflows. Digital forensics capabilities with chain of custody procedures. Threat hunting team with advanced persistent threat detection.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">RS.MI-1</td>
+                        <td>
+                            <div class="control-title">Incidents are contained</div>
+                            <div class="control-description">Rapid incident containment and isolation procedures</div>
+                        </td>
+                        <td><span class="status-partial">PARTIAL</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Automated containment with network segmentation and device isolation. Manual containment procedures for complex incidents. Some advanced persistent threat scenarios require enhanced containment capabilities currently in development.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RECOVER Function -->
+        <div class="controls-section">
+            <div class="section-header">
+                <h2 class="section-title">RECOVER Function Implementation</h2>
+                <p class="section-description">Develop and implement appropriate activities to maintain plans for resilience and restore capabilities</p>
+            </div>
+            <table class="controls-table">
+                <thead>
+                    <tr>
+                        <th>Subcategory ID</th>
+                        <th>Requirement</th>
+                        <th>Status</th>
+                        <th>Implementation Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="control-id">RC.RP-1</td>
+                        <td>
+                            <div class="control-title">Recovery plan is executed during or after a cybersecurity incident</div>
+                            <div class="control-description">Comprehensive disaster recovery and business continuity</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Business continuity plan with RTO of 15 minutes and RPO of zero data loss. Geographically distributed backup sites with automated failover. Recovery testing performed monthly with full disaster recovery exercises quarterly.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">RC.IM-1</td>
+                        <td>
+                            <div class="control-title">Recovery plans incorporate lessons learned</div>
+                            <div class="control-description">Continuous improvement of recovery procedures</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Post-incident reviews with root cause analysis and corrective actions. Recovery plan updates based on lessons learned and threat landscape changes. Cross-industry information sharing through election security consortiums.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="control-id">RC.CO-3</td>
+                        <td>
+                            <div class="control-title">Recovery activities are communicated to internal and external stakeholders</div>
+                            <div class="control-description">Transparent communication during recovery operations</div>
+                        </td>
+                        <td><span class="status-compliant">COMPLIANT</span></td>
+                        <td>
+                            <div class="implementation-details">
+                                <div class="implementation-title">Vote-Secured Implementation:</div>
+                                <div class="implementation-text">Real-time status dashboards for election officials. Automated stakeholder notifications with customizable severity thresholds. Public communication templates with transparency while protecting operational security.</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

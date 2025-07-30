@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Georgia State Seal -->
+  
+  <!-- Outer ring -->
+  <circle cx="60" cy="60" r="58" fill="#FFD700" stroke="#003366" stroke-width="3"/>
+  
+  <!-- Inner circle -->
+  <circle cx="60" cy="60" r="45" fill="white" stroke="#003366" stroke-width="2"/>
+  
+  <!-- Central arch structure -->
+  <rect x="35" y="35" width="50" height="35" fill="#003366"/>
+  
+  <!-- Three pillars -->
+  <rect x="38" y="37" width="8" height="30" fill="#FFD700"/>
+  <rect x="56" y="37" width="8" height="30" fill="#FFD700"/>
+  <rect x="74" y="37" width="8" height="30" fill="#FFD700"/>
+  
+  <!-- Arch top -->
+  <path d="M 35 35 Q 60 20 85 35" fill="#003366" stroke="#FFD700" stroke-width="1"/>
+  
+  <!-- Banner across pillars -->
+  <rect x="32" y="50" width="56" height="6" fill="#CC0000"/>
+  <text x="60" y="55" text-anchor="middle" font-family="serif" font-size="6" fill="white" font-weight="bold">CONSTITUTION</text>
+  
+  <!-- Base platform -->
+  <rect x="30" y="67" width="60" height="8" fill="#003366"/>
+  
+  <!-- Surrounding text -->
+  <path id="top-arc" d="M 20 60 A 40 40 0 0 1 100 60" fill="none"/>
+  <text font-family="serif" font-size="10" fill="#003366" font-weight="bold">
+    <textPath href="#top-arc" startOffset="50%" text-anchor="middle">STATE OF GEORGIA</textPath>
+  </text>
+  
+  <path id="bottom-arc" d="M 100 60 A 40 40 0 0 1 20 60" fill="none"/>
+  <text font-family="serif" font-size="8" fill="#003366">
+    <textPath href="#bottom-arc" startOffset="50%" text-anchor="middle">1776</textPath>
+  </text>
+</svg>

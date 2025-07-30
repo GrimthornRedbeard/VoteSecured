@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Programs - Vote-Secured.net</title>
+    <meta name="description" content="Active and planned pilot programs demonstrating Vote-Secured.net election security solutions">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--gray-50);
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-100);
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pilot-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .status-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .status-card.active {
+            border-left: 5px solid var(--success-green);
+        }
+
+        .status-card.planned {
+            border-left: 5px solid var(--warning-orange);
+        }
+
+        .status-card.completed {
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-card.active .status-number { color: var(--success-green); }
+        .status-card.planned .status-number { color: var(--warning-orange); }
+        .status-card.completed .status-number { color: var(--primary-blue); }
+
+        .status-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .pilot-sections {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .pilot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .pilot-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .pilot-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pilot-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pilot-flag {
+            width: 60px;
+            height: 40px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .pilot-info {
+            flex: 1;
+        }
+
+        .pilot-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+        }
+
+        .pilot-location {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .pilot-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #f0fdf4;
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+        }
+
+        .status-planned {
+            background: #fffbeb;
+            color: var(--warning-orange);
+            border: 1px solid var(--warning-orange);
+        }
+
+        .status-completed {
+            background: #eff6ff;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+
+        .pilot-description {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .pilot-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .pilot-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pilot-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+        }
+
+        .feature-check {
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 12px 24px;
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--gray-900);
+        }
+
+        .timeline-items {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            color: var(--primary-blue);
+            min-width: 100px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title-item {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .pilot-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pilot-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <span>🗳️</span>
+                Vote-Secured.net Pilots
+            </a>
+            <a href="/" class="back-link">
+                ← Back to Main Site
+            </a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Pilot Programs & Deployments</h1>
+            <p class="page-subtitle">Real-world implementations demonstrating the security, reliability, and effectiveness of Vote-Secured.net election solutions</p>
+        </div>
+
+        <!-- Status Overview -->
+        <div class="pilot-status-grid">
+            <div class="status-card active">
+                <div class="status-icon">🚀</div>
+                <div class="status-number">3</div>
+                <div class="status-label">Active Pilots</div>
+            </div>
+            
+            <div class="status-card planned">
+                <div class="status-icon">📅</div>
+                <div class="status-number">8</div>
+                <div class="status-label">Planned Deployments</div>
+            </div>
+            
+            <div class="status-card completed">
+                <div class="status-icon">✅</div>
+                <div class="status-number">2</div>
+                <div class="status-label">Completed Studies</div>
+            </div>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div class="timeline">
+            <h3 class="timeline-title">2025-2026 Deployment Timeline</h3>
+            <div class="timeline-items">
+                <div class="timeline-item">
+                    <div class="timeline-date">Q3 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title-item">Initial Pilot Launches</div>
+                        <div class="timeline-description">Small municipal elections in Georgia, Florida, and Texas</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Q4 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title-item">Hurricane Season Testing</div>
+                        <div class="timeline-description">Disaster resilience validation in Florida coastal counties</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Q1 2026</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title-item">Rural Connectivity Pilot</div>
+                        <div class="timeline-description">West Texas satellite voting and mobile unit deployment</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Q2 2026</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title-item">Primary Election Testing</div>
+                        <div class="timeline-description">Scaled deployment for state primary elections</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Q4 2026</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title-item">General Election Deployment</div>
+                        <div class="timeline-description">Full-scale implementation for general elections</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Pilots -->
+        <div class="pilot-sections">
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">Active Pilot Programs</h2>
+                </div>
+                
+                <div class="pilot-grid">
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/ga.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Valdosta Municipal Elections</h3>
+                                <div class="pilot-location">Valdosta, Georgia</div>
+                                <span class="pilot-status status-active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            First full deployment in Georgia focusing on paper trail requirements and QR code elimination. Testing all Blue-Ribbon Committee specifications.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">12,450</div>
+                                <div class="metric-label">Registered Voters</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">99.97%</div>
+                                <div class="metric-label">System Uptime</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> Human-readable paper ballots</li>
+                            <li><span class="feature-check">✓</span> Real-time voter challenge resolution</li>
+                            <li><span class="feature-check">✓</span> End-to-end audit capability</li>
+                            <li><span class="feature-check">✓</span> Senior citizen accessibility testing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/fl.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Key Largo Evacuation Voting</h3>
+                                <div class="pilot-location">Monroe County, Florida</div>
+                                <span class="pilot-status status-active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Hurricane resilience testing with mobile voting units and emergency shelter integration. Multilingual support validation.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">8,230</div>
+                                <div class="metric-label">Eligible Voters</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Hurricane Readiness</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> Mobile voting units deployed</li>
+                            <li><span class="feature-check">✓</span> Spanish/English bilingual interface</li>
+                            <li><span class="feature-check">✓</span> Satellite internet backup</li>
+                            <li><span class="feature-check">✓</span> Emergency shelter integration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/tx.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Presidio County Rural Voting</h3>
+                                <div class="pilot-location">West Texas Border Region</div>
+                                <span class="pilot-status status-active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Remote rural connectivity testing with satellite voting and enhanced border security protocols. Voter ID integration validation.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">4,890</div>
+                                <div class="metric-label">Rural Voters</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">85%</div>
+                                <div class="metric-label">Remote Coverage</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> Starlink satellite connectivity</li>
+                            <li><span class="feature-check">✓</span> Texas DPS ID integration</li>
+                            <li><span class="feature-check">✓</span> Border security protocols</li>
+                            <li><span class="feature-check">✓</span> Ranch community outreach</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Planned Deployments -->
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">Planned Deployments</h2>
+                </div>
+                
+                <div class="pilot-grid">
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/ga.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Metro Atlanta Expansion</h3>
+                                <div class="pilot-location">Fulton County, Georgia</div>
+                                <span class="pilot-status status-planned">Q1 2026</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Large-scale urban deployment testing high-volume processing and multilingual support for diverse metropolitan population.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">758K</div>
+                                <div class="metric-label">Registered Voters</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">15</div>
+                                <div class="metric-label">Languages</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> High-volume processing</li>
+                            <li><span class="feature-check">✓</span> Multilingual support</li>
+                            <li><span class="feature-check">✓</span> Real-time results</li>
+                            <li><span class="feature-check">✓</span> Urban accessibility</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/fl.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Miami-Dade Primary</h3>
+                                <div class="pilot-location">Miami-Dade County, Florida</div>
+                                <span class="pilot-status status-planned">Q2 2026</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Major metropolitan deployment with full trilingual support (English, Spanish, Haitian Creole) and senior-focused accessibility.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">1.5M</div>
+                                <div class="metric-label">Registered Voters</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">3</div>
+                                <div class="metric-label">Languages</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> Trilingual interface</li>
+                            <li><span class="feature-check">✓</span> Hurricane backup systems</li>
+                            <li><span class="feature-check">✓</span> Senior accessibility focus</li>
+                            <li><span class="feature-check">✓</span> Overseas military voting</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/tx.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Harris County General</h3>
+                                <div class="pilot-location">Houston Metro, Texas</div>
+                                <span class="pilot-status status-planned">Q4 2026</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Largest county deployment testing scalability with 2.4M registered voters across urban, suburban, and rural areas.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">2.4M</div>
+                                <div class="metric-label">Registered Voters</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">782</div>
+                                <div class="metric-label">Polling Locations</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> Massive scale testing</li>
+                            <li><span class="feature-check">✓</span> Urban/rural hybrid</li>
+                            <li><span class="feature-check">✓</span> Bilingual English/Spanish</li>
+                            <li><span class="feature-check">✓</span> Real-time state reporting</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Completed Studies -->
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">Completed Studies & Results</h2>
+                </div>
+                
+                <div class="pilot-grid">
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/countries/us.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">Federal Security Assessment</h3>
+                                <div class="pilot-location">CISA Cybersecurity Review</div>
+                                <span class="pilot-status status-completed">Completed</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Comprehensive federal cybersecurity assessment conducted by CISA with focus on election infrastructure protection.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Security Requirements Met</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Critical Vulnerabilities</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> CISA approval received</li>
+                            <li><span class="feature-check">✓</span> Penetration testing passed</li>
+                            <li><span class="feature-check">✓</span> Federal compliance verified</li>
+                            <li><span class="feature-check">✓</span> Recommendations implemented</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pilot-card">
+                        <div class="pilot-header">
+                            <div class="pilot-flag" style="background-image: url('/images/countries/us.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <div class="pilot-info">
+                                <h3 class="pilot-title">University Research Study</h3>
+                                <div class="pilot-location">Georgia Tech & MIT</div>
+                                <span class="pilot-status status-completed">Completed</span>
+                            </div>
+                        </div>
+                        
+                        <p class="pilot-description">
+                            Independent academic research on cryptographic voting security and usability conducted by leading computer science departments.
+                        </p>
+                        
+                        <div class="pilot-metrics">
+                            <div class="metric">
+                                <div class="metric-value">2,500</div>
+                                <div class="metric-label">Test Participants</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">98.7%</div>
+                                <div class="metric-label">Usability Score</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="pilot-features">
+                            <li><span class="feature-check">✓</span> Peer-reviewed publication</li>
+                            <li><span class="feature-check">✓</span> Security proofs verified</li>
+                            <li><span class="feature-check">✓</span> Usability testing completed</li>
+                            <li><span class="feature-check">✓</span> Academic endorsement</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2 class="cta-title">Join the Next Pilot Program</h2>
+            <p class="cta-description">
+                Become part of the future of secure elections. Partner with us to implement cutting-edge voting technology in your jurisdiction.
+            </p>
+            <div class="cta-buttons">
+                <a href="mailto:pilots@vote-secured.net" class="cta-button">Apply for Pilot Program</a>
+                <a href="/demo.html" class="cta-button">View Live Demo</a>
+                <a href="mailto:info@vote-secured.net?subject=Pilot Program Guide Request&body=Please send me the Vote Secured pilot program implementation guide." class="cta-button">Download Pilot Guide</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Add animation to pilot cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide cards and observe them
+        document.querySelectorAll('.pilot-card, .status-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            cardObserver.observe(card);
+        });
+
+        console.log('🗳️ Vote-Secured.net Pilot Programs');
+        console.log('Active Pilots: 3, Planned: 8, Completed: 2');
+        console.log('Contact: pilots@vote-secured.net');
+        
+        // Track page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Pilot Programs',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>

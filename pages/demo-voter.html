@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Experience Demo - Vote-Secured.net</title>
+    <meta name="description" content="Experience secure electronic voting from a voter's perspective with our interactive simulation.">
+    
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--gray-50);
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-100);
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .demo-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .demo-step {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .demo-step.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-900);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-100);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-100);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--white);
+        }
+
+        .ballot-section {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ballot-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .candidate-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid var(--gray-100);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .candidate-option:hover {
+            border-color: var(--primary-blue);
+            background: #f0f9ff;
+        }
+
+        .candidate-option.selected {
+            border-color: var(--success-green);
+            background: #f0fdf4;
+        }
+
+        .candidate-radio {
+            width: 20px;
+            height: 20px;
+        }
+
+        .candidate-info {
+            flex: 1;
+        }
+
+        .candidate-name {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .candidate-party {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #1e3a8a;
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-600);
+            color: var(--white);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .security-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f0fdf4;
+            border-left: 4px solid var(--success-green);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .security-icon {
+            color: var(--success-green);
+            font-size: 1.2rem;
+        }
+
+        .receipt-container {
+            background: var(--gray-50);
+            border: 2px dashed var(--gray-600);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .receipt-hash {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--success-green));
+            transition: width 0.5s ease;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            transition: background-color 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: var(--primary-blue);
+        }
+
+        .step-dot.completed {
+            background: var(--success-green);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--gray-100);
+            border-radius: 50%;
+            border-top-color: var(--primary-blue);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .verification-panel {
+            background: #f0f9ff;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            border: 1px solid var(--success-green);
+            color: #166534;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                margin: 1rem auto;
+                padding: 0 10px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/demo.html" class="logo">
+                <span>🗳️</span>
+                Voter Experience Demo
+            </a>
+            <a href="/demo.html" class="back-link">
+                ← Back to Demo Hub
+            </a>
+        </div>
+    </header>
+
+    <main class="demo-container">
+        <!-- Progress Indicator -->
+        <div class="step-indicator">
+            <div class="step-dot active" id="dot-1"></div>
+            <div class="step-dot" id="dot-2"></div>
+            <div class="step-dot" id="dot-3"></div>
+            <div class="step-dot" id="dot-4"></div>
+            <div class="step-dot" id="dot-5"></div>
+        </div>
+
+        <!-- Step 1: Authentication -->
+        <div class="demo-step active" id="step-1">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Identity Verification</h2>
+            </div>
+
+            <div class="security-indicator">
+                <span class="security-icon">🔒</span>
+                <span>All data is encrypted and secure. This is a demonstration only.</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="voter-id">Voter ID Number</label>
+                <input type="text" id="voter-id" class="form-input" placeholder="Enter your voter ID (demo: VS2024-DEMO1)" value="">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="birth-date">Date of Birth</label>
+                <input type="date" id="birth-date" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="zip-code">ZIP Code</label>
+                <input type="text" id="zip-code" class="form-input" placeholder="12345" maxlength="5">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="nextStep(2)">Verify Identity</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Multi-Factor Authentication -->
+        <div class="demo-step" id="step-2">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">Multi-Factor Authentication</h2>
+            </div>
+
+            <div class="alert-success">
+                ✅ Identity verified successfully!
+            </div>
+
+            <p style="margin-bottom: 1.5rem;">For additional security, please complete multi-factor authentication:</p>
+
+            <div class="form-group">
+                <label class="form-label">Authentication Method</label>
+                <select class="form-select" id="mfa-method">
+                    <option value="sms">SMS Text Message</option>
+                    <option value="email">Email Verification</option>
+                    <option value="app">Authenticator App</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="mfa-code">Verification Code</label>
+                <input type="text" id="mfa-code" class="form-input" placeholder="Enter 6-digit code (demo: 123456)" maxlength="6">
+                <small style="color: var(--gray-600);">Demo code: 123456</small>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="previousStep(1)">Back</button>
+                <button class="btn btn-primary" onclick="nextStep(3)">Verify Code</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Ballot Selection -->
+        <div class="demo-step" id="step-3">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">Cast Your Ballot</h2>
+            </div>
+
+            <div class="security-indicator">
+                <span class="security-icon">🔐</span>
+                <span>Your selections are encrypted locally before transmission</span>
+            </div>
+
+            <div class="ballot-section">
+                <h3 class="ballot-title">President of the United States</h3>
+                <p style="margin-bottom: 1rem; color: var(--gray-600);">Vote for one candidate</p>
+                
+                <div class="candidate-option" onclick="selectCandidate('president', 'candidate-1')">
+                    <input type="radio" name="president" value="candidate-1" class="candidate-radio">
+                    <div class="candidate-info">
+                        <div class="candidate-name">Jane Smith</div>
+                        <div class="candidate-party">Democratic Party</div>
+                    </div>
+                </div>
+
+                <div class="candidate-option" onclick="selectCandidate('president', 'candidate-2')">
+                    <input type="radio" name="president" value="candidate-2" class="candidate-radio">
+                    <div class="candidate-info">
+                        <div class="candidate-name">John Doe</div>
+                        <div class="candidate-party">Republican Party</div>
+                    </div>
+                </div>
+
+                <div class="candidate-option" onclick="selectCandidate('president', 'candidate-3')">
+                    <input type="radio" name="president" value="candidate-3" class="candidate-radio">
+                    <div class="candidate-info">
+                        <div class="candidate-name">Alex Johnson</div>
+                        <div class="candidate-party">Independent</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ballot-section">
+                <h3 class="ballot-title">U.S. Senate</h3>
+                <p style="margin-bottom: 1rem; color: var(--gray-600);">Vote for one candidate</p>
+                
+                <div class="candidate-option" onclick="selectCandidate('senate', 'senate-1')">
+                    <input type="radio" name="senate" value="senate-1" class="candidate-radio">
+                    <div class="candidate-info">
+                        <div class="candidate-name">Maria Rodriguez</div>
+                        <div class="candidate-party">Democratic Party</div>
+                    </div>
+                </div>
+
+                <div class="candidate-option" onclick="selectCandidate('senate', 'senate-2')">
+                    <input type="radio" name="senate" value="senate-2" class="candidate-radio">
+                    <div class="candidate-info">
+                        <div class="candidate-name">Robert Wilson</div>
+                        <div class="candidate-party">Republican Party</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="previousStep(2)">Back</button>
+                <button class="btn btn-primary" onclick="nextStep(4)" id="cast-vote-btn" disabled>Review Ballot</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Review and Confirm -->
+        <div class="demo-step" id="step-4">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">Review Your Selections</h2>
+            </div>
+
+            <div class="security-indicator">
+                <span class="security-icon">🔍</span>
+                <span>Please review your selections carefully before submitting</span>
+            </div>
+
+            <div class="ballot-section">
+                <h3 class="ballot-title">Your Ballot Summary</h3>
+                <div id="ballot-summary">
+                    <!-- Ballot summary will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="verification-panel">
+                <h4 style="margin-bottom: 1rem;">Cryptographic Verification</h4>
+                <p style="margin-bottom: 1rem;">Your ballot will be:</p>
+                <ul style="margin-left: 2rem; margin-bottom: 1rem;">
+                    <li>Encrypted with AES-256 encryption</li>
+                    <li>Digitally signed with your voter credentials</li>
+                    <li>Added to the immutable blockchain ledger</li>
+                    <li>Verified with zero-knowledge proofs</li>
+                </ul>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="confirm-ballot" style="margin-right: 8px;">
+                        I confirm that my selections are correct and I wish to cast my ballot
+                    </label>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="previousStep(3)">Back to Ballot</button>
+                <button class="btn btn-primary" onclick="castBallot()" id="final-submit-btn" disabled>Cast Ballot</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Receipt and Verification -->
+        <div class="demo-step" id="step-5">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2 class="step-title">Ballot Cast Successfully</h2>
+            </div>
+
+            <div class="alert-success">
+                🎉 Your vote has been successfully recorded and encrypted on the blockchain!
+            </div>
+
+            <div class="receipt-container">
+                <h3 style="margin-bottom: 1rem;">🧾 VOTING RECEIPT</h3>
+                <p><strong>Election:</strong> 2024 General Election Demo</p>
+                <p><strong>Date:</strong> <span id="vote-timestamp"></span></p>
+                <p><strong>Voter Token:</strong> VS2024-DEMO1</p>
+                
+                <div class="receipt-hash" id="vote-hash">
+                    Loading cryptographic hash...
+                </div>
+                
+                <p style="font-size: 0.9rem; margin-top: 1rem;">
+                    Save this receipt to verify your vote was counted.<br>
+                    Visit the public verification portal at any time.
+                </p>
+            </div>
+
+            <div class="verification-panel">
+                <h4 style="margin-bottom: 1rem;">Next Steps</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Your vote is now part of the immutable blockchain ledger</li>
+                    <li>You can verify your vote was counted using your receipt hash</li>
+                    <li>Results will be available in real-time as votes are tallied</li>
+                    <li>All cryptographic proofs are publicly verifiable</li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="window.open('/demo', '_blank')">View Public Verification</button>
+                <button class="btn btn-secondary" onclick="restartDemo()">Start New Demo</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentStep = 1;
+        let ballotSelections = {};
+
+        function nextStep(stepNumber) {
+            // Validate current step
+            if (!validateStep(currentStep)) {
+                return;
+            }
+
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`dot-${currentStep}`).classList.remove('active');
+            document.getElementById(`dot-${currentStep}`).classList.add('completed');
+
+            // Show next step
+            currentStep = stepNumber;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`dot-${currentStep}`).classList.add('active');
+
+            // Special handling for specific steps
+            if (stepNumber === 4) {
+                populateBallotSummary();
+            } else if (stepNumber === 5) {
+                generateReceipt();
+            }
+        }
+
+        function previousStep(stepNumber) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`dot-${currentStep}`).classList.remove('active');
+
+            // Show previous step
+            currentStep = stepNumber;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`dot-${currentStep}`).classList.add('active');
+            document.getElementById(`dot-${currentStep}`).classList.remove('completed');
+        }
+
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    const voterId = document.getElementById('voter-id').value;
+                    const birthDate = document.getElementById('birth-date').value;
+                    const zipCode = document.getElementById('zip-code').value;
+                    
+                    if (!voterId || !birthDate || !zipCode) {
+                        alert('Please fill in all required fields.');
+                        return false;
+                    }
+                    
+                    // Simulate API call delay
+                    showLoading('Verifying identity...');
+                    setTimeout(() => hideLoading(), 1000);
+                    return true;
+
+                case 2:
+                    const mfaCode = document.getElementById('mfa-code').value;
+                    if (mfaCode !== '123456') {
+                        alert('Invalid verification code. Use demo code: 123456');
+                        return false;
+                    }
+                    return true;
+
+                case 3:
+                    if (Object.keys(ballotSelections).length === 0) {
+                        alert('Please make at least one selection before proceeding.');
+                        return false;
+                    }
+                    return true;
+
+                case 4:
+                    const confirmCheckbox = document.getElementById('confirm-ballot');
+                    if (!confirmCheckbox.checked) {
+                        alert('Please confirm your ballot selections.');
+                        return false;
+                    }
+                    return true;
+
+                default:
+                    return true;
+            }
+        }
+
+        function selectCandidate(race, candidateId) {
+            ballotSelections[race] = candidateId;
+            
+            // Update UI
+            const raceOptions = document.querySelectorAll(`input[name="${race}"]`);
+            raceOptions.forEach(option => {
+                const parentOption = option.closest('.candidate-option');
+                parentOption.classList.remove('selected');
+                option.checked = false;
+            });
+
+            const selectedOption = document.querySelector(`input[value="${candidateId}"]`);
+            selectedOption.checked = true;
+            selectedOption.closest('.candidate-option').classList.add('selected');
+
+            // Enable review button if selections made
+            updateReviewButton();
+        }
+
+        function updateReviewButton() {
+            const reviewBtn = document.getElementById('cast-vote-btn');
+            reviewBtn.disabled = Object.keys(ballotSelections).length === 0;
+        }
+
+        function populateBallotSummary() {
+            const summaryDiv = document.getElementById('ballot-summary');
+            let summaryHTML = '';
+
+            const candidates = {
+                'candidate-1': 'Jane Smith (Democratic Party)',
+                'candidate-2': 'John Doe (Republican Party)', 
+                'candidate-3': 'Alex Johnson (Independent)',
+                'senate-1': 'Maria Rodriguez (Democratic Party)',
+                'senate-2': 'Robert Wilson (Republican Party)'
+            };
+
+            const races = {
+                'president': 'President of the United States',
+                'senate': 'U.S. Senate'
+            };
+
+            for (const [race, candidateId] of Object.entries(ballotSelections)) {
+                summaryHTML += `
+                    <div style="padding: 1rem; background: var(--white); border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--primary-blue);">
+                        <strong>${races[race]}:</strong><br>
+                        ${candidates[candidateId]}
+                    </div>
+                `;
+            }
+
+            summaryDiv.innerHTML = summaryHTML;
+
+            // Enable final submit button when checkbox is checked
+            document.getElementById('confirm-ballot').addEventListener('change', function() {
+                document.getElementById('final-submit-btn').disabled = !this.checked;
+            });
+        }
+
+        function castBallot() {
+            showLoading('Encrypting and submitting ballot...');
+            
+            // Simulate ballot casting process
+            setTimeout(() => {
+                hideLoading();
+                nextStep(5);
+            }, 2000);
+        }
+
+        function generateReceipt() {
+            // Generate timestamp
+            const now = new Date();
+            document.getElementById('vote-timestamp').textContent = now.toLocaleString();
+
+            // Generate mock cryptographic hash
+            const hash = generateMockHash();
+            document.getElementById('vote-hash').textContent = hash;
+        }
+
+        function generateMockHash() {
+            const chars = '0123456789abcdef';
+            let hash = '';
+            for (let i = 0; i < 64; i++) {
+                hash += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return hash;
+        }
+
+        function showLoading(message) {
+            // Could implement loading overlay here
+            console.log('Loading:', message);
+        }
+
+        function hideLoading() {
+            console.log('Loading complete');
+        }
+
+        function restartDemo() {
+            // Reset demo state
+            currentStep = 1;
+            ballotSelections = {};
+            
+            // Reset all steps
+            document.querySelectorAll('.demo-step').forEach(step => step.classList.remove('active'));
+            document.querySelectorAll('.step-dot').forEach(dot => {
+                dot.classList.remove('active', 'completed');
+            });
+            
+            // Reset form fields
+            document.getElementById('voter-id').value = '';
+            document.getElementById('birth-date').value = '';  
+            document.getElementById('zip-code').value = '';
+            document.getElementById('mfa-code').value = '';
+            document.getElementById('confirm-ballot').checked = false;
+            
+            // Clear selections
+            document.querySelectorAll('.candidate-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // Show first step
+            document.getElementById('step-1').classList.add('active');
+            document.getElementById('dot-1').classList.add('active');
+        }
+
+        // Initialize demo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🗳️ Vote-Secured.net Voter Experience Demo');
+            console.log('This is a demonstration of the secure voting process');
+            
+            // Pre-fill demo data for easier testing
+            document.getElementById('voter-id').value = 'VS2024-DEMO1';
+            document.getElementById('birth-date').value = '1990-01-01';
+            document.getElementById('zip-code').value = '12345';
+        });
+
+        // Track demo analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'demo_start', {
+                demo_type: 'voter_experience'
+            });
+        }
+    </script>
+</body>
+</html>

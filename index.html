@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote-Secured.net - Ensuring Democratic Integrity Through Technology</title>
+    <meta name="description" content="Vote-Secured.net provides comprehensive voting security solutions with advanced cryptographic protections and audit capabilities for electoral processes.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #1e40af;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #1e40af;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e40af;
+        }
+
+        .security-highlights {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            padding: 3rem;
+            border-radius: 12px;
+            margin: 3rem 0;
+        }
+
+        .security-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .security-item .icon {
+            font-size: 1.5rem;
+            color: #10b981;
+        }
+
+        .status-banner {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .status-banner .icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .documentation-links {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .doc-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .doc-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1e40af;
+            transition: all 0.3s ease;
+        }
+
+        .doc-link:hover {
+            background: #e0e7ff;
+            transform: translateX(5px);
+        }
+
+        .doc-link .icon {
+            font-size: 1.2rem;
+        }
+
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .security-list {
+                grid-template-columns: 1fr;
+            }
+
+            .doc-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">🗳️</div>
+            <h1>Vote-Secured.net</h1>
+            <p class="tagline">Ensuring Democratic Integrity Through Technology</p>
+            <div class="hero-buttons">
+                <a href="/docs/architecture.md" class="btn btn-primary">📋 View Architecture</a>
+                <a href="/docs/security.md" class="btn btn-secondary">🔒 Security Details</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="status-banner">
+                <span class="icon">🚧</span>
+                <strong>Project Status:</strong> Initial Setup Phase - Starting from scratch. Documentation and architecture planning in progress.
+            </div>
+
+            <section class="section">
+                <h2>Comprehensive Voting Security Platform</h2>
+                <p style="text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto;">
+                    Vote-Secured.net is designed to provide the highest levels of security, privacy, and transparency 
+                    for electoral processes through advanced cryptographic techniques and secure system architecture.
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>End-to-End Encryption</h3>
+                        <p>Advanced cryptographic protocols ensure vote confidentiality while maintaining verifiability and audit capabilities.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>Privacy Protection</h3>
+                        <p>Anonymous vote casting with receipt-free voting and coercion resistance to protect voter privacy.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Transparent Auditing</h3>
+                        <p>Comprehensive audit trails with public verifiability and real-time monitoring capabilities.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Identity Verification</h3>
+                        <p>Multi-factor authentication and biometric verification while preserving voter anonymity.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>High Availability</h3>
+                        <p>Resilient infrastructure designed for 99.99% uptime during critical election periods.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <h3>Standards Compliance</h3>
+                        <p>Adherence to IEEE 1622, EAC VVSG, Common Criteria, and other international voting standards.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="security-highlights">
+                    <h2>Security Framework</h2>
+                    <p style="text-align: center; margin-bottom: 2rem;">
+                        Our comprehensive security approach addresses all aspects of electronic voting security
+                    </p>
+                    
+                    <div class="security-list">
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>AES-256 & RSA-4096 Encryption</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Zero-Knowledge Proofs</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Homomorphic Encryption</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Blockchain Audit Trails</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Multi-Factor Authentication</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Hardware Security Modules</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Post-Quantum Cryptography</span>
+                        </div>
+                        <div class="security-item">
+                            <span class="icon">✅</span>
+                            <span>Continuous Security Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="documentation-links">
+                    <h2>Project Documentation</h2>
+                    <p style="text-align: center; margin-bottom: 1rem;">
+                        Comprehensive documentation covering all aspects of the voting security platform
+                    </p>
+                    
+                    <div class="doc-links">
+                        <a href="/docs/architecture.md" class="doc-link">
+                            <span class="icon">🏗️</span>
+                            <div>
+                                <strong>System Architecture</strong>
+                                <br><small>Technical design and components</small>
+                            </div>
+                        </a>
+                        <a href="/docs/security.md" class="doc-link">
+                            <span class="icon">🔒</span>
+                            <div>
+                                <strong>Security Framework</strong>
+                                <br><small>Comprehensive security requirements</small>
+                            </div>
+                        </a>
+                        <a href="/docs/api.md" class="doc-link">
+                            <span class="icon">🔌</span>
+                            <div>
+                                <strong>API Documentation</strong>
+                                <br><small>RESTful API and WebSocket endpoints</small>
+                            </div>
+                        </a>
+                        <a href="/README.md" class="doc-link">
+                            <span class="icon">📖</span>
+                            <div>
+                                <strong>Project Overview</strong>
+                                <br><small>Getting started and project info</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <a href="/docs/architecture.md">Architecture</a>
+                    <a href="/docs/security.md">Security</a>
+                    <a href="/docs/api.md">API Documentation</a>
+                    <a href="#roadmap">Development Roadmap</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Security</h3>
+                    <a href="/docs/security.md#cryptographic-security">Cryptographic Protocols</a>
+                    <a href="/docs/security.md#audit-and-monitoring">Audit Framework</a>
+                    <a href="/docs/security.md#compliance-requirements">Compliance Standards</a>
+                    <a href="#security-audits">Security Audits</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Development</h3>
+                    <a href="#github">GitHub Repository</a>
+                    <a href="#contributing">Contributing Guidelines</a>
+                    <a href="#issues">Issue Tracking</a>
+                    <a href="#releases">Release Notes</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="mailto:security@vote-secured.net">Security Team</a>
+                    <a href="mailto:info@vote-secured.net">General Inquiries</a>
+                    <a href="#support">Technical Support</a>
+                    <a href="#legal">Legal & Compliance</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Vote-Secured.net - Ensuring Democratic Integrity Through Technology</p>
+                <p>Built with security, privacy, and transparency as core principles</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Basic functionality for smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add animation to feature cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide cards and observe them
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            cardObserver.observe(card);
+        });
+
+        console.log('🗳️ Vote-Secured.net - Ensuring Democratic Integrity Through Technology');
+        console.log('Project Status: Initial Setup Phase');
+        console.log('Documentation: /docs/');
+    </script>
+</body>
+</html>

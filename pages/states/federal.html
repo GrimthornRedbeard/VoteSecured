@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Agencies - Vote-Secured.net</title>
+    <meta name="description" content="Secure voting solutions for federal agencies including DOD, DHS, CISA, and EAC with enhanced security and compliance">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fbbf24, #f59e0b, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .federal-seal {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: radial-gradient(circle, #1e40af, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .federal-seal::before {
+            content: "🇺🇸";
+            font-size: 5rem;
+        }
+
+        .agency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .agency-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .agency-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .agency-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--agency-color);
+        }
+
+        .agency-card.dod::before { background: linear-gradient(90deg, #16a34a, #059669); }
+        .agency-card.dhs::before { background: linear-gradient(90deg, #dc2626, #b91c1c); }
+        .agency-card.cisa::before { background: linear-gradient(90deg, #1e40af, #1d4ed8); }
+        .agency-card.eac::before { background: linear-gradient(90deg, #7c2d12, #a16207); }
+
+        .agency-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .agency-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .agency-logo.dod { background: linear-gradient(135deg, #16a34a, #059669); }
+        .agency-logo.dhs { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+        .agency-logo.cisa { background: linear-gradient(135deg, #1e40af, #1d4ed8); }
+        .agency-logo.eac { background: linear-gradient(135deg, #7c2d12, #a16207); }
+
+        .agency-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .agency-acronym {
+            font-size: 1rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .agency-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #4b5563;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #374151;
+        }
+
+        .feature-check {
+            color: #16a34a;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .agency-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .agency-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #1e40af;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .key-benefits {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #1e40af;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .benefit-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .benefit-description {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .stats-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .contact-section {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .contact-item {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .contact-info {
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e40af;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .agency-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agency-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .agency-actions {
+                justify-content: center;
+            }
+            
+            .benefits-grid,
+            .stats-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Back to Main Site</a>
+    
+    <div class="container">
+        <div class="header">
+            <div class="federal-seal"></div>
+            <h1>Federal Agencies</h1>
+            <p class="subtitle">Secure, Compliant, and Integrated Voting Solutions for Federal Government Agencies</p>
+        </div>
+
+        <!-- Key Benefits Overview -->
+        <div class="key-benefits">
+            <h2 style="text-align: center; font-size: 2.2rem; margin-bottom: 20px; color: #1f2937;">Federal-Grade Security & Compliance</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #6b7280; margin-bottom: 30px;">
+                Purpose-built solutions meeting the highest federal security standards with seamless integration into existing government infrastructure.
+            </p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <span class="benefit-icon">🏛️</span>
+                    <div class="benefit-title">Federal Compliance</div>
+                    <div class="benefit-description">FedRAMP High, FISMA, FIPS 140-2 Level 3/4, and all federal security requirements</div>
+                </div>
+                
+                <div class="benefit-item">
+                    <span class="benefit-icon">🔒</span>
+                    <div class="benefit-title">Enhanced Security</div>
+                    <div class="benefit-description">Zero-trust architecture with quantum-safe cryptography and continuous monitoring</div>
+                </div>
+                
+                <div class="benefit-item">
+                    <span class="benefit-icon">🌐</span>
+                    <div class="benefit-title">Global Operations</div>
+                    <div class="benefit-description">24/7 worldwide support for military deployments and overseas operations</div>
+                </div>
+                
+                <div class="benefit-item">
+                    <span class="benefit-icon">🤝</span>
+                    <div class="benefit-title">Seamless Integration</div>
+                    <div class="benefit-description">Direct integration with existing federal systems and security frameworks</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agency Cards -->
+        <div class="agency-grid">
+            <!-- Department of Defense -->
+            <div class="agency-card dod">
+                <div class="agency-header">
+                    <div class="agency-logo dod">🛡️</div>
+                    <div class="agency-info">
+                        <h2>Department of Defense</h2>
+                        <div class="agency-acronym">DOD • Military Voting Solutions</div>
+                    </div>
+                </div>
+                
+                <p class="agency-description">
+                    Enhanced UOCAVA compliance with global military voting capabilities, security clearance integration, and SCIF-compatible systems for all service branches.
+                </p>
+                
+                <ul class="features-list">
+                    <li><span class="feature-check">✓</span> UOCAVA Enhanced Compliance</li>
+                    <li><span class="feature-check">✓</span> CAC/PIV Authentication</li>
+                    <li><span class="feature-check">✓</span> SCIF Compatibility</li>
+                    <li><span class="feature-check">✓</span> Global Satellite Connectivity</li>
+                    <li><span class="feature-check">✓</span> 24/7 Military Operations Support</li>
+                </ul>
+                
+                <div class="agency-actions">
+                    <a href="/federal/dod" class="agency-btn btn-primary">
+                        📋 DOD Package
+                    </a>
+                    <a href="/demo?agency=dod" class="agency-btn btn-secondary">
+                        🎮 Military Demo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Department of Homeland Security -->
+            <div class="agency-card dhs">
+                <div class="agency-header">
+                    <div class="agency-logo dhs">🚨</div>
+                    <div class="agency-info">
+                        <h2>Homeland Security</h2>
+                        <div class="agency-acronym">DHS • Critical Infrastructure Protection</div>
+                    </div>
+                </div>
+                
+                <p class="agency-description">
+                    Critical infrastructure protection with enhanced emergency response capabilities, disaster resilience, and coordination with state/local emergency management.
+                </p>
+                
+                <ul class="features-list">
+                    <li><span class="feature-check">✓</span> Critical Infrastructure Security</li>
+                    <li><span class="feature-check">✓</span> Emergency Response Integration</li>
+                    <li><span class="feature-check">✓</span> Disaster Recovery Automation</li>
+                    <li><span class="feature-check">✓</span> Multi-Agency Coordination</li>
+                    <li><span class="feature-check">✓</span> FEMA Integration Protocols</li>
+                </ul>
+                
+                <div class="agency-actions">
+                    <a href="/federal/dhs" class="agency-btn btn-primary">
+                        📋 DHS Package
+                    </a>
+                    <a href="/demo?agency=dhs" class="agency-btn btn-secondary">
+                        🎮 Emergency Demo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cybersecurity & Infrastructure Security Agency -->
+            <div class="agency-card cisa">
+                <div class="agency-header">
+                    <div class="agency-logo cisa">🔐</div>
+                    <div class="agency-info">
+                        <h2>CISA</h2>
+                        <div class="agency-acronym">Cybersecurity & Infrastructure Security Agency</div>
+                    </div>
+                </div>
+                
+                <p class="agency-description">
+                    Real-time threat intelligence integration, automated incident response, and comprehensive cybersecurity framework implementation for election infrastructure protection.
+                </p>
+                
+                <ul class="features-list">
+                    <li><span class="feature-check">✓</span> Real-Time Threat Intelligence</li>
+                    <li><span class="feature-check">✓</span> Automated Incident Response</li>
+                    <li><span class="feature-check">✓</span> CISA AIS Integration</li>
+                    <li><span class="feature-check">✓</span> 24/7 SOC Coordination</li>
+                    <li><span class="feature-check">✓</span> Election Security Standards</li>
+                </ul>
+                
+                <div class="agency-actions">
+                    <a href="/federal/cisa" class="agency-btn btn-primary">
+                        📋 CISA Package
+                    </a>
+                    <a href="/demo?agency=cisa" class="agency-btn btn-secondary">
+                        🎮 Security Demo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Election Assistance Commission -->
+            <div class="agency-card eac">
+                <div class="agency-header">
+                    <div class="agency-logo eac">🗳️</div>
+                    <div class="agency-info">
+                        <h2>Election Assistance Commission</h2>
+                        <div class="agency-acronym">EAC • Federal Election Standards</div>
+                    </div>
+                </div>
+                
+                <p class="agency-description">
+                    Complete VVSG 2.0 compliance with comprehensive testing protocols, accessibility standards, and federal election guideline implementation across all jurisdictions.
+                </p>
+                
+                <ul class="features-list">
+                    <li><span class="feature-check">✓</span> VVSG 2.0 Full Compliance</li>
+                    <li><span class="feature-check">✓</span> Comprehensive Testing Protocols</li>
+                    <li><span class="feature-check">✓</span> Accessibility Standards (WCAG 2.1 AA)</li>
+                    <li><span class="feature-check">✓</span> Federal Guideline Implementation</li>
+                    <li><span class="feature-check">✓</span> Multi-State Coordination</li>
+                </ul>
+                
+                <div class="agency-actions">
+                    <a href="/federal/eac" class="agency-btn btn-primary">
+                        📋 EAC Package
+                    </a>
+                    <a href="/demo?agency=eac" class="agency-btn btn-secondary">
+                        🎮 Compliance Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Federal Statistics -->
+        <div class="stats-section">
+            <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Federal Implementation Impact</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px;">
+                Comprehensive metrics demonstrating the effectiveness of federal agency integration
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">2.8M</span>
+                    <span class="stat-label">Military & Federal Voters</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">195</span>
+                    <span class="stat-label">Countries Supported</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">99.99%</span>
+                    <span class="stat-label">Security Uptime</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">$450M+</span>
+                    <span class="stat-label">Annual Federal Savings</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15 min</span>
+                    <span class="stat-label">Threat Response Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Compliance Rate</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-section">
+            <h2 style="text-align: center; font-size: 2.2rem; margin-bottom: 20px; color: #1f2937;">Federal Agency Contacts</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #6b7280; margin-bottom: 30px;">
+                Dedicated support teams for each federal agency with security clearance and specialized expertise
+            </p>
+            
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-title">Department of Defense</div>
+                    <a href="mailto:dod@vote-secured.net" class="contact-info">dod@vote-secured.net</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-title">Department of Homeland Security</div>
+                    <a href="mailto:dhs@vote-secured.net" class="contact-info">dhs@vote-secured.net</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-title">CISA</div>
+                    <a href="mailto:cisa@vote-secured.net" class="contact-info">cisa@vote-secured.net</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-title">Election Assistance Commission</div>
+                    <a href="mailto:eac@vote-secured.net" class="contact-info">eac@vote-secured.net</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-title">Federal Procurement</div>
+                    <a href="mailto:federal@vote-secured.net" class="contact-info">federal@vote-secured.net</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-title">Security Clearance Support</div>
+                    <a href="mailto:security@vote-secured.net" class="contact-info">security@vote-secured.net</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced federal agency tracking
+        console.log('🏛️ Vote-Secured.net Federal Agency Solutions');
+        console.log('Agencies: DOD, DHS, CISA, EAC');
+        console.log('Features: Military voting, cybersecurity, compliance');
+        console.log('Contact: federal@vote-secured.net');
+        
+        // Track federal agency interactions
+        function trackFederalEvent(agency, action) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    event_category: 'federal_agency',
+                    event_label: agency,
+                    custom_map: {
+                        'agency_type': agency,
+                        'interaction_type': action,
+                        'security_level': 'federal'
+                    }
+                });
+            }
+            console.log(`Federal Event: ${agency} - ${action}`);
+        }
+        
+        // Track agency package clicks
+        document.querySelectorAll('a[href^="/federal/"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const agency = e.target.closest('.agency-card').classList[1];
+                trackFederalEvent(agency, 'package_download');
+            });
+        });
+        
+        // Track demo requests
+        document.querySelectorAll('a[href*="demo?agency="]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const agency = new URL(e.target.href).searchParams.get('agency');
+                trackFederalEvent(agency, 'demo_request');
+            });
+        });
+        
+        // Track contact clicks
+        document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const email = e.target.href.split(':')[1];
+                const agency = email.split('@')[0];
+                trackFederalEvent(agency, 'contact_request');
+            });
+        });
+        
+        // Animate agency cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide cards and observe them
+        document.querySelectorAll('.agency-card, .benefit-item, .stat-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            cardObserver.observe(card);
+        });
+        
+        // Track page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Federal Agencies',
+                page_location: window.location.href,
+                custom_map: {
+                    'page_type': 'federal_landing',
+                    'target_audience': 'federal_agencies',
+                    'security_level': 'federal'
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Secured - Florida Election Security Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, 'Segoe UI', Georgia, serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-bottom: 3px solid #e0e0e0;
+            position: relative;
+        }
+        
+        .slide:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #FF6000;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #FF6000;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .florida-seal {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #FF6000, #003366);
+            border-radius: 50%;
+            color: white;
+            font-size: 48px;
+        }
+        
+        .florida-flag {
+            width: 80px;
+            height: 50px;
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            border: 1px solid #333;
+            background-image: url('/images/fl.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .concern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .concern-card {
+            background: #fff;
+            border: 2px solid #FF6000;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .concern-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .concern-icon {
+            font-size: 36px;
+            margin-right: 15px;
+            color: #003366;
+        }
+        
+        .solution-box {
+            background: #e8f4fd;
+            border-left: 4px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .solution-box h4 {
+            color: #0ea5e9;
+            margin-bottom: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table th {
+            background: #FF6000;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .check {
+            color: #0ea5e9;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .cross {
+            color: #dc2626;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .florida-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .stat-box {
+            padding: 30px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            border: 2px solid #FF6000;
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #003366;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .hurricane-resilience {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #FF6000;
+        }
+        
+        .domain-badge {
+            position: absolute;
+            top: 20px;
+            right: 140px;
+            font-size: 14px;
+            color: #666;
+            background: #f0f4f8;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid #d0d0d0;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .slide-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #FF6000;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #003366;
+            transform: scale(1.1);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .multilingual-section {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .accessibility-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .accessibility-card {
+            background: #f0f9ff;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #0ea5e9;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #FF6000 0%, #003366 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #FF6000;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 6px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide">
+        <div class="florida-flag"></div>
+        <div class="container">
+            <div class="florida-seal">🌴</div>
+            <h1>Vote Secured: Florida's Hurricane-Resilient Election Solution</h1>
+            <p class="subtitle">Secure, Accessible, and Disaster-Resistant Voting for the Sunshine State</p>
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 20px; color: #FF6000;">
+                    <strong>Prepared for:</strong> Florida Division of Elections<br>
+                    <strong>Secretary of State:</strong> Cord Byrd<br>
+                    <strong>Supervisors of Elections Association of Florida</strong><br>
+                    <strong>Date:</strong> July 2025
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">1</span>
+    </div>
+
+    <!-- Slide 2: Florida's Unique Election Challenges -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h2>Florida's Unique Election Challenges</h2>
+            <p class="subtitle">Addressing the Sunshine State's Specific Electoral Needs</p>
+            <div class="concern-grid">
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🌊</span>
+                        <h3>Hurricane & Disaster Resilience</h3>
+                    </div>
+                    <p>Elections must continue despite hurricanes, flooding, and power outages affecting traditional polling locations</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Cloud-based infrastructure with mobile voting capability allows elections to continue from any location with internet access</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🌎</span>
+                        <h3>Multilingual Requirements</h3>
+                    </div>
+                    <p>Large Spanish-speaking population requires comprehensive bilingual election support under federal law</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Full Spanish translation with audio support, Creole for Haitian communities, and scalable multilingual interface</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🏖️</span>
+                        <h3>Seasonal Population Variations</h3>
+                    </div>
+                    <p>Dramatic population swings with snowbirds and tourists requiring flexible voter capacity</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Elastic cloud infrastructure automatically scales for peak demand periods without hardware investments</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🎖️</span>
+                        <h3>Military & Overseas Voting</h3>
+                    </div>
+                    <p>Large military presence and overseas population requiring UOCAVA compliance and secure remote voting</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>FVAP-compliant overseas voting with military-grade encryption and time zone accommodation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">2</span>
+    </div>
+
+    <!-- Slide 3: Florida Election Statistics -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h2>Florida Election Security Landscape</h2>
+            <div class="florida-stats">
+                <div class="stat-box">
+                    <div class="stat-number">15.7M</div>
+                    <div class="stat-label">Registered voters</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">67</div>
+                    <div class="stat-label">Counties with varying needs</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">22%</div>
+                    <div class="stat-label">Hispanic/Latino voters</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">3.1M</div>
+                    <div class="stat-label">Senior citizens (65+)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">58%</div>
+                    <div class="stat-label">Vote by mail usage</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">$180M</div>
+                    <div class="stat-label">Annual election costs</div>
+                </div>
+            </div>
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 30px; border-radius: 8px; margin-top: 40px;">
+                <h3 style="color: #856404; text-align: center;">Key Florida Election Priorities</h3>
+                <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                    <li style="padding: 10px 0;">🌀 Hurricane season disruption mitigation</li>
+                    <li style="padding: 10px 0;">🗳️ High vote-by-mail volume management</li>
+                    <li style="padding: 10px 0;">👥 Senior citizen accessibility requirements</li>
+                    <li style="padding: 10px 0;">🌐 Multilingual ballot mandates</li>
+                    <li style="padding: 10px 0;">🏝️ Remote/island community access</li>
+                    <li style="padding: 10px 0;">⚡ Power grid vulnerability concerns</li>
+                </ul>
+            </div>
+        </div>
+        <span class="slide-number">3</span>
+    </div>
+
+    <!-- Slide 4: Hurricane Resilience Focus -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h2>Hurricane-Resilient Election Infrastructure</h2>
+            <p class="subtitle">Ensuring Democracy Continues Through Natural Disasters</p>
+            
+            <div class="hurricane-resilience">
+                <h3 style="color: #0ea5e9; text-align: center; margin-bottom: 30px;">Disaster Response Capabilities</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #0ea5e9;">Pre-Hurricane Preparation</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Cloud data backup and replication</li>
+                            <li style="padding: 5px 0;">✓ Mobile voting unit deployment</li>
+                            <li style="padding: 5px 0;">✓ Satellite internet connectivity</li>
+                            <li style="padding: 5px 0;">✓ Emergency power integration</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #0ea5e9;">During Hurricane Response</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Automated polling site relocation</li>
+                            <li style="padding: 5px 0;">✓ Emergency mobile voting deployment</li>
+                            <li style="padding: 5px 0;">✓ Extended voting period management</li>
+                            <li style="padding: 5px 0;">✓ Real-time voter notification system</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #0ea5e9;">Post-Hurricane Recovery</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Rapid polling site restoration</li>
+                            <li style="padding: 5px 0;">✓ Data integrity verification</li>
+                            <li style="padding: 5px 0;">✓ Makeup voting coordination</li>
+                            <li style="padding: 5px 0;">✓ Emergency audit capabilities</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #0ea5e9;">Technology Resilience</h4>
+                        <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                            <li style="padding: 5px 0;">✓ Multi-region cloud deployment</li>
+                            <li style="padding: 5px 0;">✓ Offline voting capability</li>
+                            <li style="padding: 5px 0;">✓ Automatic failover systems</li>
+                            <li style="padding: 5px 0;">✓ Solar-powered mobile units</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">4</span>
+    </div>
+
+    <!-- Slide 5: Multilingual Accessibility -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h2>Comprehensive Multilingual & Accessibility Support</h2>
+            <p class="subtitle">Serving Florida's Diverse Population</p>
+            
+            <div class="multilingual-section">
+                <h3 style="color: #ea580c; text-align: center; margin-bottom: 20px;">Federally Required Languages</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                    <div>
+                        <div style="width: 40px; height: 25px; margin: 0 auto 10px; background-image: url('/images/countries/us.svg'); background-size: cover; background-position: center; background-repeat: no-repeat; border: 1px solid #ccc;"></div>
+                        <h4>English</h4>
+                        <p>Full interface with accessibility features</p>
+                    </div>
+                    <div>
+                        <div style="width: 40px; height: 25px; margin: 0 auto 10px; background-image: url('/images/countries/es.svg'); background-size: cover; background-position: center; background-repeat: no-repeat; border: 1px solid #ccc;"></div>
+                        <h4>Español</h4>
+                        <p>Complete Spanish translation mandated by VRA</p>
+                    </div>
+                    <div>
+                        <div style="width: 40px; height: 25px; margin: 0 auto 10px; background-image: url('/images/countries/ht.svg'); background-size: cover; background-position: center; background-repeat: no-repeat; border: 1px solid #ccc;"></div>
+                        <h4>Kreyòl Ayisyen</h4>
+                        <p>Haitian Creole for Miami-Dade County</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accessibility-grid">
+                <div class="accessibility-card">
+                    <h4 style="color: #0ea5e9;">Senior Citizen Support</h4>
+                    <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                        <li style="padding: 5px 0;">✓ Large font options and high contrast</li>
+                        <li style="padding: 5px 0;">✓ Audio ballot reading capability</li>
+                        <li style="padding: 5px 0;">✓ Simple, intuitive interface design</li>
+                        <li style="padding: 5px 0;">✓ Phone support hotline</li>
+                        <li style="padding: 5px 0;">✓ Print-friendly receipt options</li>
+                    </ul>
+                </div>
+                <div class="accessibility-card">
+                    <h4 style="color: #0ea5e9;">Disability Accommodations</h4>
+                    <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                        <li style="padding: 5px 0;">✓ Screen reader compatibility</li>
+                        <li style="padding: 5px 0;">✓ Voice recognition voting</li>
+                        <li style="padding: 5px 0;">✓ Switch-accessible interfaces</li>
+                        <li style="padding: 5px 0;">✓ Motor impairment adaptations</li>
+                        <li style="padding: 5px 0;">✓ WCAG 2.1 AA compliance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 30px; border-radius: 12px; margin-top: 30px; text-align: center;">
+                <h3 style="color: #0ea5e9;">Unique Florida Features</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 20px;">
+                    <div>
+                        <h4>Hurricane Evacuation Voting</h4>
+                        <p>Mobile voting units for evacuation centers and shelters</p>
+                    </div>
+                    <div>
+                        <h4>Snowbird Season Adaptation</h4>
+                        <p>Flexible registration and voting for seasonal residents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">5</span>
+    </div>
+
+    <!-- Slide 6: Florida vs Current System Comparison -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h2>Vote Secured vs. Florida's Current System</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Current Florida System</th>
+                        <th>Vote Secured Solution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hurricane Resilience</strong></td>
+                        <td>Polling sites often close during storms</td>
+                        <td>Cloud-based system continues operating</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multilingual Support</strong></td>
+                        <td>Paper translations, limited audio</td>
+                        <td>Full digital translation with audio support</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vote by Mail Processing</strong></td>
+                        <td>Manual signature verification</td>
+                        <td>Automated verification with human oversight</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overseas Military Voting</strong></td>
+                        <td>Email/fax return (security concerns)</td>
+                        <td>Secure encrypted digital return</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Senior Accessibility</strong></td>
+                        <td>Physical polling booth limitations</td>
+                        <td>Customizable interface from any device</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Result Processing</strong></td>
+                        <td>Hours to days for final counts</td>
+                        <td>Real-time results with audit trail</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost per Voter</strong></td>
+                        <td>$11.46 (2022 actual)</td>
+                        <td>$2.50 with full features</td>
+                    </tr>
+                    <tr style="background: #f0f9ff; font-weight: bold;">
+                        <td>Annual State Savings</td>
+                        <td>-</td>
+                        <td class="check">$140M+ annually</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span class="slide-number">6</span>
+    </div>
+
+    <!-- Slide 7: Implementation Roadmap -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h2>Florida Implementation Strategy</h2>
+            <p class="subtitle">Phased Deployment Aligned with Florida Election Calendar</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px;">
+                <div style="background: #fff7ed; padding: 30px; border-radius: 12px; border-left: 5px solid #ea580c;">
+                    <h3 style="color: #ea580c; text-align: center;">Phase 1: Pilot</h3>
+                    <h4 style="text-align: center; margin: 20px 0;">Fall 2025</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ 3-5 small counties</li>
+                        <li style="padding: 8px 0;">✓ Municipal elections</li>
+                        <li style="padding: 8px 0;">✓ Hurricane season testing</li>
+                        <li style="padding: 8px 0;">✓ Multilingual validation</li>
+                        <li style="padding: 8px 0;">✓ Senior citizen feedback</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #f0f9ff; padding: 30px; border-radius: 12px; border-left: 5px solid #0ea5e9;">
+                    <h3 style="color: #0ea5e9; text-align: center;">Phase 2: Expansion</h3>
+                    <h4 style="text-align: center; margin: 20px 0;">2026 Primaries</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ 15-20 counties</li>
+                        <li style="padding: 8px 0;">✓ Full primary elections</li>
+                        <li style="padding: 8px 0;">✓ Hurricane Ian anniversary testing</li>
+                        <li style="padding: 8px 0;">✓ UOCAVA compliance</li>
+                        <li style="padding: 8px 0;">✓ Legislative approval</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #f0fdf4; padding: 30px; border-radius: 12px; border-left: 5px solid #22c55e;">
+                    <h3 style="color: #22c55e; text-align: center;">Phase 3: Statewide</h3>
+                    <h4 style="text-align: center; margin: 20px 0;">2026 General</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ All 67 counties</li>
+                        <li style="padding: 8px 0;">✓ Presidential election</li>
+                        <li style="padding: 8px 0;">✓ Full hurricane readiness</li>
+                        <li style="padding: 8px 0;">✓ Complete accessibility</li>
+                        <li style="padding: 8px 0;">✓ Cost savings realized</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 30px; border-radius: 12px; margin-top: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="text-align: center; color: #FF6000; margin-bottom: 20px;">Florida-Specific Preparation</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div>
+                        <h4 style="color: #003366;">Hurricane Season Testing</h4>
+                        <p>Comprehensive disaster simulation testing during 2025 hurricane season to validate system resilience</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #003366;">Spanish Language Certification</h4>
+                        <p>Full compliance testing with federal VRA requirements and community validation</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #003366;">Senior Focus Groups</h4>
+                        <p>Extensive usability testing with Florida's large senior citizen population</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #003366;">SOEA Partnership</h4>
+                        <p>Close collaboration with Supervisors of Elections Association of Florida</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">7</span>
+    </div>
+
+    <!-- Slide 8: Call to Action -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="florida-flag"></div>
+        <div class="container">
+            <h1>Secure Florida's Electoral Future</h1>
+            <div class="cta-section">
+                <h2>Ready for Hurricane Season 2026?</h2>
+                <p style="font-size: 22px; margin-bottom: 30px;">Don't let the next hurricane disrupt Florida's elections. Implement Vote Secured's resilient, accessible, and cost-effective solution.</p>
+                <a href="mailto:florida@vote-secured.net?subject=Florida Demo Request&body=I would like to schedule a demo of Vote Secured for Florida election officials. Please contact me to arrange a presentation." class="cta-button">Request Florida Demo</a>
+                <a href="mailto:florida@vote-secured.net?subject=SOEA Presentation Request&body=I would like to schedule a Vote Secured presentation for the Supervisors of Elections Association meeting. Please provide available dates." class="cta-button">Schedule SOEA Presentation</a>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 40px;">
+                <div style="text-align: center;">
+                    <h3 style="color: #FF6000;">Contact</h3>
+                    <p>florida@vote-secured.net</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: #FF6000;">Hurricane Resilience</h3>
+                    <p>Disaster-Proof Voting</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: #FF6000;">Accessibility</h3>
+                    <p>Multilingual & Senior-Friendly</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: #FF6000;">Savings</h3>
+                    <p>$140M+ Annual Reduction</p>
+                </div>
+            </div>
+            <div style="margin-top: 40px; padding: 30px; background: #FF6000; color: white; border-radius: 12px;">
+                <p style="text-align: center; font-size: 20px; margin: 0;">
+                    "Florida deserves election technology as resilient as its people. <br>
+                    Vote Secured delivers hurricane-proof democracy for the Sunshine State."
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">8</span>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="slide-nav">
+        <button class="nav-btn" id="firstBtn" onclick="goToSlide(1)" title="First Slide">⏮</button>
+        <button class="nav-btn" id="prevBtn" onclick="previousSlide()" title="Previous Slide">⏪</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next Slide">⏩</button>
+        <button class="nav-btn" id="lastBtn" onclick="goToSlide(8)" title="Last Slide">⏭</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 8;
+
+        function updateNavigation() {
+            document.getElementById('firstBtn').disabled = currentSlide === 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            document.getElementById('lastBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 1 && slideNumber <= totalSlides) {
+                currentSlide = slideNumber;
+                const slides = document.querySelectorAll('.slide');
+                slides[slideNumber - 1].scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start' 
+                });
+                updateNavigation();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        // Initialize navigation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case 'PageDown':
+                    case ' ':
+                        e.preventDefault();
+                        nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        e.preventDefault();
+                        previousSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToSlide(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        goToSlide(totalSlides);
+                        break;
+                }
+            });
+
+            // Track current slide position on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const slides = Array.from(document.querySelectorAll('.slide'));
+                        const slideIndex = slides.indexOf(entry.target);
+                        if (slideIndex !== -1) {
+                            currentSlide = slideIndex + 1;
+                            updateNavigation();
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            document.querySelectorAll('.slide').forEach(slide => {
+                observer.observe(slide);
+            });
+        });
+
+        console.log('🌴 Vote-Secured.net - Florida Election Security Solution');
+        console.log('Addressing: Hurricane resilience, multilingual support, senior accessibility');
+        console.log('Potential savings: $140M+ annually for Florida taxpayers');
+    </script>
+</body>
+</html>

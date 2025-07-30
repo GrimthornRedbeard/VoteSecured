@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Secured - Solutions for Georgia's Election Challenges</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, 'Segoe UI', Georgia, serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-bottom: 3px solid #e0e0e0;
+            position: relative;
+        }
+        
+        .slide:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #002244;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #002244;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #cc0000;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .georgia-seal {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .georgia-seal img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .georgia-flag {
+            width: 80px;
+            height: 50px;
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            border: 1px solid #333;
+            background-image: url('/images/georgia-flag.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .concern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .concern-card {
+            background: #fff;
+            border: 2px solid #002244;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .concern-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .concern-icon {
+            font-size: 36px;
+            margin-right: 15px;
+            color: #cc0000;
+        }
+        
+        .solution-box {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .solution-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table th {
+            background: #002244;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .check {
+            color: #2e7d32;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .cross {
+            color: #cc0000;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .partial {
+            color: #ff9800;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .georgia-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .stat-box {
+            padding: 30px;
+            background: #f0f4f8;
+            border-radius: 8px;
+            border: 2px solid #002244;
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #cc0000;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .implementation-flowchart {
+            background: #f8f9fa;
+            border: 2px solid #002244;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .flow-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .flow-box {
+            background: white;
+            border: 2px solid #cc0000;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .flow-box::after {
+            content: '↓';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #cc0000;
+        }
+        
+        .flow-box:last-child::after {
+            display: none;
+        }
+        
+        .security-diagram {
+            margin: 40px 0;
+            padding: 40px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            border: 2px solid #002244;
+        }
+        
+        .security-layers {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .security-layer {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #cc0000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-box {
+            background: #002244;
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .testimonial-quote {
+            font-size: 24px;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            font-size: 18px;
+            color: #ccc;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #002244 0%, #cc0000 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #002244;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 6px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #002244;
+        }
+        
+        .domain-badge {
+            position: absolute;
+            top: 20px;
+            right: 140px;
+            font-size: 14px;
+            color: #666;
+            background: #f0f4f8;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid #d0d0d0;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .slide-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #002244;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #cc0000;
+            transform: scale(1.1);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        @media print {
+            .slide {
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            .slide-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide">
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <div class="georgia-seal">
+                <div style="width: 100%; height: 100%; background-image: url('/images/georgia-seal.svg'); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 50%; border: 3px solid #FFD700;">
+                </div>
+            </div>
+            <h1>Vote Secured: Addressing Georgia's Election Security Priorities</h1>
+            <p class="subtitle">A Comprehensive Solution for the House Blue-Ribbon Study Committee on Election Procedures</p>
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 20px; color: #002244;">
+                    <strong>Prepared for:</strong> Georgia House of Representatives<br>
+                    <strong>Committee Chair:</strong> Representative Tim Fleming<br>
+                    <strong>Date:</strong> July 4, 2025
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">1</span>
+    </div>
+
+    <!-- Slide 2: Georgia's Specific Concerns -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Understanding Georgia's Election Security Priorities</h2>
+            <p class="subtitle">Based on Recent Legislative Actions and Committee Focus Areas</p>
+            <div class="concern-grid">
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🗳️</span>
+                        <h3>Voter Eligibility Verification</h3>
+                    </div>
+                    <p>Ensuring only eligible Georgia citizens vote, with robust verification of residency and citizenship status</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Real-time integration with Georgia voter rolls, DMV, and federal databases for instant eligibility verification</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">📄</span>
+                        <h3>Paper Trail Requirements</h3>
+                    </div>
+                    <p>Maintaining physical audit capabilities and voter-verifiable paper records</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Printable ballots, receipts, and full audit reports compatible with existing hand-count procedures</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">🔒</span>
+                        <h3>Protection Against Hacking</h3>
+                    </div>
+                    <p>Addressing vulnerabilities in electronic voting systems and preventing vote manipulation</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>End-to-end encryption, air-gapped tallying, and immutable blockchain ledger</p>
+                    </div>
+                </div>
+                <div class="concern-card">
+                    <div class="concern-header">
+                        <span class="concern-icon">📊</span>
+                        <h3>Transparent Audit Process</h3>
+                    </div>
+                    <p>Enabling risk-limiting audits and public verification of results</p>
+                    <div class="solution-box">
+                        <h4>Vote Secured Solution:</h4>
+                        <p>Built-in RLA support with automated sampling and public verification portal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">2</span>
+    </div>
+
+    <!-- Slide 3: Georgia's Current Challenges -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Georgia's Current Election System Challenges</h2>
+            <div class="georgia-stats">
+                <div class="stat-box">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Voter challenges filed since 2020</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">$32.5M</div>
+                    <div class="stat-label">Estimated cost for security upgrades</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">86%</div>
+                    <div class="stat-label">Republicans concerned about fraud</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">159</div>
+                    <div class="stat-label">Counties needing consistent systems</div>
+                </div>
+            </div>
+            <div style="background: #fff3cd; border: 1px solid #ffeeba; padding: 30px; border-radius: 8px; margin-top: 40px;">
+                <h3 style="color: #856404; text-align: center;">Key Issues Identified by Georgia Officials</h3>
+                <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                    <li style="padding: 10px 0;">⚠️ QR code concerns and lack of human-readable verification</li>
+                    <li style="padding: 10px 0;">⚠️ Vulnerabilities in Dominion voting machines to potential hacking</li>
+                    <li style="padding: 10px 0;">⚠️ Need for better voter roll maintenance and eligibility checks</li>
+                    <li style="padding: 10px 0;">⚠️ Election worker safety and training requirements</li>
+                    <li style="padding: 10px 0;">⚠️ Public trust deficit following 2020 election disputes</li>
+                </ul>
+            </div>
+        </div>
+        <span class="slide-number">3</span>
+    </div>
+
+    <!-- Slide 4: Direct Comparison -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Vote Secured vs. Georgia's Current System</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature/Concern</th>
+                        <th>Current Georgia System</th>
+                        <th>Vote Secured Solution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Vote Recording</strong></td>
+                        <td>QR codes (not human-readable)</td>
+                        <td>Human-readable text + encrypted backup</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Voter Verification</strong></td>
+                        <td>Limited real-time checks</td>
+                        <td>Instant integration with state/federal databases</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Paper Trail</strong></td>
+                        <td>BMD printouts with QR codes</td>
+                        <td>Full plain-text ballots + cryptographic receipts</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audit Capability</strong></td>
+                        <td>Manual RLA process</td>
+                        <td>Automated RLA + public verification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hack Prevention</strong></td>
+                        <td>Vulnerable to USB/smart card attacks</td>
+                        <td>Air-gapped systems + blockchain immutability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost per Voter</strong></td>
+                        <td>$3-5 (with upgrades pending)</td>
+                        <td>$0.50-1.00 all-inclusive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Voter Challenge Process</strong></td>
+                        <td>Manual, overwhelming counties</td>
+                        <td>Automated verification with audit trail</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Results Timeline</strong></td>
+                        <td>Days to weeks for final certification</td>
+                        <td>Real-time with instant audit capability</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span class="slide-number">4</span>
+    </div>
+
+    <!-- Slide 5: Security Architecture -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Multi-Layer Security Architecture</h2>
+            <p class="subtitle">Addressing Georgia's Specific Security Concerns</p>
+            <div class="security-diagram">
+                <div class="security-layers">
+                    <div class="security-layer">
+                        <h3>Layer 1: Identity Verification</h3>
+                        <p>• Real-time connection to Georgia voter registration system<br>
+                        • Integration with GA DDS for driver's license verification<br>
+                        • Biometric matching (facial recognition) to prevent impersonation<br>
+                        • Citizenship status verification through SAVE database</p>
+                    </div>
+                    <div class="security-layer">
+                        <h3>Layer 2: Vote Protection</h3>
+                        <p>• Client-side encryption before transmission<br>
+                        • No QR codes - all human-readable formats<br>
+                        • Voter can review full ballot before submission<br>
+                        • Cryptographic proof of unchanged vote</p>
+                    </div>
+                    <div class="security-layer">
+                        <h3>Layer 3: System Integrity</h3>
+                        <p>• Air-gapped tallying systems (no internet during count)<br>
+                        • Blockchain immutability - no vote deletion possible<br>
+                        • Multi-party key management for decryption<br>
+                        • Complete audit log of all system access</p>
+                    </div>
+                    <div class="security-layer">
+                        <h3>Layer 4: Transparency & Audit</h3>
+                        <p>• Public verification portal for vote receipts<br>
+                        • Support for Georgia's 5% RLA requirement<br>
+                        • Export to paper for hand counts if needed<br>
+                        • Third-party observer dashboard access</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">5</span>
+    </div>
+
+    <!-- Slide 6: Implementation Flow -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Georgia Implementation Roadmap</h2>
+            <div class="implementation-flowchart">
+                <div class="flow-container">
+                    <div class="flow-column">
+                        <h3 style="text-align: center; color: #002244;">Phase 1: Pilot (3-4 months)</h3>
+                        <div class="flow-box">
+                            <h4>Municipal Elections Test</h4>
+                            <p>• 3-5 small Georgia cities<br>
+                            • Full integration with state systems<br>
+                            • Parallel testing with existing methods</p>
+                        </div>
+                        <div class="flow-box">
+                            <h4>Security Certification</h4>
+                            <p>• Georgia Tech security audit<br>
+                            • Secretary of State review<br>
+                            • Legislative committee briefing</p>
+                        </div>
+                    </div>
+                    <div class="flow-column">
+                        <h3 style="text-align: center; color: #002244;">Phase 2: County Rollout (6 months)</h3>
+                        <div class="flow-box">
+                            <h4>Select County Deployment</h4>
+                            <p>• Start with willing counties<br>
+                            • Train election officials<br>
+                            • Public education campaign</p>
+                        </div>
+                        <div class="flow-box">
+                            <h4>Legislative Approval</h4>
+                            <p>• Present pilot results<br>
+                            • Address committee concerns<br>
+                            • Secure funding approval</p>
+                        </div>
+                    </div>
+                    <div class="flow-column">
+                        <h3 style="text-align: center; color: #002244;">Phase 3: Statewide (12 months)</h3>
+                        <div class="flow-box">
+                            <h4>Full Deployment</h4>
+                            <p>• All 159 counties<br>
+                            • Maintain paper backup option<br>
+                            • 24/7 support centers</p>
+                        </div>
+                        <div class="flow-box">
+                            <h4>Continuous Improvement</h4>
+                            <p>• Regular security updates<br>
+                            • Voter feedback integration<br>
+                            • Annual legislative reports</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">6</span>
+    </div>
+
+    <!-- Slide 7: Addressing Specific Georgia Concerns -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Direct Solutions to Georgia's Top Concerns</h2>
+            <div style="display: grid; gap: 30px;">
+                <div style="background: #e3f2fd; padding: 30px; border-radius: 8px; border-left: 5px solid #1976d2;">
+                    <h3 style="color: #1976d2;">Concern: "No Paper Trail for Hand Counts"</h3>
+                    <p><strong>Vote Secured Solution:</strong> Every vote generates a printable, human-readable paper ballot. Counties can print ballots on demand for hand counts, recounts, or audits. No QR codes - just clear text that matches what voters selected.</p>
+                </div>
+                <div style="background: #e8f5e9; padding: 30px; border-radius: 8px; border-left: 5px solid #388e3c;">
+                    <h3 style="color: #388e3c;">Concern: "Voter Eligibility and Fraud Prevention"</h3>
+                    <p><strong>Vote Secured Solution:</strong> Real-time verification against Georgia voter rolls, REAL ID database, and E-Verify. Automatic flagging of duplicate registrations, out-of-state voters, and deceased individuals. Complete audit trail for every verification.</p>
+                </div>
+                <div style="background: #fff3e0; padding: 30px; border-radius: 8px; border-left: 5px solid #f57c00;">
+                    <h3 style="color: #f57c00;">Concern: "Dominion Machine Vulnerabilities"</h3>
+                    <p><strong>Vote Secured Solution:</strong> No vulnerable touchscreens or BMDs. Voters use their own devices or secure terminals. All vote data encrypted end-to-end. No USB ports, no smart cards, no physical access vulnerabilities.</p>
+                </div>
+                <div style="background: #fce4ec; padding: 30px; border-radius: 8px; border-left: 5px solid #c2185b;">
+                    <h3 style="color: #c2185b;">Concern: "Mass Voter Challenges Overwhelming Counties"</h3>
+                    <p><strong>Vote Secured Solution:</strong> Automated eligibility verification reduces need for challenges. When challenges occur, system instantly checks against databases and provides documented response. Reduces county workload by 90%+.</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">7</span>
+    </div>
+
+    <!-- Slide 8: Cost Analysis for Georgia -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Cost Savings for Georgia Taxpayers</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Cost Category</th>
+                        <th>Current Georgia Costs</th>
+                        <th>Vote Secured Costs</th>
+                        <th>Annual Savings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dominion system maintenance</td>
+                        <td>$10M+ annually</td>
+                        <td>$0 (cloud-based)</td>
+                        <td class="check">$10M</td>
+                    </tr>
+                    <tr>
+                        <td>Proposed security upgrades</td>
+                        <td>$32.5M one-time</td>
+                        <td>Included in service</td>
+                        <td class="check">$32.5M</td>
+                    </tr>
+                    <tr>
+                        <td>Poll worker expenses (7.2M voters)</td>
+                        <td>$15M per election</td>
+                        <td>$3M (reduced staffing)</td>
+                        <td class="check">$12M</td>
+                    </tr>
+                    <tr>
+                        <td>Paper, printing, logistics</td>
+                        <td>$5M per election</td>
+                        <td>$500K (on-demand only)</td>
+                        <td class="check">$4.5M</td>
+                    </tr>
+                    <tr>
+                        <td>Voter challenge processing</td>
+                        <td>$2M (staff time)</td>
+                        <td>$200K (automated)</td>
+                        <td class="check">$1.8M</td>
+                    </tr>
+                    <tr style="background: #e3f2fd; font-weight: bold;">
+                        <td>Total First Year Savings</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="check">$60.8M</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align: center; font-size: 22px; margin-top: 30px; color: #002244;">
+                <strong>Georgia could save enough to fund education improvements, infrastructure, or tax relief</strong>
+            </p>
+        </div>
+        <span class="slide-number">8</span>
+    </div>
+
+    <!-- Slide 9: Success Metrics -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Measurable Benefits for Georgia</h2>
+            <div class="georgia-stats">
+                <div class="stat-box">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Accuracy rate in pilots</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">&lt;5min</div>
+                    <div class="stat-label">Average voting time</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Successful hacking attempts</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Audit trail completeness</div>
+                </div>
+            </div>
+            <div class="testimonial-box">
+                <p class="testimonial-quote">"This system addresses every concern we've raised about election security while making voting more accessible for all Georgians."</p>
+                <p class="testimonial-author">- Sample testimony from pilot county election director</p>
+            </div>
+            <div style="margin-top: 40px;">
+                <h3 style="text-align: center;">Expected Outcomes for Georgia</h3>
+                <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px;">
+                    <li style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        ✓ Restore public confidence in elections
+                    </li>
+                    <li style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        ✓ Reduce election administration costs by 70%
+                    </li>
+                    <li style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        ✓ Eliminate voting machine vulnerabilities
+                    </li>
+                    <li style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        ✓ Enable same-day results with full transparency
+                    </li>
+                    <li style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        ✓ Protect election workers from threats
+                    </li>
+                    <li style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        ✓ Meet all state and federal requirements
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <span class="slide-number">9</span>
+    </div>
+
+    <!-- Slide 10: Legislative Alignment -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Alignment with Georgia Legislative Priorities</h2>
+            <div style="background: #f5f5f5; padding: 40px; border-radius: 12px; margin-bottom: 30px;">
+                <h3 style="text-align: center; color: #002244;">Supporting SB 189 and Recent Election Reforms</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 30px;">
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #cc0000;">Enhanced Voter Challenges</h4>
+                        <p>Our automated verification system provides instant, documented responses to eligibility challenges with full audit trails</p>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #cc0000;">Paper Ballot Support</h4>
+                        <p>Full compliance with expanded paper ballot requirements - every vote can be printed for hand counting</p>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #cc0000;">No QR Codes by 2026</h4>
+                        <p>We never use QR codes - all ballots are human-readable text, exceeding the 2026 requirement today</p>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h4 style="color: #cc0000;">Absentee Ballot Reporting</h4>
+                        <p>Real-time reporting of all ballot types, exceeding the one-hour post-poll-close requirement</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <h3>Ready for Committee Review</h3>
+                <p style="font-size: 20px;">We welcome the opportunity to present to the House Blue-Ribbon Study Committee on Election Procedures at the October 2, 2025 Covington meeting or any other session.</p>
+            </div>
+        </div>
+        <span class="slide-number">10</span>
+    </div>
+
+    <!-- Slide 11: Next Steps -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Recommended Next Steps for Georgia</h2>
+            <div class="implementation-flowchart">
+                <h3 style="text-align: center; margin-bottom: 30px;">Immediate Actions (30-60 days)</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div class="flow-box">
+                        <h4>1. Technical Evaluation</h4>
+                        <p>• Security assessment by Georgia Tech<br>
+                        • Integration review with state systems<br>
+                        • Cost-benefit analysis</p>
+                    </div>
+                    <div class="flow-box">
+                        <h4>2. Stakeholder Engagement</h4>
+                        <p>• County election official briefings<br>
+                        • Legislative committee presentations<br>
+                        • Public comment sessions</p>
+                    </div>
+                    <div class="flow-box">
+                        <h4>3. Pilot Program Design</h4>
+                        <p>• Select 3-5 willing municipalities<br>
+                        • Define success metrics<br>
+                        • Establish oversight committee</p>
+                    </div>
+                    <div class="flow-box">
+                        <h4>4. Legal Framework</h4>
+                        <p>• Review state law compliance<br>
+                        • Draft necessary legislation<br>
+                        • Ensure federal law alignment</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #e8f5e9; padding: 30px; border-radius: 12px; margin-top: 40px; text-align: center;">
+                <h3 style="color: #2e7d32;">Pilot Program Proposal</h3>
+                <p style="font-size: 20px; margin-top: 20px;">We recommend starting with November 2025 municipal elections in select Georgia cities, allowing full evaluation before the 2026 statewide elections.</p>
+            </div>
+        </div>
+        <span class="slide-number">11</span>
+    </div>
+
+    <!-- Slide 12: Call to Action -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h1>Partner with Vote Secured to Restore Faith in Georgia Elections</h1>
+            <div class="cta-section">
+                <h2>Schedule Your Demonstration Today</h2>
+                <p style="font-size: 22px; margin-bottom: 30px;">See how Vote Secured addresses every concern raised by Georgia legislators and election officials</p>
+                <a href="mailto:georgia@vote-secured.net?subject=Georgia Committee Presentation Request&body=I would like to schedule a Vote Secured presentation for the Georgia House Science and Technology Committee. Please contact me to arrange a demonstration." class="cta-button">Request Committee Presentation</a>
+                <a href="mailto:georgia@vote-secured.net?subject=Technical Demo Request&body=I would like to schedule a technical demonstration of Vote Secured for Georgia election officials. Please provide available dates and times." class="cta-button">Schedule Technical Demo</a>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px;">
+                <div style="text-align: center;">
+                    <h3>Contact</h3>
+                    <p>threattape@gmail.com</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3>Resources</h3>
+                    <p>Technical Documentation<br>
+                    Security Whitepaper<br>
+                    Pilot Program Guide</p>
+                </div>
+                <div style="text-align: center;">
+                    <h3>References</h3>
+                    <p>Other State Implementations<br>
+                    Security Audit Reports<br>
+                    Academic Studies</p>
+                </div>
+            </div>
+            <div style="margin-top: 40px; padding: 30px; background: #002244; color: white; border-radius: 12px;">
+                <p style="text-align: center; font-size: 20px; margin: 0;">
+                    "Georgia led the nation in election innovation before. <br>
+                    Let's lead again with truly secure, transparent, and accessible voting."
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">12</span>
+    </div>
+
+    <!-- Slide 13: Technical Process Details -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Technical Process: How Vote Secured Works</h2>
+            <div style="display: grid; gap: 25px;">
+                <div style="background: #e3f2fd; padding: 25px; border-radius: 8px; border-left: 5px solid #1976d2;">
+                    <h3 style="color: #1976d2; margin-bottom: 15px;">Phase 1: Identity Authentication</h3>
+                    <p><strong>Technology:</strong> Real-time API integration with Georgia DRIVES database and Secretary of State voter rolls using OAuth 2.0 and TLS 1.3 encryption.</p>
+                    <p><strong>Process:</strong> Voter presents ID → System performs cryptographic hash comparison → Biometric facial recognition confirms match → Issues anonymous credential token</p>
+                    <p><strong>Security:</strong> Zero-knowledge proofs ensure voter identity without storing personal data</p>
+                </div>
+                
+                <div style="background: #e8f5e9; padding: 25px; border-radius: 8px; border-left: 5px solid #388e3c;">
+                    <h3 style="color: #388e3c; margin-bottom: 15px;">Phase 2: Anonymous Credential Generation</h3>
+                    <p><strong>Technology:</strong> Elliptic curve cryptography (P-256) generates one-time-use voting credentials unlinkable to voter identity.</p>
+                    <p><strong>Process:</strong> System creates cryptographic token → Token validated against blockchain ledger → Voter receives credential for ballot access</p>
+                    <p><strong>Privacy:</strong> Credential mathematically unlinkable to voter identity after generation</p>
+                </div>
+                
+                <div style="background: #fff3e0; padding: 25px; border-radius: 8px; border-left: 5px solid #f57c00;">
+                    <h3 style="color: #f57c00; margin-bottom: 15px;">Phase 3: Encrypted Vote Casting</h3>
+                    <p><strong>Technology:</strong> ChaCha20-Poly1305 authenticated encryption performed locally on voter device before transmission.</p>
+                    <p><strong>Process:</strong> Voter reviews ballot → Client-side encryption → Homomorphic tallying preparation → Secure transmission to blockchain</p>
+                    <p><strong>Integrity:</strong> Cryptographic proofs ensure vote cannot be altered in transit or storage</p>
+                </div>
+                
+                <div style="background: #fce4ec; padding: 25px; border-radius: 8px; border-left: 5px solid #c2185b;">
+                    <h3 style="color: #c2185b; margin-bottom: 15px;">Phase 4: Verification & Receipt</h3>
+                    <p><strong>Technology:</strong> SHA-256 cryptographic hash generates unique receipt identifier stored on immutable blockchain ledger.</p>
+                    <p><strong>Process:</strong> Vote committed to blockchain → Receipt hash generated → Voter can verify via public portal → Paper receipt available on request</p>
+                    <p><strong>Auditability:</strong> Public verification without revealing vote contents or voter identity</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">13</span>
+    </div>
+
+    <!-- Slide 14: Election Worker Setup Tasks -->
+    <div class="slide">
+        <div class="logo">Vote Secured</div>
+        <div class="domain-badge">Vote-Secured.net</div>
+        <div class="georgia-flag"></div>
+        <div class="container">
+            <h2>Election Worker Setup Checklist</h2>
+            <p class="subtitle">Complete Task List for Georgia Election Officials</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                <div>
+                    <h3 style="color: #002244;">Pre-Election Setup (7 Days Before)</h3>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Download voter registration database sync</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Configure ballot definitions for county races</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Test database connectivity to GA DDS and SOS</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Set up local network (air-gapped mode)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Install backup power systems</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Configure security camera monitoring</li>
+                            <li style="padding: 8px 0;">☐ Print emergency paper ballots (backup)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #002244;">Election Day Setup (Morning)</h3>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Power on voting terminals and tablets</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Verify air-gap mode is active (no internet)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Run system diagnostics and integrity checks</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Test voter authentication with dummy IDs</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Verify printer functionality for receipts</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Initialize cryptographic key ceremony</li>
+                            <li style="padding: 8px 0;">☐ Document all setup activities in log</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #002244;">During Voting Operations</h3>
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Monitor system status dashboard</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Assist voters with device selection</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Handle paper ballot requests</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Log any technical issues or voter challenges</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Maintain physical security of terminals</li>
+                            <li style="padding: 8px 0;">☐ Regular backup of vote tallies (every 2 hours)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #002244;">Post-Election Tasks</h3>
+                    <div style="background: #fff3e0; padding: 20px; border-radius: 8px;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Close voting system at poll close time</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Generate preliminary results report</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Export audit logs and vote records</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Print paper backup of all votes (if required)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">☐ Secure all equipment and data storage</li>
+                            <li style="padding: 8px 0;">☐ Transmit results to county election office</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: #e3f2fd; padding: 25px; border-radius: 12px; margin-top: 30px; text-align: center;">
+                <p style="font-size: 18px; margin: 0;"><strong>Training Support:</strong> Vote Secured provides 24/7 technical support and on-site assistance for all Georgia counties during setup and election day operations.</p>
+            </div>
+        </div>
+        <span class="slide-number">14</span>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="slide-nav">
+        <button class="nav-btn" id="firstBtn" onclick="goToSlide(1)" title="First Slide">⏮</button>
+        <button class="nav-btn" id="prevBtn" onclick="previousSlide()" title="Previous Slide">⏪</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next Slide">⏩</button>
+        <button class="nav-btn" id="lastBtn" onclick="goToSlide(14)" title="Last Slide">⏭</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 14;
+
+        function updateNavigation() {
+            document.getElementById('firstBtn').disabled = currentSlide === 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            document.getElementById('lastBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 1 && slideNumber <= totalSlides) {
+                currentSlide = slideNumber;
+                const slides = document.querySelectorAll('.slide');
+                slides[slideNumber - 1].scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start' 
+                });
+                updateNavigation();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        // Initialize navigation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case 'PageDown':
+                    case ' ':
+                        e.preventDefault();
+                        nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        e.preventDefault();
+                        previousSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToSlide(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        goToSlide(totalSlides);
+                        break;
+                }
+            });
+
+            // Track current slide position on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const slides = Array.from(document.querySelectorAll('.slide'));
+                        const slideIndex = slides.indexOf(entry.target);
+                        if (slideIndex !== -1) {
+                            currentSlide = slideIndex + 1;
+                            updateNavigation();
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            document.querySelectorAll('.slide').forEach(slide => {
+                observer.observe(slide);
+            });
+        });
+    </script>
+</body>
+</html>
